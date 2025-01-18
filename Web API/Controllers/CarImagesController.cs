@@ -19,9 +19,9 @@ namespace Web_API.Controllers
             _carImageService = carImageService;
         }
         [HttpPost("add")]
-        public IActionResult Add([FromForm(Name = ("Image"))] IFormFile file, [FromForm] CarImage carImage)
+        public IActionResult Add([FromForm] IFormFile file, [FromForm] CarImage carImage)
         {
-            var result = _carImageService.Add(carImage,file);
+            var result = _carImageService.Add(file, carImage);
             if (result.Success)
             {
                 return Ok(result);
@@ -69,18 +69,17 @@ namespace Web_API.Controllers
             }
             return BadRequest(result);
         }
-        [HttpGet("getbycarid")]
-        public IActionResult GetByCarId(int carId)
+
+        [HttpGet("getcarimagebycolorandbrandid")]
+        public IActionResult GetCarImageByColorAndBrandId(int brandId, int colorId)
         {
-            var result = _carImageService.GetCarsByCarId(carId);
+            var result = _carImageService.GetCarImageByColorAndBrandId(brandId,colorId);
             if (result.Success)
             {
                 return Ok(result);
             }
-
             return BadRequest(result);
         }
-
 
     }
 }

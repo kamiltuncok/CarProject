@@ -7,6 +7,7 @@ using Core.Utilities.Interceptors;
 using Core.Utilities.Security.JWT;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
+using Core.Utilities.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,8 +27,23 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<ColorManager>().As<IColorService>().SingleInstance();
             builder.RegisterType<EfColorDal>().As<IColorDal>().SingleInstance();
 
-            builder.RegisterType<CustomerManager>().As<ICustomerService>().SingleInstance();
-            builder.RegisterType<EfCustomerDal>().As<ICustomerDal>().SingleInstance();
+            //builder.RegisterType<IndividualCustomerManager>().As<IIndividualCustomerService>().SingleInstance();
+            //builder.RegisterType<EfIndividualCustomerDal>().As<IIndividualCustomerDal>().SingleInstance();
+
+            //builder.RegisterType<CorporateCustomerManager>().As<ICorporateCustomerService>().SingleInstance();
+            //builder.RegisterType<EfCorporateCustomerDal>().As<ICorporateCustomerDal>().SingleInstance();
+
+            builder.RegisterType<IndividualCustomerManager>().As<IIndividualCustomerService>().SingleInstance();
+            builder.RegisterType<EfIndividualCustomerDal>().As<IIndividualCustomerDal>().SingleInstance();
+
+            builder.RegisterType<CorporateCustomerManager>().As<ICorporateCustomerService>().SingleInstance();
+            builder.RegisterType<EfCorporateCustomerDal>().As<ICorporateCustomerDal>().SingleInstance();
+
+            builder.RegisterType<FuelManager>().As<IFuelService>().SingleInstance();
+            builder.RegisterType<EfFuelDal>().As<IFuelDal>().SingleInstance();
+
+            builder.RegisterType<GearManager>().As<IGearService>().SingleInstance();
+            builder.RegisterType<EfGearDal>().As<IGearDal>().SingleInstance();
 
             builder.RegisterType<RentalManager>().As<IRentalService>().SingleInstance();
             builder.RegisterType<EfRentalDal>().As<IRentalDal>().SingleInstance();
@@ -35,8 +51,16 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<CarImageManager>().As<ICarImageService>().SingleInstance();
             builder.RegisterType<EfCarImageDal>().As<ICarImageDal>().SingleInstance();
 
+             builder.RegisterType<FileHeplerManager>().As<IFileHelper>().SingleInstance();
+
             builder.RegisterType<UserManager>().As<IUserService>();
             builder.RegisterType<EfUserDal>().As<IUserDal>();
+
+            builder.RegisterType<CorporateUserManager>().As<ICorporateUserService>();
+            builder.RegisterType<EfCorporateUserDal>().As<ICorporateUserDal>();
+
+            builder.RegisterType<LocationManager>().As<ILocationService>();
+            builder.RegisterType<EfLocationDal>().As<ILocationDal>();
 
             builder.RegisterType<AuthManager>().As<IAuthService>();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>();

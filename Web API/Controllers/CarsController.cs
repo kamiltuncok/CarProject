@@ -123,6 +123,17 @@ namespace Web_API.Controllers
 
             return BadRequest(result);
         }
+        [HttpGet("getbylocations")]
+        public IActionResult GetByLocations(int locationId)
+        {
+            var result = _carService.GetCarDetailsByLocationId(locationId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
         [HttpGet("getbycarid")]
         public IActionResult GetByCarId(int carId)
         {
@@ -145,6 +156,34 @@ namespace Web_API.Controllers
             }
             return BadRequest(result);
         }
+        [HttpGet("getnotrentedcarsbylocations")]
+        public IActionResult GetNotRentedCarsByLocations(int locationId)
+        {
+            var result = _carService.GetNotRentedCarsByLocationId(locationId,false);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpGet("getcarsnotrentedbylocations")]
+        public IActionResult GetCarsNotRentedByLocations(string locationName)
+        {
+            var result = _carService.GetCarsNotRentedByLocationName(locationName, false);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpPost("carisrented")]
+        public void CarRented(int carId) => _carService.CarRented(carId);
+
+
 
     }
 }

@@ -14,6 +14,7 @@ using Entities.Concrete;
 using Entities.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 
 namespace Business.Concrete
@@ -32,9 +33,7 @@ namespace Business.Concrete
         [CacheRemoveAspect("ICarService.Get")]
         public IResult Add(Car car)
         {
-            ValidationTool.Validate(new CarValidator(), car);
-
-
+            car.IsRented = false;
             _carDal.Add(car);
             return new SuccessResult(Messages.CarAdded);
         }
@@ -65,8 +64,8 @@ namespace Business.Concrete
         }
 
 
-       [CacheAspect]
-       [PerformanceAspect(5)]
+        [CacheAspect]
+        [PerformanceAspect(5)]
         public IDataResult<List<Car>> GetAll()
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.CarsListed);
@@ -74,7 +73,7 @@ namespace Business.Concrete
 
         public IDataResult<List<CarDetailDto>> GetCarDetailDtos()
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(),Messages.CarsListed);
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(), Messages.CarsListed);
         }
 
         public IDataResult<List<Car>> GetCarsByBrandId(int id)
@@ -92,10 +91,10 @@ namespace Business.Concrete
         [CacheRemoveAspect("ICarService.Get")]
         public IResult Update(Car car)
         {
-            if (car.Description.Length<2 && car.DailyPrice < 0)
-            {
-                return new ErrorResult(Messages.CarNameInvalid);
-            }
+            //if (car.Description.Length<2 && car.DailyPrice < 0)
+            //{
+            //    return new ErrorResult(Messages.CarNameInvalid);
+            //}
             _carDal.Update(car);
             return new SuccessResult(Messages.CarUpdated);
         }
@@ -123,5 +122,28 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.Id == id));
         }
 
+        public IDataResult<List<CarDetailDto>> GetCarDetailsByLocationId(int locationId)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailsByLocationId(locationId));
+        }
+
+        public IDataResult<List<CarDetailDto>> GetNotRentedCarsByLocationId(int locationId, bool IsRented)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetNotRentedCarsByLocationId(locationId, false));
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarsNotRentedByLocationName(string locationName, bool IsRented)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarsNotRentedByLocationName(locationName, false));
+        }
+
+        public void CarRented(int carId)
+        {
+            Car car = new Car();
+            car = _carDal.Get(c => c.Id == carId);
+            car.IsRented = true;
+
+            _carDal.Update(car);
+        }
     }
 }

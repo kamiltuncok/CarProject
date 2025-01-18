@@ -23,8 +23,12 @@ namespace Business.Abstract
         IDataResult<List<CarDetailDto>> GetCarDetails();
         IDataResult<List<CarDetailDto>> GetCarDetailsByBrandId(int brandId);
         IDataResult<List<CarDetailDto>> GetCarDetailsByColorId(int colorId);
+        IDataResult<List<CarDetailDto>> GetCarDetailsByLocationId(int locationId);
+        IDataResult<List<CarDetailDto>> GetNotRentedCarsByLocationId(int locationId,bool IsRented);
+        IDataResult<List<CarDetailDto>> GetCarsNotRentedByLocationName(string locationName, bool IsRented);
         IDataResult<List<CarDetailDto>> GetCarDetailsByCarId(int carId);
         IDataResult<CarDetailDto> GetCarDetailsById(int id);
+        void CarRented(int carId);
 
     }
 }

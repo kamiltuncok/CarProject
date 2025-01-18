@@ -14,14 +14,33 @@ namespace DataAccess.Concrete.EntityFramework
             optionsBuilder.UseSqlServer(@"Server=DESKTOP-PH8K0NT\SQLEXPRESS;Database=RentACar;Trusted_Connection=true");
         }
 
+
         public DbSet<Car> Cars { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Color> Colors { get; set; }
-        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Fuel> Fuels { get; set; }
+        public DbSet<Gear> Gears { get; set; }
+        public DbSet<IndividualCustomer> IndividualCustomers { get; set; }
+        public DbSet<CorporateCustomer> CorporateCustomers { get; set; }
         public DbSet<Rental> Rentals { get; set; }
         public DbSet<CarImage> CarImages { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<CorporateUser> CorporateUsers { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
+        public DbSet<Location> Locations { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<IndividualCustomer>()
+                .ToTable("IndividualCustomers")
+                .HasKey(ic => ic.CustomerId);
+
+            modelBuilder.Entity<CorporateCustomer>()
+                .ToTable("CorporateCustomers")
+                .HasKey(cc => cc.CustomerId);
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }
