@@ -12,10 +12,15 @@ namespace Entities.DTOs
         public string Description { get; set; }
         public string BrandName { get; set; }
         public string ColorName { get; set; }
+        public string LocationName { get; set; }
         public int DailyPrice { get; set; }
         public DateTime? ReturnDATE { get; set; }
         public int BrandId { get; set; }
         public int ColorId { get; set; }
+        public bool IsRented { get; set; }
+        public string FuelName { get; set; }
+        public string GearName { get; set; }
+        public int Deposit { get; set; }
 
     }
 }

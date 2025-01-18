@@ -12,49 +12,38 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfCarDal : EfEntityRepositoryBase<Car, RentACarContext>, ICarDal
     {
-        public List<CarDetailDto> GetCarDetails()
-        {
-            using (RentACarContext context = new RentACarContext())
-            {
-                var result = from ca in context.Cars
-                             join b in context.Brands
-                             on ca.BrandId equals b.BrandId
-                             join co in context.Colors
-                             on ca.ColorId equals co.ColorId
-                             join re in context.Rentals
-                             on ca.Id equals re.CarId
-                             select new CarDetailDto
-                             {
-                                 CarId = ca.Id,
-                                 ModelYear = ca.ModelYear,
-                                 BrandName = b.BrandName,
-                                 ColorName = co.ColorName,
-                                 DailyPrice = ca.DailyPrice,
-                                 Description = ca.Description,
-                                 ReturnDATE = re.ReturnDate
-                             };
-                return result.ToList();
-            }
-        }
 
         public List<CarDetailDto> GetCarDetailsByColorId(int colorId)
         {
             using (RentACarContext context = new RentACarContext())
             {
                 var result = from ca in context.Cars
-                             join b in context.Brands
-                             on ca.BrandId equals b.BrandId
                              join co in context.Colors
                              on ca.ColorId equals co.ColorId
+                             join br in context.Brands
+                             on ca.BrandId equals br.BrandId
+                             join fu in context.Fuels
+                             on ca.FuelId equals fu.FuelId
+                             join ge in context.Gears
+                             on ca.GearId equals ge.GearId
+                             join lo in context.Locations
+                             on ca.LocationId equals lo.LocationId
                              where ca.ColorId == colorId
+
                              select new CarDetailDto
                              {
                                  CarId = ca.Id,
-                                 ModelYear = ca.ModelYear,
-                                 BrandName = b.BrandName,
+                                 BrandId = ca.BrandId,
+                                 ColorId = ca.ColorId,
+                                 BrandName = br.BrandName,
                                  ColorName = co.ColorName,
                                  DailyPrice = ca.DailyPrice,
-                                 Description = ca.Description
+                                 Description = ca.Description,
+                                 ModelYear = ca.ModelYear,
+                                 LocationName = lo.LocationName,
+                                 FuelName=fu.FuelName,
+                                 GearName = ge.GearName,
+                                 Deposit = ca.Deposit
                              };
                 return result.ToList();
 
@@ -68,19 +57,32 @@ namespace DataAccess.Concrete.EntityFramework
             using (RentACarContext context = new RentACarContext())
             {
                 var result = from ca in context.Cars
-                             join b in context.Brands
-                             on ca.BrandId equals b.BrandId
                              join co in context.Colors
                              on ca.ColorId equals co.ColorId
-                             where b.BrandId == brandId
+                             join br in context.Brands
+                             on ca.BrandId equals br.BrandId
+                             join fu in context.Fuels
+                             on ca.FuelId equals fu.FuelId
+                             join ge in context.Gears
+                             on ca.GearId equals ge.GearId
+                             join lo in context.Locations
+                             on ca.LocationId equals lo.LocationId
+                             where ca.BrandId == brandId
+
                              select new CarDetailDto
                              {
                                  CarId = ca.Id,
-                                 ModelYear = ca.ModelYear,
-                                 BrandName = b.BrandName,
+                                 BrandId = ca.BrandId,
+                                 ColorId = ca.ColorId,
+                                 BrandName = br.BrandName,
                                  ColorName = co.ColorName,
                                  DailyPrice = ca.DailyPrice,
-                                 Description = ca.Description
+                                 Description = ca.Description,
+                                 ModelYear = ca.ModelYear,
+                                 LocationName = lo.LocationName,
+                                 FuelName=fu.FuelName,
+                                 GearName = ge.GearName,
+                                 Deposit = ca.Deposit
                              };
                 return result.ToList();
 
@@ -90,18 +92,34 @@ namespace DataAccess.Concrete.EntityFramework
         {
             using (RentACarContext context = new RentACarContext())
             {
-                var result = from c in context.Cars
-                             join b in context.Brands on c.BrandId equals b.BrandId
-                             join cl in context.Colors on c.ColorId equals cl.ColorId
-                             where c.Id == carId
+                var result = from ca in context.Cars
+                             join co in context.Colors
+                             on ca.ColorId equals co.ColorId
+                             join br in context.Brands
+                             on ca.BrandId equals br.BrandId
+                             join fu in context.Fuels
+                             on ca.FuelId equals fu.FuelId
+                             join ge in context.Gears
+                             on ca.GearId equals ge.GearId
+                             join lo in context.Locations
+                             on ca.LocationId equals lo.LocationId
+                             where ca.Id == carId
+
                              select new CarDetailDto
                              {
-                                 CarId = c.Id,
-                                 Description = c.Description,
-                                 BrandName = b.BrandName,
-                                 ColorName = cl.ColorName,
-                                 ModelYear = c.ModelYear,
-                                 DailyPrice = c.DailyPrice
+                                 CarId = ca.Id,
+                                 BrandId = ca.BrandId,
+                                 ColorId = ca.ColorId,
+                                 BrandName = br.BrandName,
+                                 ColorName = co.ColorName,
+                                 DailyPrice = ca.DailyPrice,
+                                 Description = ca.Description,
+                                 ModelYear = ca.ModelYear,
+                                 LocationName = lo.LocationName,
+                                 IsRented =ca.IsRented,
+                                 FuelName=fu.FuelName,
+                                 GearName = ge.GearName,
+                                 Deposit = ca.Deposit
                              };
                 return result.ToList();
 
@@ -112,22 +130,32 @@ namespace DataAccess.Concrete.EntityFramework
             using (RentACarContext context = new RentACarContext())
             {
                 var result = from ca in context.Cars
-                             join br in context.Brands
-                             on ca.BrandId equals br.BrandId
                              join co in context.Colors
                              on ca.ColorId equals co.ColorId
+                             join br in context.Brands
+                             on ca.BrandId equals br.BrandId
+                             join fu in context.Fuels
+                             on ca.FuelId equals fu.FuelId
+                             join ge in context.Gears
+                             on ca.GearId equals ge.GearId
+                             join lo in context.Locations
+                             on ca.LocationId equals lo.LocationId
                              where ca.Id == id
+
                              select new CarDetailDto
                              {
+                                 CarId = ca.Id,
+                                 BrandId = ca.BrandId,
+                                 ColorId = ca.ColorId,
                                  BrandName = br.BrandName,
                                  ColorName = co.ColorName,
                                  DailyPrice = ca.DailyPrice,
-                                 BrandId = br.BrandId,
-                                 ColorId = co.ColorId,
-                                 CarId = ca.Id,
-                                 ModelYear = ca.ModelYear,
                                  Description = ca.Description,
-
+                                 ModelYear = ca.ModelYear,
+                                 LocationName = lo.LocationName,
+                                 FuelName=fu.FuelName,
+                                 GearName = ge.GearName,
+                                 Deposit = ca.Deposit
                              };
                 return result.First();
             }
@@ -141,7 +169,12 @@ namespace DataAccess.Concrete.EntityFramework
                              on ca.ColorId equals co.ColorId
                              join br in context.Brands
                              on ca.BrandId equals br.BrandId
-
+                             join fu in context.Fuels
+                             on ca.FuelId equals fu.FuelId
+                             join ge in context.Gears
+                             on ca.GearId equals ge.GearId
+                             join lo in context.Locations
+                             on ca.LocationId equals lo.LocationId
 
                              select new CarDetailDto
                              {
@@ -153,11 +186,127 @@ namespace DataAccess.Concrete.EntityFramework
                                  DailyPrice = ca.DailyPrice,
                                  Description = ca.Description,
                                  ModelYear = ca.ModelYear,
+                                 LocationName=lo.LocationName,
+                                 FuelName=fu.FuelName,
+                                 GearName = ge.GearName,
+                                 Deposit = ca.Deposit
                              };
                 return filter == null
              ? result.ToList()
              : result.Where(filter).ToList();
             };
+        }
+
+        public List<CarDetailDto> GetCarDetailsByLocationId(int locationId)
+        {
+            using (RentACarContext context = new RentACarContext())
+            {
+                var result = from ca in context.Cars
+                             join co in context.Colors
+                             on ca.ColorId equals co.ColorId
+                             join br in context.Brands
+                             on ca.BrandId equals br.BrandId
+                             join fu in context.Fuels
+                             on ca.FuelId equals fu.FuelId
+                             join ge in context.Gears
+                             on ca.GearId equals ge.GearId
+                             join lo in context.Locations
+                             on ca.LocationId equals lo.LocationId
+                             where ca.LocationId == locationId
+
+                             select new CarDetailDto
+                             {
+                                 CarId = ca.Id,
+                                 BrandId = ca.BrandId,
+                                 ColorId = ca.ColorId,
+                                 BrandName = br.BrandName,
+                                 ColorName = co.ColorName,
+                                 DailyPrice = ca.DailyPrice,
+                                 Description = ca.Description,
+                                 ModelYear = ca.ModelYear,
+                                 LocationName = lo.LocationName,
+                                 FuelName= fu.FuelName,
+                                 GearName = ge.GearName,
+                                 Deposit = ca.Deposit
+                             };
+                return result.ToList();
+
+            }
+        }
+
+        public List<CarDetailDto> GetNotRentedCarsByLocationId(int locationId, bool IsRented)
+        {
+            using (RentACarContext context = new RentACarContext())
+            {
+                var result = from ca in context.Cars
+                             join co in context.Colors
+                             on ca.ColorId equals co.ColorId
+                             join br in context.Brands
+                             on ca.BrandId equals br.BrandId
+                             join fu in context.Fuels
+                             on ca.FuelId equals fu.FuelId
+                             join ge in context.Gears
+                             on ca.GearId equals ge.GearId
+                             join lo in context.Locations
+                             on ca.LocationId equals lo.LocationId
+                             where ca.LocationId == locationId && ca.IsRented ==IsRented
+
+                             select new CarDetailDto
+                             {
+                                 CarId = ca.Id,
+                                 BrandId = ca.BrandId,
+                                 ColorId = ca.ColorId,
+                                 BrandName = br.BrandName,
+                                 ColorName = co.ColorName,
+                                 DailyPrice = ca.DailyPrice,
+                                 Description = ca.Description,
+                                 ModelYear = ca.ModelYear,
+                                 LocationName = lo.LocationName,
+                                 FuelName = fu.FuelName,
+                                 GearName = ge.GearName,
+                                 Deposit = ca.Deposit
+
+                             };
+                return result.ToList();
+
+            }
+        }
+
+        public List<CarDetailDto> GetCarsNotRentedByLocationName(string locationName, bool IsRented)
+        {
+            using (RentACarContext context = new RentACarContext())
+            {
+                var result = from ca in context.Cars
+                             join co in context.Colors
+                             on ca.ColorId equals co.ColorId
+                             join br in context.Brands
+                             on ca.BrandId equals br.BrandId
+                             join fu in context.Fuels
+                             on ca.FuelId equals fu.FuelId
+                             join ge in context.Gears
+                             on ca.GearId equals ge.GearId
+                             join lo in context.Locations
+                             on ca.LocationId equals lo.LocationId
+                             where lo.LocationName == locationName && ca.IsRented == IsRented
+
+                             select new CarDetailDto
+                             {
+                                 CarId = ca.Id,
+                                 BrandId = ca.BrandId,
+                                 ColorId = ca.ColorId,
+                                 BrandName = br.BrandName,
+                                 ColorName = co.ColorName,
+                                 DailyPrice = ca.DailyPrice,
+                                 Description = ca.Description,
+                                 ModelYear = ca.ModelYear,
+                                 LocationName = lo.LocationName,
+                                 FuelName= fu.FuelName,
+                                 GearName = ge.GearName,
+                                 Deposit =ca.Deposit
+                             };
+                return result.ToList();
+
+            }
         }
     }
 }

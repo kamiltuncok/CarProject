@@ -29,8 +29,10 @@ namespace Business.Concrete
                   return new ErrorResult(RentalMessages.RentalNotAdded);
               }
             */
+
             ValidationTool.Validate(new RentalValidator(), rental);
 
+            rental.isReturned = false;
             _rentalDal.Add(rental);
                 return new SuccessResult(Messages.RentalAdded);
            
@@ -42,11 +44,11 @@ namespace Business.Concrete
             return new SuccessResult(Messages.RentalDeleted);
         }
 
-        public IDataResult<List<RentalDetailDto>> GetRentalDetails()
-        {
-            var result = _rentalDal.GetRentalDetails();
-            return new SuccessDataResult<List<RentalDetailDto>>(result, Messages.rentalDetailsListed);
-        }
+        //public IDataResult<List<RentalDetailDto>> GetRentalDetails()
+        //{
+        //    var result = _rentalDal.GetRentalDetails();
+        //    return new SuccessDataResult<List<RentalDetailDto>>(result, Messages.rentalDetailsListed);
+        //}
 
         public IDataResult<List<Rental>> GetAll()
         {

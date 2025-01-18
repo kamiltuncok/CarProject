@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities.Enums;
+using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -24,9 +25,15 @@ namespace Core.Extensions
             claims.Add(new Claim(ClaimTypes.NameIdentifier, nameIdentifier));
         }
 
+        public static void AddCustomerType(this ICollection<Claim> claims, CustomerType customerType)
+        {
+            claims.Add(new Claim("customerType", customerType.ToString()));
+        }
+
         public static void AddRoles(this ICollection<Claim> claims, string[] roles)
         {
             roles.ToList().ForEach(role => claims.Add(new Claim(ClaimTypes.Role, role)));
         }
+
     }
 }

@@ -41,10 +41,16 @@ namespace Business.Constants
         internal static string PasswordError = "Parola Hatası";
         internal static string SuccessfulLogin = "Başarılı Giriş";
         internal static string UserAlreadyExists = "Bu Kullanıcı Zaten Mevcut";
-        internal static string AccessTokenCreated = "Erişim Belirteci Oluşturuldu";
+        internal static string AccessTokenCreated = "Giriş Başarılı";
         internal static string CarImageLimitExceeded = "Araba Resim Ekleme Limiti Aşıldı";
         internal static readonly string carDetailsListed = "Araba Detayları Listelendi";
         internal static readonly string rentalDetailsListed = "Kiralama Detayları Listelendi";
+
+        public static string UserPasswordUpdated = "Kullanıcı Şifresi Güncellendi";
+        public static string UserDeleted = "Kullanıcı Silindi";
+        public static string UserUpdated = "Kullanıcı Güncellendi";
+
+
     }
 
 }

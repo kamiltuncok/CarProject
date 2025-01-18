@@ -32,7 +32,7 @@ namespace Web_API.Controllers
             var result = _authService.CreateAccessToken(userToLogin.Data);
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
 
             return BadRequest(result.Message);
@@ -52,6 +52,67 @@ namespace Web_API.Controllers
             if (result.Success)
             {
                 return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
+        }
+
+        [HttpPost("updatepassword")]
+        public ActionResult UpdatePassword(UserForPasswordDto userForPasswordDto)
+        {
+            var result = _authService.UpdatePassword(userForPasswordDto, userForPasswordDto.NewPassword);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result.Message);
+        }
+
+        [HttpPost("loginforcorporate")]
+        public ActionResult LoginForCorporateUser(UserForLoginDto userForLoginDto)
+        {
+            var userToLogin = _authService.LoginForCorporateUser(userForLoginDto);
+            if (!userToLogin.Success)
+            {
+                return BadRequest(userToLogin.Message);
+            }
+
+            var result = _authService.CreateAccessTokenForCorporate(userToLogin.Data);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result.Message);
+        }
+
+        [HttpPost("registerforcorporate")]
+        public ActionResult Register(CorporateUserForRegisterDto userForRegisterDto)
+        {
+            var userExists = _authService.CorporateUserExists(userForRegisterDto.Email);
+            if (!userExists.Success)
+            {
+                return BadRequest(userExists.Message);
+            }
+
+            var registerResult = _authService.RegisterForCorporate(userForRegisterDto, userForRegisterDto.Password);
+            var result = _authService.CreateAccessTokenForCorporate(registerResult.Data);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
+        }
+
+        [HttpPost("updatepasswordforcorporate")]
+        public ActionResult UpdatePasswordForCorporate(UserForPasswordDto userForPasswordDto)
+        {
+            var result = _authService.UpdateCorporatePassword(userForPasswordDto, userForPasswordDto.NewPassword);
+            if (result.Success)
+            {
+                return Ok(result);
             }
 
             return BadRequest(result.Message);
