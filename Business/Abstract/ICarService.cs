@@ -30,5 +30,15 @@ namespace Business.Abstract
         IDataResult<CarDetailDto> GetCarDetailsById(int id);
         void CarRented(int carId);
 
+        IDataResult<int> UpdatePriceByAction(int carId, string action);
+
+        IDataResult<List<CarDetailDto>> GetNotRentedCarsByGearId(int gearId, bool IsRented);
+        IDataResult<List<CarDetailDto>> GetNotRentedCarsByFuelId(int fuelId, bool IsRented);
+
+        IDataResult<List<CarDetailDto>> GetCarsByFuelAndLocation(int fuelId, bool isRented, string locationName);
+        IDataResult<List<CarDetailDto>> GetCarsByGearAndLocation(int gearId, bool isRented, string locationName);
+        IDataResult<List<CarDetailDto>> GetCarsByGearAndFuelFilters(List<int> fuelIds, List<int> gearIds, bool isRented, string locationName);
     }
+
 }
+

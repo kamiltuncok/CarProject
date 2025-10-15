@@ -145,5 +145,62 @@ namespace Business.Concrete
 
             _carDal.Update(car);
         }
+
+        public IDataResult<int> UpdatePriceByAction(int carId, string action)
+        {
+            // 1️⃣ Aracı database’den al
+            var car = _carDal.Get(c => c.Id == carId);
+            if (car == null)
+                return new ErrorDataResult<int>(0, "Car not found");
+
+            // 2️⃣ Fiyat güncelleme adımı (step)
+            int step = 100; // 100 birim veya istersen %5 yapabilirsin
+            switch (action.ToLower())
+            {
+                case "increase":
+                    car.DailyPrice += step;
+                    break;
+                case "decrease":
+                    car.DailyPrice = Math.Max(car.DailyPrice - step, 0); // negatif olmasın
+                    break;
+                case "same":
+                    // değişiklik yok
+                    break;
+                default:
+                    return new ErrorDataResult<int>(car.DailyPrice, "Unknown action");
+            }
+
+            // 3️⃣ Güncellenmiş fiyatı database’e yaz
+            _carDal.Update(car);
+
+            // 4️⃣ Sonuç dön
+            return new SuccessDataResult<int>(car.DailyPrice, $"Price {action} applied successfully");
+        }
+
+        public IDataResult<List<CarDetailDto>> GetNotRentedCarsByGearId(int gearId, bool isRented)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailsByGearId(gearId,false));
+        }
+
+        public IDataResult<List<CarDetailDto>> GetNotRentedCarsByFuelId(int fuelId, bool isRented)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailsByFuelId(fuelId,false));
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarsByFuelAndLocation(int fuelId, bool isRented, string locationName)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarsByFuelAndLocation(fuelId, isRented, locationName));
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarsByGearAndLocation(int gearId, bool isRented, string locationName)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarsByGearAndLocation(gearId, isRented, locationName));
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarsByGearAndFuelFilters(List<int> fuelIds, List<int> gearIds, bool isRented, string locationName)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarsByGearAndFuelFilters(fuelIds, gearIds, isRented, locationName));
+        }
+
     }
 }

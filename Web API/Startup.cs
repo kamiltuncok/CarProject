@@ -7,6 +7,8 @@ using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.JWT;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
+using Hangfire;
+using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,22 +38,12 @@ namespace Web_API
         {
             services.AddControllersWithViews();
 
-            /* services.AddSingleton<ICarService, CarManager>();
-             services.AddSingleton<ICarDal, EfCarDal>();
-
-             services.AddSingleton<IColorService, ColorManager>();
-             services.AddSingleton<IColorDal, EfColorDal>();
-
-             services.AddSingleton<IBrandService, BrandManager>();
-             services.AddSingleton<IBrandDal, EfBrandDal>();
-
-             services.AddSingleton<IUserService, UserManager>();
-             services.AddSingleton<IUserDal, EfUserDal>();
-
-             services.AddSingleton<IRentalService, RentalManager>();
-             services.AddSingleton<IRentalDal, EfRentalDal>();
-            */
             services.AddCors();
+
+
+            services.AddHangfire(config => config.UseMemoryStorage());
+            services.AddHangfireServer();
+            services.AddHttpClient<IPricingService, PricingManager>();
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -92,6 +84,8 @@ namespace Web_API
 
             app.ConfigureCustomExceptionMiddleware();
 
+            app.UseHangfireDashboard("/hangfire");
+
             app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader());
 
             app.UseHttpsRedirection();
@@ -109,6 +103,13 @@ namespace Web_API
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            RecurringJob.AddOrUpdate<IPricingService>(
+        "update-prices-job",
+        service => service.UpdateAllPricesAsync(),
+        "*/1 * * * *");
         }
+
+
     }
 }
