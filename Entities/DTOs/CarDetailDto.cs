@@ -17,6 +17,8 @@ namespace Entities.DTOs
         public DateTime? ReturnDATE { get; set; }
         public int BrandId { get; set; }
         public int ColorId { get; set; }
+        public int GearId { get; set; }
+        public int FuelId { get; set; }
         public bool IsRented { get; set; }
         public string FuelName { get; set; }
         public string GearName { get; set; }

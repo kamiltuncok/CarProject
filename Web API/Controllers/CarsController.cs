@@ -6,6 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Business.Abstract;
 using Entities.Concrete;
+using System.Net.Http;
+using System.Text;
 
 namespace Web_API.Controllers
 {
@@ -14,10 +16,13 @@ namespace Web_API.Controllers
     public class CarsController : ControllerBase
     {
         ICarService _carService;
-        public CarsController(ICarService carService)
+        IPricingService _pricingService;
+        public CarsController(ICarService carService,IPricingService pricingService)
         {
             _carService = carService;
+            _pricingService = pricingService;
         }
+
         [HttpGet("getall")]
         public IActionResult GetAll()
         {
@@ -182,6 +187,116 @@ namespace Web_API.Controllers
 
         [HttpPost("carisrented")]
         public void CarRented(int carId) => _carService.CarRented(carId);
+
+        [HttpGet("getnotrentedcarsbygears")]
+        public IActionResult GetNotRentedCarsByGears(int gearId)
+        {
+            var result = _carService.GetNotRentedCarsByGearId(gearId, false);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpGet("getnotrentedcarsbyfuels")]
+        public IActionResult GetNotRentedCarsByFuels(int fuelId)
+        {
+            var result = _carService.GetNotRentedCarsByFuelId(fuelId, false);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpGet("getcarsbyfuelandlocation")]
+        public IActionResult GetCarsByFuelAndLocation(int fuelId, string locationName)
+        {
+            var result = _carService.GetCarsByFuelAndLocation(fuelId, false, locationName);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("getcarsbygearandlocation")]
+        public IActionResult GetCarsByGearAndLocation(int gearId, string locationName)
+        {
+            var result = _carService.GetCarsByGearAndLocation(gearId, false, locationName);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("getcarsbygearandfuelfilters")]
+        public IActionResult GetCarsByFilters([FromQuery] List<int> fuelIds, [FromQuery] List<int> gearIds, string locationName)
+        {
+            var result = _carService.GetCarsByGearAndFuelFilters(fuelIds, gearIds, false, locationName);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+
+        [HttpGet("getrecommendedprice")]
+        public async Task<IActionResult> GetRecommendedPrice(int carId)
+        {
+            try
+            {
+                var action = await _pricingService.GetRecommendedActionAsync(carId);
+                return Ok(new
+                {
+                    CarId = carId,
+                    RecommendedAction = action
+                });
+            }
+            catch (Exception ex)
+            {
+                // Detaylı hatayı JSON olarak döndür
+                return StatusCode(500, new
+                {
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+        }
+
+
+        [HttpPost("updateprice")]
+        public async Task<IActionResult> UpdatePrice(int carId)
+        {
+            string action = await _pricingService.GetRecommendedActionAsync(carId);
+            var result = _carService.UpdatePriceByAction(carId, action);
+
+            if (result.Success)
+                return Ok(new { CarId = carId, NewPrice = result.Data, Action = action });
+
+            return BadRequest(result.Message);
+        }
+
+
+        [HttpPost("update-prices")]
+        public async Task<IActionResult> UpdateAllPrices()
+        {
+            try
+            {
+                var result = await _pricingService.UpdateAllPricesAsync();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Fiyat güncelleme sırasında bir hata oluştu.", details = ex.Message });
+            }
+        }
+
 
 
 

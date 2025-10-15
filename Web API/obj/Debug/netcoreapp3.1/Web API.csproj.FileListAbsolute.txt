@@ -267,3 +267,22 @@ C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\netcoreap
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\netcoreapp3.1\Web API.dll
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\netcoreapp3.1\Web API.pdb
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\netcoreapp3.1\Web API.genruntimeconfig.cache
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\netcoreapp3.1\Hangfire.AspNetCore.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\netcoreapp3.1\Hangfire.Core.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\netcoreapp3.1\Hangfire.MemoryStorage.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\netcoreapp3.1\Hangfire.NetCore.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\netcoreapp3.1\Hangfire.SqlServer.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\netcoreapp3.1\ca\Hangfire.Core.resources.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\netcoreapp3.1\de\Hangfire.Core.resources.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\netcoreapp3.1\es\Hangfire.Core.resources.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\netcoreapp3.1\fa\Hangfire.Core.resources.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\netcoreapp3.1\fr\Hangfire.Core.resources.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\netcoreapp3.1\nb\Hangfire.Core.resources.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\netcoreapp3.1\nl\Hangfire.Core.resources.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\netcoreapp3.1\pt-BR\Hangfire.Core.resources.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\netcoreapp3.1\pt-PT\Hangfire.Core.resources.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\netcoreapp3.1\pt\Hangfire.Core.resources.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\netcoreapp3.1\sv\Hangfire.Core.resources.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\netcoreapp3.1\tr-TR\Hangfire.Core.resources.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\netcoreapp3.1\zh-TW\Hangfire.Core.resources.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\netcoreapp3.1\zh\Hangfire.Core.resources.dll

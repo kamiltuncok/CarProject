@@ -11,6 +11,7 @@ using Core.Utilities.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Net.Http;
 
 namespace Business.DependencyResolvers.Autofac
 {
@@ -64,6 +65,10 @@ namespace Business.DependencyResolvers.Autofac
 
             builder.RegisterType<AuthManager>().As<IAuthService>();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>();
+
+            builder.RegisterType<PricingManager>().As<IPricingService>();
+
+            builder.Register(c => new HttpClient()).As<HttpClient>().SingleInstance();
 
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
