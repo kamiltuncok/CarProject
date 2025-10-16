@@ -17,6 +17,7 @@ namespace Entities.Concrete
         public bool IsRented { get; set; }
         public int FuelId { get; set; }
         public int GearId { get; set; }
+        public int SegmentId { get; set; }
         public int Deposit { get; set; }
     }
 }

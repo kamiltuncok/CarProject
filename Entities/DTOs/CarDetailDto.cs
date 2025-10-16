@@ -13,12 +13,14 @@ namespace Entities.DTOs
         public string BrandName { get; set; }
         public string ColorName { get; set; }
         public string LocationName { get; set; }
+        public string SegmentName { get; set; }
         public int DailyPrice { get; set; }
         public DateTime? ReturnDATE { get; set; }
         public int BrandId { get; set; }
         public int ColorId { get; set; }
         public int GearId { get; set; }
         public int FuelId { get; set; }
+        public int SegmentId { get; set; }
         public bool IsRented { get; set; }
         public string FuelName { get; set; }
         public string GearName { get; set; }

@@ -46,6 +46,9 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<GearManager>().As<IGearService>().SingleInstance();
             builder.RegisterType<EfGearDal>().As<IGearDal>().SingleInstance();
 
+            builder.RegisterType<SegmentManager>().As<ISegmentService>().SingleInstance();
+            builder.RegisterType<EfSegmentDal>().As<ISegmentDal>().SingleInstance();
+
             builder.RegisterType<RentalManager>().As<IRentalService>().SingleInstance();
             builder.RegisterType<EfRentalDal>().As<IRentalDal>().SingleInstance();
 

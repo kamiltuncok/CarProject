@@ -122,10 +122,6 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.Id == id));
         }
 
-        public IDataResult<List<CarDetailDto>> GetCarDetailsByLocationId(int locationId)
-        {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailsByLocationId(locationId));
-        }
 
         public IDataResult<List<CarDetailDto>> GetNotRentedCarsByLocationId(int locationId, bool IsRented)
         {
@@ -175,26 +171,6 @@ namespace Business.Concrete
 
             // 4️⃣ Sonuç dön
             return new SuccessDataResult<int>(car.DailyPrice, $"Price {action} applied successfully");
-        }
-
-        public IDataResult<List<CarDetailDto>> GetNotRentedCarsByGearId(int gearId, bool isRented)
-        {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailsByGearId(gearId,false));
-        }
-
-        public IDataResult<List<CarDetailDto>> GetNotRentedCarsByFuelId(int fuelId, bool isRented)
-        {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailsByFuelId(fuelId,false));
-        }
-
-        public IDataResult<List<CarDetailDto>> GetCarsByFuelAndLocation(int fuelId, bool isRented, string locationName)
-        {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarsByFuelAndLocation(fuelId, isRented, locationName));
-        }
-
-        public IDataResult<List<CarDetailDto>> GetCarsByGearAndLocation(int gearId, bool isRented, string locationName)
-        {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarsByGearAndLocation(gearId, isRented, locationName));
         }
 
         public IDataResult<List<CarDetailDto>> GetCarsByGearAndFuelFilters(List<int> fuelIds, List<int> gearIds, bool isRented, string locationName)
