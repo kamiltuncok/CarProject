@@ -23,7 +23,6 @@ namespace Business.Abstract
         IDataResult<List<CarDetailDto>> GetCarDetails();
         IDataResult<List<CarDetailDto>> GetCarDetailsByBrandId(int brandId);
         IDataResult<List<CarDetailDto>> GetCarDetailsByColorId(int colorId);
-        IDataResult<List<CarDetailDto>> GetCarDetailsByLocationId(int locationId);
         IDataResult<List<CarDetailDto>> GetNotRentedCarsByLocationId(int locationId,bool IsRented);
         IDataResult<List<CarDetailDto>> GetCarsNotRentedByLocationName(string locationName, bool IsRented);
         IDataResult<List<CarDetailDto>> GetCarDetailsByCarId(int carId);
@@ -32,11 +31,6 @@ namespace Business.Abstract
 
         IDataResult<int> UpdatePriceByAction(int carId, string action);
 
-        IDataResult<List<CarDetailDto>> GetNotRentedCarsByGearId(int gearId, bool IsRented);
-        IDataResult<List<CarDetailDto>> GetNotRentedCarsByFuelId(int fuelId, bool IsRented);
-
-        IDataResult<List<CarDetailDto>> GetCarsByFuelAndLocation(int fuelId, bool isRented, string locationName);
-        IDataResult<List<CarDetailDto>> GetCarsByGearAndLocation(int gearId, bool isRented, string locationName);
         IDataResult<List<CarDetailDto>> GetCarsByGearAndFuelFilters(List<int> fuelIds, List<int> gearIds, bool isRented, string locationName);
     }
 

@@ -29,6 +29,7 @@ namespace DataAccess.Concrete.EntityFramework
         public DbSet<CorporateUser> CorporateUsers { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
         public DbSet<Location> Locations { get; set; }
+        public DbSet<Segment> Segments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

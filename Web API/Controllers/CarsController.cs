@@ -128,17 +128,7 @@ namespace Web_API.Controllers
 
             return BadRequest(result);
         }
-        [HttpGet("getbylocations")]
-        public IActionResult GetByLocations(int locationId)
-        {
-            var result = _carService.GetCarDetailsByLocationId(locationId);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
 
-            return BadRequest(result);
-        }
         [HttpGet("getbycarid")]
         public IActionResult GetByCarId(int carId)
         {
@@ -188,51 +178,6 @@ namespace Web_API.Controllers
         [HttpPost("carisrented")]
         public void CarRented(int carId) => _carService.CarRented(carId);
 
-        [HttpGet("getnotrentedcarsbygears")]
-        public IActionResult GetNotRentedCarsByGears(int gearId)
-        {
-            var result = _carService.GetNotRentedCarsByGearId(gearId, false);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-        }
-
-        [HttpGet("getnotrentedcarsbyfuels")]
-        public IActionResult GetNotRentedCarsByFuels(int fuelId)
-        {
-            var result = _carService.GetNotRentedCarsByFuelId(fuelId, false);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-        }
-
-        [HttpGet("getcarsbyfuelandlocation")]
-        public IActionResult GetCarsByFuelAndLocation(int fuelId, string locationName)
-        {
-            var result = _carService.GetCarsByFuelAndLocation(fuelId, false, locationName);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpGet("getcarsbygearandlocation")]
-        public IActionResult GetCarsByGearAndLocation(int gearId, string locationName)
-        {
-            var result = _carService.GetCarsByGearAndLocation(gearId, false, locationName);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
 
         [HttpGet("getcarsbygearandfuelfilters")]
         public IActionResult GetCarsByFilters([FromQuery] List<int> fuelIds, [FromQuery] List<int> gearIds, string locationName)
