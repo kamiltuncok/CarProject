@@ -31,7 +31,7 @@ namespace Business.Abstract
 
         IDataResult<int> UpdatePriceByAction(int carId, string action);
 
-        IDataResult<List<CarDetailDto>> GetCarsByGearAndFuelFilters(List<int> fuelIds, List<int> gearIds, bool isRented, string locationName);
+        IDataResult<List<CarDetailDto>> GetCarsByFilters(List<int> fuelIds, List<int> gearIds, List<int> segmentIds, bool isRented, string locationName);
     }
 
 }

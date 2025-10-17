@@ -173,9 +173,9 @@ namespace Business.Concrete
             return new SuccessDataResult<int>(car.DailyPrice, $"Price {action} applied successfully");
         }
 
-        public IDataResult<List<CarDetailDto>> GetCarsByGearAndFuelFilters(List<int> fuelIds, List<int> gearIds, bool isRented, string locationName)
+        public IDataResult<List<CarDetailDto>> GetCarsByFilters(List<int> fuelIds, List<int> gearIds, List<int> segmentIds, bool isRented, string locationName)
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarsByGearAndFuelFilters(fuelIds, gearIds, isRented, locationName));
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarsByFilters(fuelIds, gearIds, segmentIds, isRented, locationName));
         }
 
     }

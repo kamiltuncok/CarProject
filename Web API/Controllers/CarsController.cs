@@ -179,10 +179,10 @@ namespace Web_API.Controllers
         public void CarRented(int carId) => _carService.CarRented(carId);
 
 
-        [HttpGet("getcarsbygearandfuelfilters")]
-        public IActionResult GetCarsByFilters([FromQuery] List<int> fuelIds, [FromQuery] List<int> gearIds, string locationName)
+        [HttpGet("getcarsbyfilters")]
+        public IActionResult GetCarsByFilters([FromQuery] List<int> fuelIds, [FromQuery] List<int> gearIds, [FromQuery] List<int> segmentIds, string locationName)
         {
-            var result = _carService.GetCarsByGearAndFuelFilters(fuelIds, gearIds, false, locationName);
+            var result = _carService.GetCarsByFilters(fuelIds, gearIds, segmentIds, false, locationName);
             if (result.Success)
             {
                 return Ok(result);

@@ -285,7 +285,7 @@ namespace DataAccess.Concrete.EntityFramework
         }
 
 
-        public List<CarDetailDto> GetCarsByGearAndFuelFilters(List<int> fuelIds, List<int> gearIds, bool isRented, string locationName)
+        public List<CarDetailDto> GetCarsByFilters(List<int> fuelIds, List<int> gearIds, List<int> segmentIds, bool isRented, string locationName)
         {
             using (RentACarContext context = new RentACarContext())
             {
@@ -298,6 +298,8 @@ namespace DataAccess.Concrete.EntityFramework
                             on ca.FuelId equals fu.FuelId
                             join ge in context.Gears
                             on ca.GearId equals ge.GearId
+                            join se in context.Segments
+                            on ca.SegmentId equals se.SegmentId
                             join lo in context.Locations
                             on ca.LocationId equals lo.LocationId
                             where ca.IsRented == isRented &&
@@ -316,10 +318,12 @@ namespace DataAccess.Concrete.EntityFramework
                                 LocationName = lo.LocationName,
                                 FuelName = fu.FuelName,
                                 GearName = ge.GearName,
+                                SegmentName = se.SegmentName,
                                 Deposit = ca.Deposit,
                                 IsRented = ca.IsRented,
                                 FuelId = ca.FuelId,
-                                GearId = ca.GearId
+                                GearId = ca.GearId,
+                                SegmentId = ca.SegmentId
                             };
 
                 // Fuel filtreleri
@@ -334,9 +338,16 @@ namespace DataAccess.Concrete.EntityFramework
                     query = query.Where(c => gearIds.Contains(c.GearId));
                 }
 
+                // Segment filtreleri
+                if (segmentIds != null && segmentIds.Any())
+                {
+                    query = query.Where(c => segmentIds.Contains(c.SegmentId));
+                }
+
                 return query.ToList();
             }
-        }
+        
+    }
 
     }
 }
