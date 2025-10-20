@@ -243,6 +243,18 @@ namespace Web_API.Controllers
         }
 
 
+        [HttpGet("getlowestpricebysegment")]
+        public IActionResult GetLowestPriceBySegment(int segmentId)
+        {
+            var result = _carService.GetLowestPriceBySegmentId(segmentId, false);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+
 
 
     }

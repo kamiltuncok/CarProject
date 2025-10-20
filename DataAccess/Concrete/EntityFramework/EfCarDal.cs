@@ -349,5 +349,19 @@ namespace DataAccess.Concrete.EntityFramework
         
     }
 
+        public decimal GetLowestPriceBySegmentId(int segmentId, bool isRented)
+        {
+            using (RentACarContext context = new RentACarContext())
+            {
+                var query = from car in context.Cars
+                            where car.SegmentId == segmentId && car.IsRented == isRented
+                            orderby car.DailyPrice
+                            select car.DailyPrice;
+
+                var lowestPrice = query.FirstOrDefault();
+                return lowestPrice;
+            }
+        }
+
     }
 }

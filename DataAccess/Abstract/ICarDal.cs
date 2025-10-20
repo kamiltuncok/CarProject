@@ -19,5 +19,7 @@ namespace DataAccess.Abstract
         CarDetailDto GetCarDetailsById(int id);
         List<CarDetailDto> GetCarDetails(Expression<Func<CarDetailDto, bool>> filter = null);
         List<CarDetailDto> GetCarsByFilters(List<int> fuelIds, List<int> gearIds, List<int> segmentIds, bool isRented, string locationName);
+
+        decimal GetLowestPriceBySegmentId(int segmentId, bool isRented);
     }
 }

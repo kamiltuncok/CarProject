@@ -178,5 +178,18 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarsByFilters(fuelIds, gearIds, segmentIds, isRented, locationName));
         }
 
+        public IDataResult<decimal> GetLowestPriceBySegmentId(int segmentId, bool isRented)
+        {
+            try
+            {
+                var lowestPrice = _carDal.GetLowestPriceBySegmentId(segmentId, isRented);
+                return new SuccessDataResult<decimal>(lowestPrice, "En düşük fiyat getirildi");
+            }
+            catch (Exception ex)
+            {
+                return new ErrorDataResult<decimal>(0, "Fiyat getirilirken hata oluştu: " + ex.Message);
+            }
+        }
+
     }
 }

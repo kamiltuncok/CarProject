@@ -32,6 +32,8 @@ namespace Business.Abstract
         IDataResult<int> UpdatePriceByAction(int carId, string action);
 
         IDataResult<List<CarDetailDto>> GetCarsByFilters(List<int> fuelIds, List<int> gearIds, List<int> segmentIds, bool isRented, string locationName);
+
+        IDataResult<decimal> GetLowestPriceBySegmentId(int segmentId, bool isRented);
     }
 
 }
