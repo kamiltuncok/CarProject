@@ -176,5 +176,34 @@ namespace Business.Concrete
             }
             return new SuccessResult();
         }
+
+        public IDataResult<User> RegisterAdmin(UserForRegisterDto userForRegisterDto, string password)
+        {
+            // Önce kullanıcı var mı kontrol et
+            if (_userService.GetByMail(userForRegisterDto.Email) != null)
+            {
+                return new ErrorDataResult<User>(Messages.UserAlreadyExists);
+            }
+
+            byte[] passwordHash, passwordSalt;
+            HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
+
+            var adminUser = new User
+            {
+                Email = userForRegisterDto.Email,
+                FirstName = userForRegisterDto.FirstName,
+                LastName = userForRegisterDto.LastName,
+                IdentityNumber = userForRegisterDto.IdentityNumber,
+                PhoneNumber = userForRegisterDto.PhoneNumber,
+                Address = userForRegisterDto.Address,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                Status = true,
+                CustomerType = CustomerType.Admin // ✅ Sadece bu satır farklı
+            };
+
+            _userService.Add(adminUser);
+            return new SuccessDataResult<User>(adminUser, "Admin kullanıcısı başarıyla oluşturuldu");
+        }
     }
 }

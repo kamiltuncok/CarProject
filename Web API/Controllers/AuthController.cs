@@ -57,6 +57,30 @@ namespace Web_API.Controllers
             return BadRequest(result.Message);
         }
 
+        [HttpPost("registeradmin")]
+        public ActionResult RegisterAdmin(UserForRegisterDto userForRegisterDto)
+        {
+            var userExists = _authService.UserExists(userForRegisterDto.Email);
+            if (!userExists.Success)
+            {
+                return BadRequest(userExists.Message);
+            }
+
+            var registerResult = _authService.RegisterAdmin(userForRegisterDto, userForRegisterDto.Password);
+            if (!registerResult.Success)
+            {
+                return BadRequest(registerResult.Message);
+            }
+
+            var result = _authService.CreateAccessToken(registerResult.Data);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
+        }
+
         [HttpPost("updatepassword")]
         public ActionResult UpdatePassword(UserForPasswordDto userForPasswordDto)
         {
