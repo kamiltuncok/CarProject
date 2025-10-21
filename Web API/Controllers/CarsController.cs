@@ -151,17 +151,6 @@ namespace Web_API.Controllers
             }
             return BadRequest(result);
         }
-        [HttpGet("getnotrentedcarsbylocations")]
-        public IActionResult GetNotRentedCarsByLocations(int locationId)
-        {
-            var result = _carService.GetNotRentedCarsByLocationId(locationId,false);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-        }
 
         [HttpGet("getcarsnotrentedbylocations")]
         public IActionResult GetCarsNotRentedByLocations(string locationName)
