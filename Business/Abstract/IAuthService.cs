@@ -22,5 +22,6 @@ namespace Business.Abstract
         IResult CorporateUserExists(string email);
         IDataResult<AccessToken> CreateAccessTokenForCorporate(CorporateUser corporateUser);
         IDataResult<CorporateUser> UpdateCorporatePassword(UserForPasswordDto userForPasswordDto, string password);
+        IDataResult<User> RegisterAdmin(UserForRegisterDto userForRegisterDto, string password);
     }
 }
