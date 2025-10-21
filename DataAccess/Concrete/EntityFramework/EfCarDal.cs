@@ -88,46 +88,6 @@ namespace DataAccess.Concrete.EntityFramework
 
             }
         }
-        public List<CarDetailDto> GetCarDetailsByCarId(int carId)
-        {
-            using (RentACarContext context = new RentACarContext())
-            {
-                var result = from ca in context.Cars
-                             join co in context.Colors
-                             on ca.ColorId equals co.ColorId
-                             join br in context.Brands
-                             on ca.BrandId equals br.BrandId
-                             join fu in context.Fuels
-                             on ca.FuelId equals fu.FuelId
-                             join ge in context.Gears
-                             on ca.GearId equals ge.GearId
-                             join se in context.Segments
-                             on ca.SegmentId equals se.SegmentId
-                             join lo in context.Locations
-                             on ca.LocationId equals lo.LocationId
-                             where ca.Id == carId
-
-                             select new CarDetailDto
-                             {
-                                 CarId = ca.Id,
-                                 BrandId = ca.BrandId,
-                                 ColorId = ca.ColorId,
-                                 BrandName = br.BrandName,
-                                 ColorName = co.ColorName,
-                                 DailyPrice = ca.DailyPrice,
-                                 Description = ca.Description,
-                                 ModelYear = ca.ModelYear,
-                                 LocationName = lo.LocationName,
-                                 IsRented = ca.IsRented,
-                                 FuelName = fu.FuelName,
-                                 GearName = ge.GearName,
-                                 SegmentName = se.SegmentName,
-                                 Deposit = ca.Deposit
-                             };
-                return result.ToList();
-
-            }
-        }
         public CarDetailDto GetCarDetailsById(int id)
         {
             using (RentACarContext context = new RentACarContext())
@@ -204,47 +164,6 @@ namespace DataAccess.Concrete.EntityFramework
              ? result.ToList()
              : result.Where(filter).ToList();
             };
-        }
-
-        public List<CarDetailDto> GetNotRentedCarsByLocationId(int locationId, bool IsRented)
-        {
-            using (RentACarContext context = new RentACarContext())
-            {
-                var result = from ca in context.Cars
-                             join co in context.Colors
-                             on ca.ColorId equals co.ColorId
-                             join br in context.Brands
-                             on ca.BrandId equals br.BrandId
-                             join fu in context.Fuels
-                             on ca.FuelId equals fu.FuelId
-                             join ge in context.Gears
-                             on ca.GearId equals ge.GearId
-                             join se in context.Segments
-                             on ca.SegmentId equals se.SegmentId
-                             join lo in context.Locations
-                             on ca.LocationId equals lo.LocationId
-                             where ca.LocationId == locationId && ca.IsRented == IsRented
-
-                             select new CarDetailDto
-                             {
-                                 CarId = ca.Id,
-                                 BrandId = ca.BrandId,
-                                 ColorId = ca.ColorId,
-                                 BrandName = br.BrandName,
-                                 ColorName = co.ColorName,
-                                 DailyPrice = ca.DailyPrice,
-                                 Description = ca.Description,
-                                 ModelYear = ca.ModelYear,
-                                 LocationName = lo.LocationName,
-                                 FuelName = fu.FuelName,
-                                 GearName = ge.GearName,
-                                 SegmentName = se.SegmentName,
-                                 Deposit = ca.Deposit
-
-                             };
-                return result.ToList();
-
-            }
         }
 
         public List<CarDetailDto> GetCarsNotRentedByLocationName(string locationName, bool IsRented)

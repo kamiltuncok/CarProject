@@ -13,9 +13,7 @@ namespace DataAccess.Abstract
     {
         List<CarDetailDto> GetCarDetailsByBrandId(int brandId);
         List<CarDetailDto> GetCarDetailsByColorId(int colorId);
-        List<CarDetailDto> GetNotRentedCarsByLocationId(int locationId,bool IsRented);
         List<CarDetailDto> GetCarsNotRentedByLocationName(string locationName, bool IsRented);
-        List<CarDetailDto> GetCarDetailsByCarId(int carId);
         CarDetailDto GetCarDetailsById(int id);
         List<CarDetailDto> GetCarDetails(Expression<Func<CarDetailDto, bool>> filter = null);
         List<CarDetailDto> GetCarsByFilters(List<int> fuelIds, List<int> gearIds, List<int> segmentIds, bool isRented, string locationName);
