@@ -24,11 +24,6 @@ namespace Business.Concrete
         [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rental rental)
         {
-            /*  if (rental.ReturnDate==null)
-              {
-                  return new ErrorResult(RentalMessages.RentalNotAdded);
-              }
-            */
 
             ValidationTool.Validate(new RentalValidator(), rental);
 
