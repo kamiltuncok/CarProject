@@ -2,43 +2,51 @@
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
-using System;
+using Entities.Enums;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 
 namespace DataAccess.Concrete.EntityFramework
 {
     public class EfRentalDal : EfEntityRepositoryBase<Rental, RentACarContext>, IRentalDal
     {
-        //public List<RentalDetailDto> GetRentalDetails(Expression<Func<Rental, bool>> filter = null)
-        //{
-
-        //    using (RentACarContext context = new RentACarContext())
-        //    {
-        //        var result = from rental in filter == null ? context.Rentals : context.Rentals.Where(filter)
-        //                     join car in context.Cars
-        //                     on rental.CarId equals car.Id
-        //                     join brand in context.Brands
-        //                     on car.BrandId equals brand.BrandId
-        //                     join customer in context.Customers
-        //                     on rental.CustomerId equals customer.CustomerId
-        //                     join user in context.Users
-        //                     on customer.CustomerId equals user.Id
-        //                     select new RentalDetailDto
-        //                     {
-        //                         RentalId = rental.RentalId,
-        //                         CarId = rental.CarId,
-        //                         BrandName = brand.BrandName,
-        //                         FullName = $"{user.FirstName} {user.LastName}",
-        //                         RentDate = rental.RentDate,
-        //                         ReturnDate = rental.ReturnDate
-        //                     };
-        //        return result.ToList();
-
-        //    }
-        //}
+        public List<RentalDetailDto> GetRentalDetailsByUserId(int userId, CustomerType customerType)
+        {
+            using (RentACarContext context = new RentACarContext())
+            {
+                var result = from r in context.Rentals
+                             join c in context.Cars on r.CarId equals c.Id
+                             join b in context.Brands on c.BrandId equals b.BrandId
+                             join co in context.Colors on c.ColorId equals co.ColorId
+                             join s in context.Segments on c.SegmentId equals s.SegmentId
+                             join f in context.Fuels on c.FuelId equals f.FuelId
+                             join g in context.Gears on c.GearId equals g.GearId
+                             join l in context.Locations on c.LocationId equals l.LocationId
+                             where r.UserId == userId && r.CustomerType == customerType
+                             select new RentalDetailDto
+                             {
+                                 RentalId = r.RentalId,
+                                 CarId = c.Id,
+                                 UserId = r.UserId,
+                                 BrandName = b.BrandName,
+                                 ColorName = co.ColorName,
+                                 SegmentName = s.SegmentName,
+                                 FuelName = f.FuelName,
+                                 GearName = g.GearName,
+                                 LocationName = l.LocationName,
+                                 ModelYear = c.ModelYear,
+                                 DailyPrice = c.DailyPrice,
+                                 Description = c.Description,
+                                 RentDate = r.RentDate,
+                                 ReturnDate = r.ReturnDate,
+                                 StartLocation = r.StartLocation,
+                                 EndLocation = r.EndLocation,
+                                 IsReturned = r.isReturned,
+                                 Deposit = c.Deposit,
+                                 CustomerType = r.CustomerType
+                             };
+                return result.ToList();
+            }
+        }
     }
 }
-

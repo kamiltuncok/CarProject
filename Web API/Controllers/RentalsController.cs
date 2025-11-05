@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
+using Entities.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -68,15 +69,17 @@ namespace Web_API.Controllers
             }
             return BadRequest(result);
         }
-        //[HttpGet("getrentaldetails")]
-        //public IActionResult GetDetails()
-        //{
-        //    var result = _rentalService.GetRentalDetails();
-        //    if (result.Success)
-        //    {
-        //        return Ok(result);
-        //    }
-        //    return BadRequest(result);
-        //}
+
+
+        [HttpGet("getrentalsbyuserid")]
+        public IActionResult GetRentalsByUserId(int userId,CustomerType customerType)
+        {
+            var result = _rentalService.GetRentalDetailsByUserId(userId, customerType);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
     }
 }

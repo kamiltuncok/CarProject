@@ -8,6 +8,7 @@ using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
+using Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -72,6 +73,12 @@ namespace Business.Concrete
         {
             var rentals = _rentalDal.GetAll(r => r.CarId == carId && r.isReturned == true) ?? new List<Rental>();
             return new SuccessDataResult<List<Rental>>(rentals, Messages.RentalListed);
+        }
+
+        public IDataResult<List<RentalDetailDto>> GetRentalDetailsByUserId(int userId,CustomerType customerType)
+        {
+            var result = _rentalDal.GetRentalDetailsByUserId(userId,customerType);
+            return new SuccessDataResult<List<RentalDetailDto>>(result);
         }
     }
 }
