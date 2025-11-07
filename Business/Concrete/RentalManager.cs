@@ -80,5 +80,11 @@ namespace Business.Concrete
             var result = _rentalDal.GetRentalDetailsByUserId(userId,customerType);
             return new SuccessDataResult<List<RentalDetailDto>>(result);
         }
+
+        public IDataResult<List<RentalDetailDto>> GetRentalDetailsByLocationName(string locationName)
+        {
+            var result = _rentalDal.GetRentalDetailsByLocationName(locationName);
+            return new SuccessDataResult<List<RentalDetailDto>>(result, Messages.RentalListed);
+        }
     }
 }

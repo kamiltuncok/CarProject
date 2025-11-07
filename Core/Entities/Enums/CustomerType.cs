@@ -8,6 +8,7 @@ namespace Entities.Enums
     {
         Individual = 0,
         Corporate = 1,
-        Admin = 2
+        Admin = 2,
+        LocationManager=3
     }
 }

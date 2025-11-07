@@ -12,5 +12,6 @@ namespace DataAccess.Abstract
    public interface IRentalDal:IEntityRepository<Rental>
     {
         List<RentalDetailDto> GetRentalDetailsByUserId(int userId, CustomerType customerType);
+        List<RentalDetailDto> GetRentalDetailsByLocationName(string locationName);
     }
 }

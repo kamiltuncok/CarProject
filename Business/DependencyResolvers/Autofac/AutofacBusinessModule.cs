@@ -69,6 +69,9 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<AuthManager>().As<IAuthService>();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>();
 
+            builder.RegisterType<LocationOperationClaimManager>().As<ILocationOperationClaimService>();
+            builder.RegisterType<EfLocationOperationClaimDal>().As<ILocationOperationClaimDal>();
+
             builder.RegisterType<PricingManager>().As<IPricingService>();
 
             builder.Register(c => new HttpClient()).As<HttpClient>().SingleInstance();

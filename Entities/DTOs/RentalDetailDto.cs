@@ -17,7 +17,6 @@ namespace Entities.DTOs
         public string FuelName { get; set; }
         public string GearName { get; set; }
         public string LocationName { get; set; }
-        public string FullName { get; set; }
         public int ModelYear { get; set; }
         public int DailyPrice { get; set; }
         public string Description { get; set; }
