@@ -68,6 +68,7 @@ namespace DataAccess.Concrete.EntityFramework
                                  CarId = c.Id,
                                  UserId = r.UserId,
                                  BrandName = b.BrandName,
+                                 CustomerId= c.Id,
                                  ColorName = co.ColorName,
                                  SegmentName = s.SegmentName,
                                  FuelName = f.FuelName,
