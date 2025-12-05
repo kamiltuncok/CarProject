@@ -88,5 +88,14 @@ namespace DataAccess.Concrete.EntityFramework
                 return result.ToList();
             }
         }
+
+        public void AddRange(List<Rental> rentals)
+        {
+            using (var context = new RentACarContext())
+            {
+                context.Rentals.AddRange(rentals);
+                context.SaveChanges();
+            }
+        }
     }
 }

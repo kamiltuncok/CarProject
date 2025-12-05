@@ -81,5 +81,37 @@ namespace Web_API.Controllers
             }
             return BadRequest(result);
         }
+
+        [HttpPost("add-bulk")]
+        public IActionResult AddBulk([FromBody] List<Rental> rentals)
+        {
+            if (rentals == null || !rentals.Any())  // HATA BURADA
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = "Rental listesi boş"
+                });
+            }
+
+            var result = _rentalService.AddBulk(rentals);
+
+            if (result.Success)
+            {
+                return Ok(new
+                {
+                    success = true,
+                    count = rentals.Count,
+                    message = result.Message
+                });
+            }
+
+            return BadRequest(new
+            {
+                success = false,
+                message = result.Message
+            });
+        }
+
     }
 }
