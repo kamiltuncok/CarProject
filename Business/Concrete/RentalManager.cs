@@ -86,5 +86,20 @@ namespace Business.Concrete
             var result = _rentalDal.GetRentalDetailsByLocationName(locationName);
             return new SuccessDataResult<List<RentalDetailDto>>(result, Messages.RentalListed);
         }
+
+        public IResult AddBulk(List<Rental> rentals)
+        {
+            try
+            {
+                // VERİLERİ DEĞİŞTİRMİYORUZ - DIRECT ATIYORUZ
+                _rentalDal.AddRange(rentals);
+
+                return new SuccessResult($"{rentals.Count} rental eklendi");
+            }
+            catch (Exception ex)
+            {
+                return new ErrorResult($"Hata: {ex.Message}");
+            }
+        }
     }
 }

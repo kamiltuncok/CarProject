@@ -20,9 +20,9 @@ namespace Business.ValidationRules.FluentValidation
                 .Must(NotHaveBothUserAndCustomer)
                 .WithMessage("UserId ve CustomerId aynı anda kullanılamaz");
 
-            RuleFor(r => r.RentDate)
-                .NotEmpty().WithMessage("Kiralama tarihi gereklidir")
-                .GreaterThan(DateTime.Now.AddHours(-1)).WithMessage("Kiralama tarihi geçmiş olamaz");
+            //RuleFor(r => r.RentDate)
+            //    .NotEmpty().WithMessage("Kiralama tarihi gereklidir")
+            //    .GreaterThan(DateTime.Now.AddHours(-1)).WithMessage("Kiralama tarihi geçmiş olamaz");
 
             RuleFor(r => r.CarId)
                 .GreaterThan(0).WithMessage("Geçerli bir araç seçilmelidir");

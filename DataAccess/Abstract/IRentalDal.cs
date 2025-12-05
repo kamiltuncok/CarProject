@@ -13,5 +13,6 @@ namespace DataAccess.Abstract
     {
         List<RentalDetailDto> GetRentalDetailsByUserId(int userId, CustomerType customerType);
         List<RentalDetailDto> GetRentalDetailsByLocationName(string locationName);
+        void AddRange(List<Rental> rentals);
     }
 }
