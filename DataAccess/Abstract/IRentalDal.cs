@@ -13,6 +13,9 @@ namespace DataAccess.Abstract
     {
         List<RentalDetailDto> GetRentalDetailsByUserId(int userId, CustomerType customerType);
         List<RentalDetailDto> GetRentalDetailsByLocationName(string locationName);
+        List<RentalDetailDto> GetRentalsByEmail(string email);
+        List<RentalDetailDto> GetRentalsByName(string name);
+        List<RentalDetailDto> GetRentalsByDateRange(DateTime startDate, DateTime endDate);
         void AddRange(List<Rental> rentals);
     }
 }
