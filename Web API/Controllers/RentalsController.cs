@@ -113,5 +113,49 @@ namespace Web_API.Controllers
             });
         }
 
+        [HttpGet("getbystartdate")]
+        public IActionResult GetRentalsByStartDate(DateTime startDate)
+        {
+            var result = _rentalService.GetRentalsByStartDate(startDate);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("getbyemail")]
+        public IActionResult GetRentalsByEmail(string email)
+        {
+            var result = _rentalService.GetRentalsByEmail(email);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("getbyname")]
+        public IActionResult GetRentalsByName(string name)
+        {
+            var result = _rentalService.GetRentalsByName(name);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("getbydaterange")]
+        public IActionResult GetRentalsByDateRange(DateTime startDate, DateTime endDate)
+        {
+            var result = _rentalService.GetRentalsByDateRange(startDate, endDate);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
     }
 }

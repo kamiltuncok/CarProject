@@ -101,5 +101,29 @@ namespace Business.Concrete
                 return new ErrorResult($"Hata: {ex.Message}");
             }
         }
+
+        public IDataResult<List<Rental>> GetRentalsByStartDate(DateTime startDate)
+        {
+            var rentals = _rentalDal.GetAll(r => r.RentDate.Date == startDate.Date);
+            return new SuccessDataResult<List<Rental>>(rentals, Messages.RentalListed);
+        }
+
+        public IDataResult<List<RentalDetailDto>> GetRentalsByEmail(string email)
+        {
+            var result = _rentalDal.GetRentalsByEmail(email);
+            return new SuccessDataResult<List<RentalDetailDto>>(result, Messages.RentalListed);
+        }
+
+        public IDataResult<List<RentalDetailDto>> GetRentalsByName(string name)
+        {
+            var result = _rentalDal.GetRentalsByName(name);
+            return new SuccessDataResult<List<RentalDetailDto>>(result, Messages.RentalListed);
+        }
+
+        public IDataResult<List<RentalDetailDto>> GetRentalsByDateRange(DateTime startDate, DateTime endDate)
+        {
+            var result = _rentalDal.GetRentalsByDateRange(startDate, endDate);
+            return new SuccessDataResult<List<RentalDetailDto>>(result, Messages.RentalListed);
+        }
     }
 }
