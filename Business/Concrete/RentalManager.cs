@@ -18,9 +18,11 @@ namespace Business.Concrete
     public class RentalManager : IRentalService
     {
         IRentalDal _rentalDal;
-        public RentalManager(IRentalDal rentalDal)
+        ICarDal _carDal;
+        public RentalManager(IRentalDal rentalDal, ICarDal carDal)
         {
             _rentalDal = rentalDal;
+            _carDal = carDal;
         }
         [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rental rental)
@@ -124,6 +126,45 @@ namespace Business.Concrete
         {
             var result = _rentalDal.GetRentalsByDateRange(startDate, endDate);
             return new SuccessDataResult<List<RentalDetailDto>>(result, Messages.RentalListed);
+        }
+
+        public IResult MarkAsReturned(int rentalId)
+        {
+            var rental = _rentalDal.Get(r => r.RentalId == rentalId);
+            if (rental == null)
+                return new ErrorResult("Kiralama bulunamadı.");
+
+            rental.isReturned = true;
+            rental.ReturnDate = DateTime.Now;
+            _rentalDal.Update(rental);
+
+            var car = _carDal.Get(c => c.Id == rental.CarId);
+            if (car != null)
+            {
+                car.IsRented = false;
+                _carDal.Update(car);
+            }
+
+            return new SuccessResult("Araç teslim alındı.");
+        }
+
+        public IResult DeleteAndFreeCar(int rentalId)
+        {
+            var rental = _rentalDal.Get(r => r.RentalId == rentalId);
+            if (rental == null)
+                return new ErrorResult("Kiralama bulunamadı.");
+
+            int carId = rental.CarId;
+            _rentalDal.Delete(rental);
+
+            var car = _carDal.Get(c => c.Id == carId);
+            if (car != null)
+            {
+                car.IsRented = false;
+                _carDal.Update(car);
+            }
+
+            return new SuccessResult("Kiralama silindi.");
         }
     }
 }

@@ -157,5 +157,23 @@ namespace Web_API.Controllers
             return BadRequest(result);
         }
 
+        [HttpPost("markasreturned")]
+        public IActionResult MarkAsReturned(int rentalId)
+        {
+            var result = _rentalService.MarkAsReturned(rentalId);
+            if (result.Success)
+                return Ok(result);
+            return BadRequest(result);
+        }
+
+        [HttpPost("deleteandfreecardendpoint")]
+        public IActionResult DeleteAndFreeCar(int rentalId)
+        {
+            var result = _rentalService.DeleteAndFreeCar(rentalId);
+            if (result.Success)
+                return Ok(result);
+            return BadRequest(result);
+        }
+
     }
 }

@@ -24,6 +24,8 @@ namespace Business.Abstract
         IDataResult<List<RentalDetailDto>> GetRentalsByEmail(string email);
         IDataResult<List<RentalDetailDto>> GetRentalsByName(string name);
         IDataResult<List<RentalDetailDto>> GetRentalsByDateRange(DateTime startDate, DateTime endDate);
+        IResult MarkAsReturned(int rentalId);
+        IResult DeleteAndFreeCar(int rentalId);
         //IDataResult<List<RentalDetailDto>> GetRentalDetails();
     }
 }
