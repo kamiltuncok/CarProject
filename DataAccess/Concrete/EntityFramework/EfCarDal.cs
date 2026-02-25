@@ -41,6 +41,7 @@ namespace DataAccess.Concrete.EntityFramework
                                  Description = ca.Description,
                                  ModelYear = ca.ModelYear,
                                  LocationName = lo.LocationName,
+                                 LocationCity = lo.LocationCity,
                                  FuelName = fu.FuelName,
                                  GearName = ge.GearName,
                                  Deposit = ca.Deposit
@@ -80,6 +81,7 @@ namespace DataAccess.Concrete.EntityFramework
                                  Description = ca.Description,
                                  ModelYear = ca.ModelYear,
                                  LocationName = lo.LocationName,
+                                 LocationCity = lo.LocationCity,
                                  FuelName = fu.FuelName,
                                  GearName = ge.GearName,
                                  Deposit = ca.Deposit
@@ -118,6 +120,7 @@ namespace DataAccess.Concrete.EntityFramework
                                  Description = ca.Description,
                                  ModelYear = ca.ModelYear,
                                  LocationName = lo.LocationName,
+                                 LocationCity = lo.LocationCity,
                                  FuelName = fu.FuelName,
                                  GearName = ge.GearName,
                                  SegmentName = se.SegmentName,
@@ -155,6 +158,7 @@ namespace DataAccess.Concrete.EntityFramework
                                  Description = ca.Description,
                                  ModelYear = ca.ModelYear,
                                  LocationName = lo.LocationName,
+                                 LocationCity = lo.LocationCity,
                                  FuelName = fu.FuelName,
                                  GearName = ge.GearName,
                                  SegmentName = se.SegmentName,
@@ -194,6 +198,7 @@ namespace DataAccess.Concrete.EntityFramework
                                  Description = ca.Description,
                                  ModelYear = ca.ModelYear,
                                  LocationName = lo.LocationName,
+                                 LocationCity = lo.LocationCity,
                                  FuelName = fu.FuelName,
                                  GearName = ge.GearName,
                                  Deposit = ca.Deposit
@@ -235,6 +240,7 @@ namespace DataAccess.Concrete.EntityFramework
                                 Description = ca.Description,
                                 ModelYear = ca.ModelYear,
                                 LocationName = lo.LocationName,
+                                LocationCity = lo.LocationCity,
                                 FuelName = fu.FuelName,
                                 GearName = ge.GearName,
                                 SegmentName = se.SegmentName,

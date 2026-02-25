@@ -25,6 +25,7 @@ namespace Entities.DTOs
         public string FuelName { get; set; }
         public string GearName { get; set; }
         public int Deposit { get; set; }
+        public string LocationCity { get; set; }
 
     }
 }
