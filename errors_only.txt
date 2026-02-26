@@ -1,0 +1,254 @@
+﻿
+     1>C:\Users\MONSTER\OneDrive\Be
+lgeler\GitHub\CarProject\Business\B
+usiness.csproj : error NU1605: Warn
+ing As Error: Detected package down
+grade: Autofac from 8.0.0 to 7.1.0.
+ Reference the package directly fro
+m the project to select a different
+ version.  [C:\Users\MONSTER\OneDri
+ve\Belgeler\GitHub\CarProject\CarPr
+oject.sln]
+C:\Users\MONSTER\OneDrive\Belgeler\
+GitHub\CarProject\Business\Business
+.csproj : error NU1605:  Business -
+> Autofac.Extensions.DependencyInje
+ction 9.0.0 -> Autofac (>= 8.0.0)  
+[C:\Users\MONSTER\OneDrive\Belgeler
+\GitHub\CarProject\CarProject.sln]
+C:\Users\MONSTER\OneDrive\Belgeler\
+GitHub\CarProject\Business\Business
+.csproj : error NU1605:  Business -
+> Autofac (>= 7.1.0) [C:\Users\MONS
+TER\OneDrive\Belgeler\GitHub\CarPro
+ject\CarProject.sln]
+     1>C:\Users\MONSTER\OneDrive\Be
+lgeler\GitHub\CarProject\ConsoleUI\
+ConsoleUI.csproj : error NU1605: Wa
+rning As Error: Detected package do
+wngrade: Autofac from 8.0.0 to 7.1.
+0. Reference the package directly f
+rom the project to select a differe
+nt version.  [C:\Users\MONSTER\OneD
+rive\Belgeler\GitHub\CarProject\Car
+Project.sln]
+C:\Users\MONSTER\OneDrive\Belgeler\
+GitHub\CarProject\ConsoleUI\Console
+UI.csproj : error NU1605:  ConsoleU
+I -> Business -> Autofac.Extensions
+.DependencyInjection 9.0.0 -> Autof
+ac (>= 8.0.0)  [C:\Users\MONSTER\On
+eDrive\Belgeler\GitHub\CarProject\C
+arProject.sln]
+C:\Users\MONSTER\OneDrive\Belgeler\
+GitHub\CarProject\ConsoleUI\Console
+UI.csproj : error NU1605:  ConsoleU
+I -> Business -> Autofac (>= 7.1.0)
+ [C:\Users\MONSTER\OneDrive\Belgele
+r\GitHub\CarProject\CarProject.sln]
+     1>C:\Users\MONSTER\OneDrive\Be
+lgeler\GitHub\CarProject\Entities\E
+ntities.csproj : error NU1605: Warn
+ing As Error: Detected package down
+grade: Autofac from 8.0.0 to 7.1.0.
+ Reference the package directly fro
+m the project to select a different
+ version.  [C:\Users\MONSTER\OneDri
+ve\Belgeler\GitHub\CarProject\CarPr
+oject.sln]
+C:\Users\MONSTER\OneDrive\Belgeler\
+GitHub\CarProject\Entities\Entities
+.csproj : error NU1605:  Entities -
+> Core -> Autofac.Extensions.Depend
+encyInjection 9.0.0 -> Autofac (>= 
+8.0.0)  [C:\Users\MONSTER\OneDrive\
+Belgeler\GitHub\CarProject\CarProje
+ct.sln]
+C:\Users\MONSTER\OneDrive\Belgeler\
+GitHub\CarProject\Entities\Entities
+.csproj : error NU1605:  Entities -
+> Core -> Autofac (>= 7.1.0) [C:\Us
+ers\MONSTER\OneDrive\Belgeler\GitHu
+b\CarProject\CarProject.sln]
+     1>C:\Users\MONSTER\OneDrive\Be
+lgeler\GitHub\CarProject\DataAccess
+\DataAccess.csproj : error NU1605: 
+Warning As Error: Detected package 
+downgrade: Autofac from 8.0.0 to 7.
+1.0. Reference the package directly
+ from the project to select a diffe
+rent version.  [C:\Users\MONSTER\On
+eDrive\Belgeler\GitHub\CarProject\C
+arProject.sln]
+C:\Users\MONSTER\OneDrive\Belgeler\
+GitHub\CarProject\DataAccess\DataAc
+cess.csproj : error NU1605:  DataAc
+cess -> Entities -> Core -> Autofac
+.Extensions.DependencyInjection 9.0
+.0 -> Autofac (>= 8.0.0)  [C:\Users
+\MONSTER\OneDrive\Belgeler\GitHub\C
+arProject\CarProject.sln]
+C:\Users\MONSTER\OneDrive\Belgeler\
+GitHub\CarProject\DataAccess\DataAc
+cess.csproj : error NU1605:  DataAc
+cess -> Entities -> Core -> Autofac
+ (>= 7.1.0) [C:\Users\MONSTER\OneDr
+ive\Belgeler\GitHub\CarProject\CarP
+roject.sln]
+     1>C:\Users\MONSTER\OneDrive\Be
+lgeler\GitHub\CarProject\Core\Core.
+csproj : error NU1605: Warning As E
+rror: Detected package downgrade: A
+utofac from 8.0.0 to 7.1.0. Referen
+ce the package directly from the pr
+oject to select a different version
+.  [C:\Users\MONSTER\OneDrive\Belge
+ler\GitHub\CarProject\CarProject.sl
+n]
+C:\Users\MONSTER\OneDrive\Belgeler\
+GitHub\CarProject\Core\Core.csproj 
+: error NU1605:  Core -> Autofac.Ex
+tensions.DependencyInjection 9.0.0 
+-> Autofac (>= 8.0.0)  [C:\Users\MO
+NSTER\OneDrive\Belgeler\GitHub\CarP
+roject\CarProject.sln]
+C:\Users\MONSTER\OneDrive\Belgeler\
+GitHub\CarProject\Core\Core.csproj 
+: error NU1605:  Core -> Autofac (>
+= 7.1.0) [C:\Users\MONSTER\OneDrive
+\Belgeler\GitHub\CarProject\CarProj
+ect.sln]
+         NuGet Config files used:
+             C:\Users\MONSTER\AppDa
+ta\Roaming\NuGet\NuGet.Config
+             C:\Program Files (x86)
+\NuGet\Config\Microsoft.VisualStudi
+o.Offline.config
+             https://api.nuget.org/
+v3/index.json
+             C:\Program Files (x86)
+\Microsoft SDKs\NuGetPackages\
+         C:\Users\MONSTER\OneDrive\
+Belgeler\GitHub\CarProject\Business
+\Business.csproj : error NU1605: Wa
+rning As Error: Detected package do
+wngrade: Autofac from 8.0.0 to 7.1.
+0. Reference the package directly f
+rom the project to select a differe
+nt version.  [C:\Users\MONSTER\OneD
+rive\Belgeler\GitHub\CarProject\Car
+Project.sln]
+       C:\Users\MONSTER\OneDrive\Be
+lgeler\GitHub\CarProject\Business\B
+usiness.csproj : error NU1605:  Bus
+iness -> Autofac.Extensions.Depende
+ncyInjection 9.0.0 -> Autofac (>= 8
+.0.0)  [C:\Users\MONSTER\OneDrive\B
+elgeler\GitHub\CarProject\CarProjec
+t.sln]
+       C:\Users\MONSTER\OneDrive\Be
+lgeler\GitHub\CarProject\Business\B
+usiness.csproj : error NU1605:  Bus
+iness -> Autofac (>= 7.1.0) [C:\Use
+rs\MONSTER\OneDrive\Belgeler\GitHub
+\CarProject\CarProject.sln]
+         C:\Users\MONSTER\OneDrive\
+Belgeler\GitHub\CarProject\ConsoleU
+I\ConsoleUI.csproj : error NU1605: 
+Warning As Error: Detected package 
+downgrade: Autofac from 8.0.0 to 7.
+1.0. Reference the package directly
+ from the project to select a diffe
+rent version.  [C:\Users\MONSTER\On
+eDrive\Belgeler\GitHub\CarProject\C
+arProject.sln]
+       C:\Users\MONSTER\OneDrive\Be
+lgeler\GitHub\CarProject\ConsoleUI\
+ConsoleUI.csproj : error NU1605:  C
+onsoleUI -> Business -> Autofac.Ext
+ensions.DependencyInjection 9.0.0 -
+> Autofac (>= 8.0.0)  [C:\Users\MON
+STER\OneDrive\Belgeler\GitHub\CarPr
+oject\CarProject.sln]
+       C:\Users\MONSTER\OneDrive\Be
+lgeler\GitHub\CarProject\ConsoleUI\
+ConsoleUI.csproj : error NU1605:  C
+onsoleUI -> Business -> Autofac (>=
+ 7.1.0) [C:\Users\MONSTER\OneDrive\
+Belgeler\GitHub\CarProject\CarProje
+ct.sln]
+         C:\Users\MONSTER\OneDrive\
+Belgeler\GitHub\CarProject\Entities
+\Entities.csproj : error NU1605: Wa
+rning As Error: Detected package do
+wngrade: Autofac from 8.0.0 to 7.1.
+0. Reference the package directly f
+rom the project to select a differe
+nt version.  [C:\Users\MONSTER\OneD
+rive\Belgeler\GitHub\CarProject\Car
+Project.sln]
+       C:\Users\MONSTER\OneDrive\Be
+lgeler\GitHub\CarProject\Entities\E
+ntities.csproj : error NU1605:  Ent
+ities -> Core -> Autofac.Extensions
+.DependencyInjection 9.0.0 -> Autof
+ac (>= 8.0.0)  [C:\Users\MONSTER\On
+eDrive\Belgeler\GitHub\CarProject\C
+arProject.sln]
+       C:\Users\MONSTER\OneDrive\Be
+lgeler\GitHub\CarProject\Entities\E
+ntities.csproj : error NU1605:  Ent
+ities -> Core -> Autofac (>= 7.1.0)
+ [C:\Users\MONSTER\OneDrive\Belgele
+r\GitHub\CarProject\CarProject.sln]
+         C:\Users\MONSTER\OneDrive\
+Belgeler\GitHub\CarProject\DataAcce
+ss\DataAccess.csproj : error NU1605
+: Warning As Error: Detected packag
+e downgrade: Autofac from 8.0.0 to 
+7.1.0. Reference the package direct
+ly from the project to select a dif
+ferent version.  [C:\Users\MONSTER\
+OneDrive\Belgeler\GitHub\CarProject
+\CarProject.sln]
+       C:\Users\MONSTER\OneDrive\Be
+lgeler\GitHub\CarProject\DataAccess
+\DataAccess.csproj : error NU1605: 
+ DataAccess -> Entities -> Core -> 
+Autofac.Extensions.DependencyInject
+ion 9.0.0 -> Autofac (>= 8.0.0)  [C
+:\Users\MONSTER\OneDrive\Belgeler\G
+itHub\CarProject\CarProject.sln]
+       C:\Users\MONSTER\OneDrive\Be
+lgeler\GitHub\CarProject\DataAccess
+\DataAccess.csproj : error NU1605: 
+ DataAccess -> Entities -> Core -> 
+Autofac (>= 7.1.0) [C:\Users\MONSTE
+R\OneDrive\Belgeler\GitHub\CarProje
+ct\CarProject.sln]
+         C:\Users\MONSTER\OneDrive\
+Belgeler\GitHub\CarProject\Core\Cor
+e.csproj : error NU1605: Warning As
+ Error: Detected package downgrade:
+ Autofac from 8.0.0 to 7.1.0. Refer
+ence the package directly from the 
+project to select a different versi
+on.  [C:\Users\MONSTER\OneDrive\Bel
+geler\GitHub\CarProject\CarProject.
+sln]
+       C:\Users\MONSTER\OneDrive\Be
+lgeler\GitHub\CarProject\Core\Core.
+csproj : error NU1605:  Core -> Aut
+ofac.Extensions.DependencyInjection
+ 9.0.0 -> Autofac (>= 8.0.0)  [C:\U
+sers\MONSTER\OneDrive\Belgeler\GitH
+ub\CarProject\CarProject.sln]
+       C:\Users\MONSTER\OneDrive\Be
+lgeler\GitHub\CarProject\Core\Core.
+csproj : error NU1605:  Core -> Aut
+ofac (>= 7.1.0) [C:\Users\MONSTER\O
+neDrive\Belgeler\GitHub\CarProject\
+CarProject.sln]
+    5 Error(s)
+
+
