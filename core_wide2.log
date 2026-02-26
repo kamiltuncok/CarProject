@@ -1,0 +1,15 @@
+﻿MSBuild version 17.6.1+8ffc3fe3d for .NET
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Utilities\Helpers\FileHelper.cs(57,16): error CS0104: 'IResult' is an ambiguous reference between 'Core.Utilities.Results.IResult' and 'Microsoft.AspNetCore.Http.IResult' [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Core.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Extensions\ValidationErrorDetails.cs(10,47): warning CS0108: 'ValidationErrorDetails.Errors' hides inherited member 'ErrorDetails.Errors'. Use the new keyword if hiding was intended. [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Core.csproj]
+
+Build FAILED.
+
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Extensions\ValidationErrorDetails.cs(10,47): warning CS0108: 'ValidationErrorDetails.Errors' hides inherited member 'ErrorDetails.Errors'. Use the new keyword if hiding was intended. [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Core.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Utilities\Helpers\FileHelper.cs(57,16): error CS0104: 'IResult' is an ambiguous reference between 'Core.Utilities.Results.IResult' and 'Microsoft.AspNetCore.Http.IResult' [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Core.csproj]
+    1 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:01.09
+
