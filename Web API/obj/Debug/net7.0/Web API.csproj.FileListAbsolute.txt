@@ -134,3 +134,8 @@ C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\net7.0\re
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\net7.0\Web API.pdb
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\net7.0\Web API.genruntimeconfig.cache
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\net7.0\ref\Web API.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\net7.0\Humanizer.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\net7.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\net7.0\Mono.TextTemplating.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\net7.0\System.CodeDom.dll

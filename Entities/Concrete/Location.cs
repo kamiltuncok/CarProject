@@ -1,13 +1,10 @@
 ﻿using Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Entities.Concrete
 {
-    public class Location:IEntity
+    public class Location : IEntity
     {
-        public int LocationId { get; set; }
+        public int Id { get; set; }
         public string LocationName { get; set; }
         public string LocationCity { get; set; }
         public string Address { get; set; }

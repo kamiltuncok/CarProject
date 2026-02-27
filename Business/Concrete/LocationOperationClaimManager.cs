@@ -97,7 +97,7 @@ namespace Business.Concrete
                 foreach (var managerLocation in managerLocations)
                 {
                     // Location tablosundan lokasyon ismini al
-                    var location = context.Locations.FirstOrDefault(l => l.LocationId == managerLocation.LocationId);
+                    var location = context.Locations.FirstOrDefault(l => l.Id == managerLocation.LocationId);
                     if (location != null)
                     {
                         // StartLocation ile rental'ları getir
