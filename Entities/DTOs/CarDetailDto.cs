@@ -1,11 +1,10 @@
 ﻿using Core.Entities;
+using Entities.Enums;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Entities.DTOs
 {
-   public class CarDetailDto:IDto
+    public class CarDetailDto : IDto
     {
         public int CarId { get; set; }
         public int ModelYear { get; set; }
@@ -13,19 +12,19 @@ namespace Entities.DTOs
         public string BrandName { get; set; }
         public string ColorName { get; set; }
         public string LocationName { get; set; }
+        public string LocationCity { get; set; }
         public string SegmentName { get; set; }
-        public int DailyPrice { get; set; }
-        public DateTime? ReturnDATE { get; set; }
+        public decimal DailyPrice { get; set; }
+        public decimal Deposit { get; set; }
         public int BrandId { get; set; }
         public int ColorId { get; set; }
         public int GearId { get; set; }
         public int FuelId { get; set; }
         public int SegmentId { get; set; }
-        public bool IsRented { get; set; }
+        public CarStatus Status { get; set; }
+        public string PlateNumber { get; set; }
+        public int KM { get; set; }
         public string FuelName { get; set; }
         public string GearName { get; set; }
-        public int Deposit { get; set; }
-        public string LocationCity { get; set; }
-
     }
 }

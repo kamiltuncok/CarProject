@@ -27,7 +27,7 @@ namespace Business.Abstract
         IDataResult<CarDetailDto> GetCarDetailsById(int id);
         void CarRented(int carId);
 
-        IDataResult<int> UpdatePriceByAction(int carId, string action);
+        IDataResult<decimal> UpdatePriceByAction(int carId, string action);
 
         IDataResult<List<CarDetailDto>> GetCarsByFilters(List<int> fuelIds, List<int> gearIds, List<int> segmentIds, bool isRented, string locationName);
 

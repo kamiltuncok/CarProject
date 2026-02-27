@@ -12,6 +12,7 @@ using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
+using Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -33,7 +34,7 @@ namespace Business.Concrete
         [CacheRemoveAspect("ICarService.Get")]
         public IResult Add(Car car)
         {
-            car.IsRented = false;
+            car.Status = CarStatus.Available;
             _carDal.Add(car);
             return new SuccessResult(Messages.CarAdded);
         }
@@ -126,17 +127,17 @@ namespace Business.Concrete
         {
             Car car = new Car();
             car = _carDal.Get(c => c.Id == carId);
-            car.IsRented = true;
+            car.Status = CarStatus.Rented;
 
             _carDal.Update(car);
         }
 
-        public IDataResult<int> UpdatePriceByAction(int carId, string action)
+        public IDataResult<decimal> UpdatePriceByAction(int carId, string action)
         {
             // 1️⃣ Aracı database’den al
             var car = _carDal.Get(c => c.Id == carId);
             if (car == null)
-                return new ErrorDataResult<int>(0, "Car not found");
+                return new ErrorDataResult<decimal>(0, "Car not found");
 
             // 2️⃣ Fiyat güncelleme adımı (step)
             int step = 100; // 100 birim veya istersen %5 yapabilirsin
@@ -152,14 +153,14 @@ namespace Business.Concrete
                     // değişiklik yok
                     break;
                 default:
-                    return new ErrorDataResult<int>(car.DailyPrice, "Unknown action");
+                    return new ErrorDataResult<decimal>(car.DailyPrice, "Unknown action");
             }
 
             // 3️⃣ Güncellenmiş fiyatı database’e yaz
             _carDal.Update(car);
 
             // 4️⃣ Sonuç dön
-            return new SuccessDataResult<int>(car.DailyPrice, $"Price {action} applied successfully");
+            return new SuccessDataResult<decimal>(car.DailyPrice, $"Price {action} applied successfully");
         }
 
         public IDataResult<List<CarDetailDto>> GetCarsByFilters(List<int> fuelIds, List<int> gearIds, List<int> segmentIds, bool isRented, string locationName)

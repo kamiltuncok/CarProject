@@ -38,7 +38,7 @@ namespace Business.Concrete
 
         public IDataResult<Location> GetById(int id)
         {
-            return new SuccessDataResult<Location>(_locationDal.Get(l => l.LocationId == id));
+            return new SuccessDataResult<Location>(_locationDal.Get(l => l.Id == id));
         }
 
         public IDataResult<List<Location>> GetByLocationCity(string locationCity)
@@ -48,7 +48,7 @@ namespace Business.Concrete
 
         public IDataResult<List<Location>> GetListById(int id)
         {
-            return new SuccessDataResult<List<Location>>(_locationDal.GetAll(l => l.LocationId == id));
+            return new SuccessDataResult<List<Location>>(_locationDal.GetAll(l => l.Id == id));
         }
 
         public IResult Update(Location entity)

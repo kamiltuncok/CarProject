@@ -1,8 +1,6 @@
 ﻿using Core.Entities;
 using Entities.Enums;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Entities.DTOs
 {
@@ -10,23 +8,43 @@ namespace Entities.DTOs
     {
         public int RentalId { get; set; }
         public int CarId { get; set; }
-        public int UserId { get; set; }
         public int CustomerId { get; set; }
+
+        // Car info
         public string BrandName { get; set; }
         public string ColorName { get; set; }
         public string SegmentName { get; set; }
         public string FuelName { get; set; }
         public string GearName { get; set; }
-        public string LocationName { get; set; }
         public int ModelYear { get; set; }
-        public int DailyPrice { get; set; }
+        public decimal DailyPrice { get; set; }
         public string Description { get; set; }
-        public DateTime RentDate { get; set; }
-        public DateTime? ReturnDate { get; set; }
-        public string StartLocation { get; set; }
-        public string EndLocation { get; set; }
-        public bool IsReturned { get; set; }
-        public int Deposit { get; set; }
+        public string PlateNumber { get; set; }
+
+        // Location info
+        public string StartLocationName { get; set; }
+        public string StartLocationCity { get; set; }
+        public string EndLocationName { get; set; }
+        public string EndLocationCity { get; set; }
+
+        // Dates
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+
+        // Financial snapshot
+        public decimal RentedDailyPrice { get; set; }
+        public decimal TotalPrice { get; set; }
+        public decimal DepositAmount { get; set; }
+        public decimal DepositDeductedAmount { get; set; }
+        public DateTime? DepositRefundedDate { get; set; }
+        public DepositStatus DepositStatus { get; set; }
+
+        // Status
+        public RentalStatus RentalStatus { get; set; }
         public CustomerType CustomerType { get; set; }
+
+        // Customer info
+        public string CustomerEmail { get; set; }
+        public string CustomerPhone { get; set; }
     }
 }

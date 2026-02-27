@@ -199,7 +199,7 @@ namespace Business.Concrete
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 Status = true,
-                CustomerType = CustomerType.Admin // ✅ Sadece bu satır farklı
+                CustomerType = CustomerType.Individual // Admin role set via OperationClaim, not CustomerType
             };
 
             _userService.Add(adminUser);

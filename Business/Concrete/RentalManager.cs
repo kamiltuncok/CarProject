@@ -11,7 +11,6 @@ using Entities.DTOs;
 using Entities.Enums;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Business.Concrete
 {
@@ -19,21 +18,25 @@ namespace Business.Concrete
     {
         IRentalDal _rentalDal;
         ICarDal _carDal;
+
         public RentalManager(IRentalDal rentalDal, ICarDal carDal)
         {
             _rentalDal = rentalDal;
             _carDal = carDal;
         }
+
         [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rental rental)
         {
-
             ValidationTool.Validate(new RentalValidator(), rental);
 
-            rental.isReturned = false;
+            // Set default status on add
+            rental.Status = RentalStatus.Active;
+            rental.DepositStatus = DepositStatus.Blocked;
+            rental.DepositDeductedAmount = 0;
+
             _rentalDal.Add(rental);
-                return new SuccessResult(Messages.RentalAdded);
-           
+            return new SuccessResult(Messages.RentalAdded);
         }
 
         public IResult Delete(Rental rental)
@@ -42,12 +45,6 @@ namespace Business.Concrete
             return new SuccessResult(Messages.RentalDeleted);
         }
 
-        //public IDataResult<List<RentalDetailDto>> GetRentalDetails()
-        //{
-        //    var result = _rentalDal.GetRentalDetails();
-        //    return new SuccessDataResult<List<RentalDetailDto>>(result, Messages.rentalDetailsListed);
-        //}
-
         public IDataResult<List<Rental>> GetAll()
         {
             return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(), Messages.RentalListed);
@@ -55,31 +52,25 @@ namespace Business.Concrete
 
         public IDataResult<List<Rental>> GetById(int rentalid)
         {
-            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(r=>r.RentalId==rentalid), Messages.RentalListed);
+            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(r => r.Id == rentalid), Messages.RentalListed);
         }
 
         public IResult Update(Rental rental)
         {
-            if (rental.ReturnDate == null)
-            {
-                return new ErrorResult(Messages.RentalNotAdded);
-            }
-            else
-            {
-                _rentalDal.Update(rental);
-                return new SuccessResult(Messages.RetalUpdated);
-            }
+            _rentalDal.Update(rental);
+            return new SuccessResult(Messages.RetalUpdated);
         }
 
         public IDataResult<List<Rental>> GetRentalsByCarId(int carId)
         {
-            var rentals = _rentalDal.GetAll(r => r.CarId == carId && r.isReturned == true) ?? new List<Rental>();
+            var rentals = _rentalDal.GetAll(r => r.CarId == carId && r.Status == RentalStatus.Completed)
+                ?? new List<Rental>();
             return new SuccessDataResult<List<Rental>>(rentals, Messages.RentalListed);
         }
 
-        public IDataResult<List<RentalDetailDto>> GetRentalDetailsByUserId(int userId,CustomerType customerType)
+        public IDataResult<List<RentalDetailDto>> GetRentalDetailsByUserId(int userId, CustomerType customerType)
         {
-            var result = _rentalDal.GetRentalDetailsByUserId(userId,customerType);
+            var result = _rentalDal.GetRentalDetailsByUserId(userId, customerType);
             return new SuccessDataResult<List<RentalDetailDto>>(result);
         }
 
@@ -93,9 +84,7 @@ namespace Business.Concrete
         {
             try
             {
-                // VERİLERİ DEĞİŞTİRMİYORUZ - DIRECT ATIYORUZ
                 _rentalDal.AddRange(rentals);
-
                 return new SuccessResult($"{rentals.Count} rental eklendi");
             }
             catch (Exception ex)
@@ -106,7 +95,7 @@ namespace Business.Concrete
 
         public IDataResult<List<Rental>> GetRentalsByStartDate(DateTime startDate)
         {
-            var rentals = _rentalDal.GetAll(r => r.RentDate.Date == startDate.Date);
+            var rentals = _rentalDal.GetAll(r => r.StartDate.Date == startDate.Date);
             return new SuccessDataResult<List<Rental>>(rentals, Messages.RentalListed);
         }
 
@@ -130,18 +119,20 @@ namespace Business.Concrete
 
         public IResult MarkAsReturned(int rentalId)
         {
-            var rental = _rentalDal.Get(r => r.RentalId == rentalId);
+            var rental = _rentalDal.Get(r => r.Id == rentalId);
             if (rental == null)
                 return new ErrorResult("Kiralama bulunamadı.");
 
-            rental.isReturned = true;
-            rental.ReturnDate = DateTime.Now;
+            rental.Status = RentalStatus.Completed;
+            rental.DepositStatus = DepositStatus.Refunded;
+            rental.DepositRefundedDate = DateTime.Now;
             _rentalDal.Update(rental);
 
+            // Update car status to Available
             var car = _carDal.Get(c => c.Id == rental.CarId);
             if (car != null)
             {
-                car.IsRented = false;
+                car.Status = CarStatus.Available;
                 _carDal.Update(car);
             }
 
@@ -150,7 +141,7 @@ namespace Business.Concrete
 
         public IResult DeleteAndFreeCar(int rentalId)
         {
-            var rental = _rentalDal.Get(r => r.RentalId == rentalId);
+            var rental = _rentalDal.Get(r => r.Id == rentalId);
             if (rental == null)
                 return new ErrorResult("Kiralama bulunamadı.");
 
@@ -160,7 +151,7 @@ namespace Business.Concrete
             var car = _carDal.Get(c => c.Id == carId);
             if (car != null)
             {
-                car.IsRented = false;
+                car.Status = CarStatus.Available;
                 _carDal.Update(car);
             }
 

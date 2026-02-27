@@ -1,6 +1,8 @@
 ﻿using Business.Abstract;
 using Core.Entities.Requests;
 using Newtonsoft.Json.Linq;
+using Entities.Concrete;
+using Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +34,7 @@ namespace Business.Concrete
 
             foreach (var car in cars)
             {
-                if (car.IsRented) continue;
+                if (car.Status == CarStatus.Rented) continue;
 
                 var rentalCount = _rentalService.GetRentalsByCarId(car.Id)?.Data?.Count ?? 0;
 

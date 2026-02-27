@@ -1,8 +1,5 @@
 ﻿using Entities.Concrete;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Business.ValidationRules.FluentValidation
 {
@@ -10,40 +7,33 @@ namespace Business.ValidationRules.FluentValidation
     {
         public RentalValidator()
         {
-            RuleFor(r => r.ReturnDate).NotEmpty();
-
-            RuleFor(r => r)
-                .Must(HaveValidUserOrCustomer)
-                .WithMessage("UserId veya CustomerId gereklidir");
-
-            RuleFor(r => r)
-                .Must(NotHaveBothUserAndCustomer)
-                .WithMessage("UserId ve CustomerId aynı anda kullanılamaz");
-
-            //RuleFor(r => r.RentDate)
-            //    .NotEmpty().WithMessage("Kiralama tarihi gereklidir")
-            //    .GreaterThan(DateTime.Now.AddHours(-1)).WithMessage("Kiralama tarihi geçmiş olamaz");
-
             RuleFor(r => r.CarId)
                 .GreaterThan(0).WithMessage("Geçerli bir araç seçilmelidir");
 
-            RuleFor(r => r.StartLocation)
-                .NotEmpty().WithMessage("Başlangıç lokasyonu gereklidir")
-                .MinimumLength(3).WithMessage("Başlangıç lokasyonu en az 3 karakter olmalıdır");
+            RuleFor(r => r.CustomerId)
+                .GreaterThan(0).WithMessage("CustomerId gereklidir");
 
-            RuleFor(r => r.EndLocation)
-                .NotEmpty().WithMessage("Bitiş lokasyonu gereklidir")
-                .MinimumLength(3).WithMessage("Bitiş lokasyonu en az 3 karakter olmalıdır");
-        }
+            RuleFor(r => r.StartLocationId)
+                .GreaterThan(0).WithMessage("Başlangıç lokasyonu gereklidir");
 
-        private bool HaveValidUserOrCustomer(Rental rental)
-        {
-            return rental.UserId > 0 || rental.CustomerId > 0;
-        }
+            RuleFor(r => r.EndLocationId)
+                .GreaterThan(0).WithMessage("Bitiş lokasyonu gereklidir");
 
-        private bool NotHaveBothUserAndCustomer(Rental rental)
-        {
-            return !(rental.UserId > 0 && rental.CustomerId > 0);
+            RuleFor(r => r.StartDate)
+                .NotEmpty().WithMessage("Başlangıç tarihi gereklidir");
+
+            RuleFor(r => r.EndDate)
+                .NotEmpty().WithMessage("Bitiş tarihi gereklidir")
+                .GreaterThan(r => r.StartDate).WithMessage("Bitiş tarihi başlangıç tarihinden sonra olmalıdır");
+
+            RuleFor(r => r.RentedDailyPrice)
+                .GreaterThan(0).WithMessage("Günlük fiyat 0'dan büyük olmalıdır");
+
+            RuleFor(r => r.TotalPrice)
+                .GreaterThan(0).WithMessage("Toplam fiyat 0'dan büyük olmalıdır");
+
+            RuleFor(r => r.DepositAmount)
+                .GreaterThanOrEqualTo(0).WithMessage("Depozito miktarı negatif olamaz");
         }
     }
 }
