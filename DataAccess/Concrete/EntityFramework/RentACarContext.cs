@@ -174,6 +174,15 @@ namespace DataAccess.Concrete.EntityFramework
                 e.HasOne<Fuel>().WithMany().HasForeignKey(c => c.FuelId).OnDelete(DeleteBehavior.Restrict);
                 e.HasOne<Gear>().WithMany().HasForeignKey(c => c.GearId).OnDelete(DeleteBehavior.Restrict);
                 e.HasOne<Segment>().WithMany().HasForeignKey(c => c.SegmentId).OnDelete(DeleteBehavior.Restrict);
+
+                // Concurrency token — prevents two requests from renting at the same time
+                e.Property(c => c.RowVersion)
+                    .IsRowVersion()
+                    .IsConcurrencyToken();
+
+                // Fast availability loopup by location
+                e.HasIndex(c => new { c.CurrentLocationId, c.Status })
+                    .HasDatabaseName("IX_Cars_LocationStatus");
             });
 
             // ─── CarImage ─────────────────────────────────────────────────────────
@@ -231,9 +240,9 @@ namespace DataAccess.Concrete.EntityFramework
                     .HasForeignKey(r => r.EndLocationId)
                     .OnDelete(DeleteBehavior.NoAction);
 
-                // Index for double-booking guard queries (carId + date range lookups)
-                e.HasIndex(r => new { r.CarId, r.StartDate, r.EndDate })
-                    .HasDatabaseName("IX_Rentals_Car_Dates");
+                // Index for double-booking guard queries (carId + date range + status lookups)
+                e.HasIndex(r => new { r.CarId, r.StartDate, r.EndDate, r.Status })
+                    .HasDatabaseName("IX_Rentals_AvailabilityCheck");
 
                 // Active rentals index
                 e.HasIndex(r => r.Status)

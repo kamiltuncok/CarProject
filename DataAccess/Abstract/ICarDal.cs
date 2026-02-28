@@ -13,10 +13,11 @@ namespace DataAccess.Abstract
     {
         List<CarDetailDto> GetCarDetailsByBrandId(int brandId);
         List<CarDetailDto> GetCarDetailsByColorId(int colorId);
-        List<CarDetailDto> GetCarsNotRentedByLocationName(string locationName, bool IsRented);
         CarDetailDto GetCarDetailsById(int id);
         List<CarDetailDto> GetCarDetails(Expression<Func<CarDetailDto, bool>> filter = null);
-        List<CarDetailDto> GetCarsByFilters(List<int> fuelIds, List<int> gearIds, List<int> segmentIds, bool isRented, string locationName);
+        
+        // Single unified availability endpoint replacing GetCarsNotRented... and GetCarsByFilters
+        List<CarDetailDto> GetAvailableCars(CarAvailabilityFilterDto filter);
 
         decimal GetLowestPriceBySegmentId(int segmentId, bool isRented);
     }

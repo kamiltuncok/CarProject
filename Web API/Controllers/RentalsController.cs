@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
 using Entities.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -59,7 +60,7 @@ namespace Web_API.Controllers
             }
             return BadRequest(result);
         }
-        [HttpPost("add")]
+        [HttpPost("add")] // Keeping old Add for whatever reason, probably unused but safe
         public IActionResult Post(Rental rental)
         {
             var result = _rentalService.Add(rental);
@@ -67,6 +68,42 @@ namespace Web_API.Controllers
             {
                 return Ok(result);
             }
+            return BadRequest(result);
+        }
+
+        [HttpPost("create")]
+        public IActionResult CreateRental([FromBody] Entities.DTOs.RentalCreateRequestDto request)
+        {
+            // Extract the user ID from the JWT token.
+            // Assuming default ASP.NET Core Identity/JWT claims handling where NameIdentifier holds User ID.
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier);
+            
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
+            {
+                return Unauthorized(new { Message = "Kuallnıcı kimliği doğrulanamadı (Token eksik veya geçersiz)." });
+            }
+
+            // Route to the new strict domain Service
+            var result = _rentalService.CreateRental(request, userId);
+            
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpPost("createguest")]
+        public IActionResult CreateGuestRental([FromBody] Entities.DTOs.GuestRentalCreateRequestDto request)
+        {
+            var result = _rentalService.CreateGuestRental(request);
+            
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
             return BadRequest(result);
         }
 

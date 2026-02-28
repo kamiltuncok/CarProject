@@ -118,9 +118,10 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.Id == id));
         }
 
-        public IDataResult<List<CarDetailDto>> GetCarsNotRentedByLocationName(string locationName, bool IsRented)
+        public IDataResult<List<CarDetailDto>> GetAvailableCars(CarAvailabilityFilterDto filter)
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarsNotRentedByLocationName(locationName, false));
+            var result = _carDal.GetAvailableCars(filter);
+            return new SuccessDataResult<List<CarDetailDto>>(result, "Müsait araçlar listelendi.");
         }
 
         public void CarRented(int carId)
@@ -161,11 +162,6 @@ namespace Business.Concrete
 
             // 4️⃣ Sonuç dön
             return new SuccessDataResult<decimal>(car.DailyPrice, $"Price {action} applied successfully");
-        }
-
-        public IDataResult<List<CarDetailDto>> GetCarsByFilters(List<int> fuelIds, List<int> gearIds, List<int> segmentIds, bool isRented, string locationName)
-        {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarsByFilters(fuelIds, gearIds, segmentIds, isRented, locationName));
         }
 
         public IDataResult<decimal> GetLowestPriceBySegmentId(int segmentId, bool isRented)

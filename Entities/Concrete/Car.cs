@@ -19,5 +19,9 @@ namespace Entities.Concrete
         public int GearId { get; set; }         // FK -> Gear.Id
         public int SegmentId { get; set; }      // FK -> Segment.Id
         public string Description { get; set; }
+
+        // Concurrency token for Optimistic Concurrency
+        [System.ComponentModel.DataAnnotations.Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }
