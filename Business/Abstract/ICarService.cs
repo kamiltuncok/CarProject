@@ -23,13 +23,14 @@ namespace Business.Abstract
         IDataResult<List<CarDetailDto>> GetCarDetails();
         IDataResult<List<CarDetailDto>> GetCarDetailsByBrandId(int brandId);
         IDataResult<List<CarDetailDto>> GetCarDetailsByColorId(int colorId);
-        IDataResult<List<CarDetailDto>> GetCarsNotRentedByLocationName(string locationName, bool IsRented);
         IDataResult<CarDetailDto> GetCarDetailsById(int id);
+        
+        // Single unified availability endpoint
+        IDataResult<List<CarDetailDto>> GetAvailableCars(CarAvailabilityFilterDto filter);
+
         void CarRented(int carId);
 
         IDataResult<decimal> UpdatePriceByAction(int carId, string action);
-
-        IDataResult<List<CarDetailDto>> GetCarsByFilters(List<int> fuelIds, List<int> gearIds, List<int> segmentIds, bool isRented, string locationName);
 
         IDataResult<decimal> GetLowestPriceBySegmentId(int segmentId, bool isRented);
     }

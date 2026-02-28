@@ -26,6 +26,10 @@ namespace Business.Abstract
         IDataResult<List<RentalDetailDto>> GetRentalsByDateRange(DateTime startDate, DateTime endDate);
         IResult MarkAsReturned(int rentalId);
         IResult DeleteAndFreeCar(int rentalId);
-        //IDataResult<List<RentalDetailDto>> GetRentalDetails();
+        
+        // --- DomainV2 Production-Safe Endpoints ---
+        IDataResult<RentalResponseDto> CreateRental(RentalCreateRequestDto request, int customerId);
+        IDataResult<RentalResponseDto> CreateGuestRental(GuestRentalCreateRequestDto request);
+        IResult CheckCarAvailability(int carId, DateTime startDate, DateTime endDate);
     }
 }

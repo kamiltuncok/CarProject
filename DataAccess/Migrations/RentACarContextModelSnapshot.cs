@@ -177,6 +177,11 @@ namespace DataAccess.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.Property<int>("SegmentId")
                         .HasColumnType("int");
 
@@ -191,8 +196,6 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ColorId");
 
-                    b.HasIndex("CurrentLocationId");
-
                     b.HasIndex("FuelId");
 
                     b.HasIndex("GearId");
@@ -201,6 +204,9 @@ namespace DataAccess.Migrations
                         .IsUnique();
 
                     b.HasIndex("SegmentId");
+
+                    b.HasIndex("CurrentLocationId", "Status")
+                        .HasDatabaseName("IX_Cars_LocationStatus");
 
                     b.ToTable("Cars", (string)null);
                 });
@@ -490,8 +496,8 @@ namespace DataAccess.Migrations
                     b.HasIndex("Status")
                         .HasDatabaseName("IX_Rentals_Status");
 
-                    b.HasIndex("CarId", "StartDate", "EndDate")
-                        .HasDatabaseName("IX_Rentals_Car_Dates");
+                    b.HasIndex("CarId", "StartDate", "EndDate", "Status")
+                        .HasDatabaseName("IX_Rentals_AvailabilityCheck");
 
                     b.ToTable("Rentals", (string)null);
                 });

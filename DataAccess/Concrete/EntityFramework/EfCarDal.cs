@@ -24,7 +24,7 @@ namespace DataAccess.Concrete.EntityFramework
                    join lo in context.Locations on ca.CurrentLocationId equals lo.Id
                    select new CarDetailDto
                    {
-                       CarId = ca.Id,
+                       Id = ca.Id,
                        BrandId = ca.BrandId,
                        ColorId = ca.ColorId,
                        FuelId = ca.FuelId,
@@ -72,7 +72,7 @@ namespace DataAccess.Concrete.EntityFramework
             using (var context = new RentACarContext())
             {
                 return BuildCarDetailQuery(context)
-                    .FirstOrDefault(c => c.CarId == id);
+                    .FirstOrDefault(c => c.Id == id);
             }
         }
 
@@ -85,36 +85,69 @@ namespace DataAccess.Concrete.EntityFramework
             }
         }
 
-        public List<CarDetailDto> GetCarsNotRentedByLocationName(string locationName, bool IsRented)
+        public List<CarDetailDto> GetAvailableCars(CarAvailabilityFilterDto filter)
         {
             using (var context = new RentACarContext())
             {
-                // IsRented=false => CarStatus.Available
-                var statusFilter = IsRented ? CarStatus.Rented : CarStatus.Available;
-                return BuildCarDetailQuery(context)
-                    .Where(c => c.LocationName == locationName && c.Status == statusFilter)
-                    .ToList();
-            }
-        }
+                // 1. Basic Filters: Must be at start location and cannot be in maintenance
+                var query = context.Cars.Where(c =>
+                    c.CurrentLocationId == filter.StartLocationId &&
+                    c.Status != CarStatus.Maintenance);
 
-        public List<CarDetailDto> GetCarsByFilters(List<int> fuelIds, List<int> gearIds, List<int> segmentIds, bool isRented, string locationName)
-        {
-            using (var context = new RentACarContext())
-            {
-                var statusFilter = isRented ? CarStatus.Rented : CarStatus.Available;
-                var query = BuildCarDetailQuery(context)
-                    .Where(c => c.Status == statusFilter && c.LocationName == locationName);
+                // 2. Strict Overlap Rule checking Active/Pending rentals
+                query = query.Where(c => !context.Rentals.Any(r =>
+                    r.CarId == c.Id &&
+                    (r.Status == RentalStatus.Active || r.Status == RentalStatus.Pending) &&
+                    r.StartDate < filter.EndDate &&
+                    r.EndDate > filter.StartDate
+                ));
 
-                if (fuelIds != null && fuelIds.Any())
-                    query = query.Where(c => fuelIds.Contains(c.FuelId));
+                // 3. Optional User Filters
+                if (filter.FuelIds != null && filter.FuelIds.Any())
+                    query = query.Where(c => filter.FuelIds.Contains(c.FuelId));
 
-                if (gearIds != null && gearIds.Any())
-                    query = query.Where(c => gearIds.Contains(c.GearId));
+                if (filter.GearIds != null && filter.GearIds.Any())
+                    query = query.Where(c => filter.GearIds.Contains(c.GearId));
 
-                if (segmentIds != null && segmentIds.Any())
-                    query = query.Where(c => segmentIds.Contains(c.SegmentId));
+                if (filter.SegmentIds != null && filter.SegmentIds.Any())
+                    query = query.Where(c => filter.SegmentIds.Contains(c.SegmentId));
 
-                return query.ToList();
+                // 4. Output Projection using existing BuildCarDetailQuery logic mapped over the filtered query
+                // Instead of calling BuildCarDetailQuery() which joins everything indiscriminately, 
+                // we join our perfectly filtered cars with the other tables.
+                
+                var detailedQuery = from ca in query
+                                   join co in context.Colors on ca.ColorId equals co.ColorId
+                                   join br in context.Brands on ca.BrandId equals br.BrandId
+                                   join fu in context.Fuels on ca.FuelId equals fu.FuelId
+                                   join ge in context.Gears on ca.GearId equals ge.GearId
+                                   join se in context.Segments on ca.SegmentId equals se.SegmentId
+                                   join lo in context.Locations on ca.CurrentLocationId equals lo.Id
+                                   select new CarDetailDto
+                                   {
+                                       Id = ca.Id,
+                                       BrandId = ca.BrandId,
+                                       ColorId = ca.ColorId,
+                                       FuelId = ca.FuelId,
+                                       GearId = ca.GearId,
+                                       SegmentId = ca.SegmentId,
+                                       BrandName = br.BrandName,
+                                       ColorName = co.ColorName,
+                                       FuelName = fu.FuelName,
+                                       GearName = ge.GearName,
+                                       SegmentName = se.SegmentName,
+                                       LocationName = lo.LocationName,
+                                       LocationCity = lo.LocationCity,
+                                       DailyPrice = ca.DailyPrice,
+                                       Deposit = ca.Deposit,
+                                       Description = ca.Description,
+                                       ModelYear = ca.ModelYear,
+                                       Status = ca.Status,
+                                       PlateNumber = ca.PlateNumber,
+                                       KM = ca.KM
+                                   };
+
+                return detailedQuery.ToList();
             }
         }
 

@@ -60,8 +60,13 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<UserManager>().As<IUserService>();
             builder.RegisterType<EfUserDal>().As<IUserDal>();
 
+            builder.RegisterType<CustomerManager>().As<ICustomerService>().SingleInstance();
+            builder.RegisterType<EfCustomerDal>().As<ICustomerDal>().SingleInstance();
+
             builder.RegisterType<CorporateUserManager>().As<ICorporateUserService>();
             builder.RegisterType<EfCorporateUserDal>().As<ICorporateUserDal>();
+
+            builder.RegisterType<EfCorporateProfileDal>().As<ICorporateProfileDal>().SingleInstance();
 
             builder.RegisterType<LocationManager>().As<ILocationService>();
             builder.RegisterType<EfLocationDal>().As<ILocationDal>();

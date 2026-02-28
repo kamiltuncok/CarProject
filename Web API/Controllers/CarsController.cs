@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Business.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using System.Net.Http;
 using System.Text;
 
@@ -152,26 +153,10 @@ namespace Web_API.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getcarsnotrentedbylocations")]
-        public IActionResult GetCarsNotRentedByLocations(string locationName)
+        [HttpPost("available")]
+        public IActionResult GetAvailableCars([FromBody] CarAvailabilityFilterDto filter)
         {
-            var result = _carService.GetCarsNotRentedByLocationName(locationName, false);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-        }
-
-        [HttpPost("carisrented")]
-        public void CarRented(int carId) => _carService.CarRented(carId);
-
-
-        [HttpGet("getcarsbyfilters")]
-        public IActionResult GetCarsByFilters([FromQuery] List<int> fuelIds, [FromQuery] List<int> gearIds, [FromQuery] List<int> segmentIds, string locationName)
-        {
-            var result = _carService.GetCarsByFilters(fuelIds, gearIds, segmentIds, false, locationName);
+            var result = _carService.GetAvailableCars(filter);
             if (result.Success)
             {
                 return Ok(result);
