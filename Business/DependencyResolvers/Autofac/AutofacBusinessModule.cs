@@ -66,8 +66,6 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<CorporateUserManager>().As<ICorporateUserService>();
             builder.RegisterType<EfCorporateUserDal>().As<ICorporateUserDal>();
 
-            builder.RegisterType<EfCorporateProfileDal>().As<ICorporateProfileDal>().SingleInstance();
-
             builder.RegisterType<LocationManager>().As<ILocationService>();
             builder.RegisterType<EfLocationDal>().As<ILocationDal>();
 
@@ -79,6 +77,17 @@ namespace Business.DependencyResolvers.Autofac
 
             builder.RegisterType<LocationOperationClaimManager>().As<ILocationOperationClaimService>();
             builder.RegisterType<EfLocationOperationClaimDal>().As<ILocationOperationClaimDal>();
+
+            builder.RegisterType<UserOperationClaimManager>().As<IUserOperationClaimService>();
+            builder.RegisterType<EfUserOperationClaimDal>().As<IUserOperationClaimDal>();
+
+            builder.RegisterType<LocationUserRoleManager>().As<ILocationUserRoleService>();
+            builder.RegisterType<EfLocationUserRoleDal>().As<ILocationUserRoleDal>();
+
+            builder.RegisterType<OperationClaimManager>().As<IOperationClaimService>();
+            builder.RegisterType<EfOperationClaimDal>().As<IOperationClaimDal>();
+
+            builder.RegisterType<LocationManagerUserManager>().As<ILocationManagerUserService>();
 
             builder.RegisterType<PricingManager>().As<IPricingService>();
 

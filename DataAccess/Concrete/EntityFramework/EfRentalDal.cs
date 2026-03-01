@@ -54,19 +54,18 @@ namespace DataAccess.Concrete.EntityFramework
                        DepositRefundedDate = r.DepositRefundedDate,
                        DepositStatus = r.DepositStatus,
                        RentalStatus = r.Status,
-                       CustomerType = cust.CustomerType,
                        CustomerEmail = cust.Email,
                        CustomerPhone = cust.PhoneNumber
                    };
         }
 
-        public List<RentalDetailDto> GetRentalDetailsByUserId(int userId, CustomerType customerType)
+        public List<RentalDetailDto> GetRentalDetailsByUserId(int userId)
         {
             using (var context = new RentACarContext())
             {
                 // Find customerId(s) linked to this userId
                 var customerIds = context.Customers
-                    .Where(c => c.UserId == userId && c.CustomerType == customerType)
+                    .Where(c => c.UserId == userId)
                     .Select(c => c.Id)
                     .ToList();
 
@@ -102,24 +101,44 @@ namespace DataAccess.Concrete.EntityFramework
             {
                 var search = name.ToLower().Trim();
 
-                // First get matching customer IDs in memory (EF can't easily translate string concat)
-                var matchingCustomerIds = context.Customers
-                    .Where(c => c.Email.ToLower().Contains(search) || c.PhoneNumber.Contains(search))
+                // 1. Search Customers (Base) by IdentityNumber, Phone or Email
+                var baseMatchingIds = context.Customers
+                    .Where(c => c.IdentityNumber.Contains(search) || 
+                                c.PhoneNumber.Contains(search) || 
+                                c.Email.ToLower().Contains(search))
                     .Select(c => c.Id)
                     .ToList();
 
-                // Also search Users by first/last name
+                // 2. Search IndividualCustomers directly (Guest or Registered)
+                var individualMatchingIds = context.IndividualCustomers
+                    .Where(ic => (ic.FirstName + " " + ic.LastName).ToLower().Contains(search))
+                    .Select(ic => ic.Id)
+                    .ToList();
+
+                // 3. Search CorporateCustomers directly
+                var corporateMatchingIds = context.CorporateCustomers
+                    .Where(cc => cc.CompanyName.ToLower().Contains(search))
+                    .Select(cc => cc.Id)
+                    .ToList();
+
+                // 4. Search via Users linked to Customers
                 var matchingUserIds = context.Users
                     .Where(u => (u.FirstName + " " + u.LastName).ToLower().Contains(search))
                     .Select(u => u.Id)
                     .ToList();
 
-                var additionalCustomerIds = context.Customers
+                var customerIdsFromUsers = context.Customers
                     .Where(c => c.UserId.HasValue && matchingUserIds.Contains(c.UserId.Value))
                     .Select(c => c.Id)
                     .ToList();
 
-                var allCustomerIds = matchingCustomerIds.Union(additionalCustomerIds).ToList();
+                // Combine all unique customer IDs
+                var allCustomerIds = baseMatchingIds
+                    .Union(individualMatchingIds)
+                    .Union(corporateMatchingIds)
+                    .Union(customerIdsFromUsers)
+                    .Distinct()
+                    .ToList();
 
                 return BuildRentalDetailQuery(context)
                     .Where(r => allCustomerIds.Contains(r.CustomerId))

@@ -1,13 +1,13 @@
 using Core.DataAccess.EntityFramework;
 using DataAccess.Abstract;
 using Entities.Concrete;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using Entities.DTOs;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfCorporateProfileDal : EfEntityRepositoryBase<CorporateProfile, RentACarContext>, ICorporateProfileDal
+    public class EfLocationUserRoleDal : EfEntityRepositoryBase<LocationUserRole, RentACarContext>, ILocationUserRoleDal
     {
     }
 }

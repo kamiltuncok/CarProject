@@ -21,7 +21,8 @@ namespace DataAccess.Concrete.EntityFramework
 
         // ─── Customer Domain ────────────────────────────────────────────────────
         public DbSet<Customer> Customers { get; set; }
-        public DbSet<CorporateProfile> CorporateProfiles { get; set; }
+        public DbSet<IndividualCustomer> IndividualCustomers { get; set; }
+        public DbSet<CorporateCustomer> CorporateCustomers { get; set; }
 
         // ─── Vehicle ─────────────────────────────────────────────────────────────
         public DbSet<Car> Cars { get; set; }
@@ -97,7 +98,7 @@ namespace DataAccess.Concrete.EntityFramework
                 e.HasIndex(lr => new { lr.UserId, lr.LocationId, lr.OperationClaimId }).IsUnique();
             });
 
-            // ─── Customer ─────────────────────────────────────────────────────────
+            // ─── Customer (Base TPT) ──────────────────────────────────────────────
             modelBuilder.Entity<Customer>(e =>
             {
                 e.ToTable("Customers");
@@ -105,11 +106,7 @@ namespace DataAccess.Concrete.EntityFramework
                 e.HasIndex(c => c.Email).IsUnique();
                 e.Property(c => c.Email).HasMaxLength(200).IsRequired();
                 e.Property(c => c.PhoneNumber).HasMaxLength(20);
-                e.Property(c => c.Address).HasMaxLength(500);
-                e.Property(c => c.CustomerType)
-                    .HasConversion<string>()
-                    .HasMaxLength(20)
-                    .IsRequired();
+                e.Property(c => c.IdentityNumber).HasMaxLength(11);
                 e.Property(c => c.CreatedDate).IsRequired();
 
                 // Nullable FK to User — null means guest customer
@@ -120,19 +117,21 @@ namespace DataAccess.Concrete.EntityFramework
                     .OnDelete(DeleteBehavior.SetNull);
             });
 
-            // ─── CorporateProfile ─────────────────────────────────────────────────
-            modelBuilder.Entity<CorporateProfile>(e =>
+            // ─── IndividualCustomer (Derived TPT) ─────────────────────────────────
+            modelBuilder.Entity<IndividualCustomer>(e =>
             {
-                e.ToTable("CorporateProfiles");
-                e.HasKey(cp => cp.Id);
-                e.HasIndex(cp => cp.TaxNumber).IsUnique();
-                e.HasIndex(cp => cp.CustomerId).IsUnique(); // 1-to-1 with Customer
-                e.Property(cp => cp.CompanyName).HasMaxLength(250).IsRequired();
-                e.Property(cp => cp.TaxNumber).HasMaxLength(20).IsRequired();
-                e.HasOne<Customer>()
-                    .WithMany()
-                    .HasForeignKey(cp => cp.CustomerId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                e.ToTable("IndividualCustomers");
+                // EF Core uses the base Id as PK automatically for TPT
+                e.Property(ic => ic.FirstName).HasMaxLength(150).IsRequired();
+                e.Property(ic => ic.LastName).HasMaxLength(150).IsRequired();
+            });
+
+            // ─── CorporateCustomer (Derived TPT) ──────────────────────────────────
+            modelBuilder.Entity<CorporateCustomer>(e =>
+            {
+                e.ToTable("CorporateCustomers");
+                e.Property(cc => cc.CompanyName).HasMaxLength(250).IsRequired();
+                e.Property(cc => cc.TaxNumber).HasMaxLength(20);
             });
 
             // ─── Brand, Color, Fuel, Gear, Segment ───────────────────────────────

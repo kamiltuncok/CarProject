@@ -51,12 +51,6 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CustomerType")
-                        .HasColumnType("int");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -250,38 +244,6 @@ namespace DataAccess.Migrations
                     b.ToTable("Colors", (string)null);
                 });
 
-            modelBuilder.Entity("Entities.Concrete.CorporateProfile", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CompanyName")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TaxNumber")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId")
-                        .IsUnique();
-
-                    b.HasIndex("TaxNumber")
-                        .IsUnique();
-
-                    b.ToTable("CorporateProfiles", (string)null);
-                });
-
             modelBuilder.Entity("Entities.Concrete.Customer", b =>
                 {
                     b.Property<int>("Id")
@@ -290,22 +252,17 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Address")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("CustomerType")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("IdentityNumber")
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
 
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(20)
@@ -322,6 +279,8 @@ namespace DataAccess.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Customers", (string)null);
+
+                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("Entities.Concrete.Fuel", b =>
@@ -539,6 +498,39 @@ namespace DataAccess.Migrations
                     b.ToTable("Segments", (string)null);
                 });
 
+            modelBuilder.Entity("Entities.Concrete.CorporateCustomer", b =>
+                {
+                    b.HasBaseType("Entities.Concrete.Customer");
+
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("TaxNumber")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.ToTable("CorporateCustomers", (string)null);
+                });
+
+            modelBuilder.Entity("Entities.Concrete.IndividualCustomer", b =>
+                {
+                    b.HasBaseType("Entities.Concrete.Customer");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.ToTable("IndividualCustomers", (string)null);
+                });
+
             modelBuilder.Entity("Core.Entities.Concrete.UserOperationClaim", b =>
                 {
                     b.HasOne("Core.Entities.Concrete.OperationClaim", null)
@@ -590,15 +582,6 @@ namespace DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("SegmentId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Entities.Concrete.CorporateProfile", b =>
-                {
-                    b.HasOne("Entities.Concrete.Customer", null)
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -664,6 +647,24 @@ namespace DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("StartLocationId")
                         .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Entities.Concrete.CorporateCustomer", b =>
+                {
+                    b.HasOne("Entities.Concrete.Customer", null)
+                        .WithOne()
+                        .HasForeignKey("Entities.Concrete.CorporateCustomer", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Entities.Concrete.IndividualCustomer", b =>
+                {
+                    b.HasOne("Entities.Concrete.Customer", null)
+                        .WithOne()
+                        .HasForeignKey("Entities.Concrete.IndividualCustomer", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

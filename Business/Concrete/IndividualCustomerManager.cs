@@ -45,12 +45,12 @@ namespace Business.Concrete
 
         public IDataResult<IndividualCustomer> GetById(int id)
         {
-            return new SuccessDataResult<IndividualCustomer>(_customerDal.Get(c => c.CustomerId == id), Messages.CustomerListed);
+            return new SuccessDataResult<IndividualCustomer>(_customerDal.Get(c => c.Id == id), Messages.CustomerListed);
         }
 
         public IDataResult<List<IndividualCustomer>> GetListById(int id)
         {
-            return new SuccessDataResult<List<IndividualCustomer>>(_customerDal.GetAll(c => c.CustomerId == id), Messages.CustomerListed);
+            return new SuccessDataResult<List<IndividualCustomer>>(_customerDal.GetAll(c => c.Id == id), Messages.CustomerListed);
         }
 
         public IResult Update(IndividualCustomer entity)

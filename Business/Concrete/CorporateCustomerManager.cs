@@ -43,12 +43,12 @@ namespace Business.Concrete
 
         public IDataResult<CorporateCustomer> GetById(int id)
         {
-            return new SuccessDataResult<CorporateCustomer>(_customerDal.Get(c => c.CustomerId == id), Messages.CustomerListed);
+            return new SuccessDataResult<CorporateCustomer>(_customerDal.Get(c => c.Id == id), Messages.CustomerListed);
         }
 
         public IDataResult<List<CorporateCustomer>> GetListById(int id)
         {
-            return new SuccessDataResult<List<CorporateCustomer>>(_customerDal.GetAll(c => c.CustomerId == id), Messages.CustomerListed);
+            return new SuccessDataResult<List<CorporateCustomer>>(_customerDal.GetAll(c => c.Id == id), Messages.CustomerListed);
         }
 
         public IResult Update(CorporateCustomer entity)
