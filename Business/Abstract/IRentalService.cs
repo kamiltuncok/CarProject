@@ -17,9 +17,10 @@ namespace Business.Abstract
         IResult Delete(Rental rental);
         IResult Update(Rental rental);
         IDataResult<List<Rental>> GetRentalsByCarId(int carId);
-        IDataResult<List<RentalDetailDto>> GetRentalDetailsByUserId(int userId, CustomerType customerType);
+        IDataResult<List<RentalDetailDto>> GetRentalDetailsByUserId(int userId);
         IDataResult<List<RentalDetailDto>> GetRentalDetailsByLocationName(string locationName);
         IResult AddBulk(List<Rental> rentals);
+        IDataResult<List<RentalDetailDto>> GetRentalsByManagerLocation(int userId);
         IDataResult<List<Rental>> GetRentalsByStartDate(DateTime startDate);
         IDataResult<List<RentalDetailDto>> GetRentalsByEmail(string email);
         IDataResult<List<RentalDetailDto>> GetRentalsByName(string name);

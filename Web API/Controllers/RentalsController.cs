@@ -109,9 +109,30 @@ namespace Web_API.Controllers
 
 
         [HttpGet("getrentalsbyuserid")]
-        public IActionResult GetRentalsByUserId(int userId,CustomerType customerType)
+        public IActionResult GetRentalsByUserId(int userId)
         {
-            var result = _rentalService.GetRentalDetailsByUserId(userId, customerType);
+            var result = _rentalService.GetRentalDetailsByUserId(userId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("diagnosticcustomer")]
+        public IActionResult DiagnosticCustomer(int userId)
+        {
+            using (var context = new DataAccess.Concrete.EntityFramework.RentACarContext())
+            {
+                var customers = context.Customers.Where(c => c.UserId == userId).Select(c => new { c.Id }).ToList();
+                return Ok(customers);
+            }
+        }
+
+        [HttpGet("getrentalsbymanagerlocation")]
+        public IActionResult GetRentalsByManagerLocation(int userId)
+        {
+            var result = _rentalService.GetRentalsByManagerLocation(userId);
             if (result.Success)
             {
                 return Ok(result);

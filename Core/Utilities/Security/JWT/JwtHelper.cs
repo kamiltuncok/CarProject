@@ -59,7 +59,6 @@ namespace Core.Utilities.Security.JWT
             var claims = new List<Claim>();
             claims.AddNameIdentifier(user.Id.ToString());
             claims.AddEmail(user.Email);
-            claims.AddCustomerType(user.CustomerType);
             claims.AddName($"{user.FirstName} {user.LastName}");
             claims.AddRoles(operationClaims.Select(c => c.Name).ToArray());
 
@@ -102,7 +101,6 @@ namespace Core.Utilities.Security.JWT
             var claims = new List<Claim>();
             claims.AddNameIdentifier(corporateUser.Id.ToString());
             claims.AddEmail(corporateUser.Email);
-            claims.AddCustomerType(corporateUser.CustomerType);
             claims.AddRoles(operationClaims.Select(c => c.Name).ToArray());
 
             return claims;

@@ -1,0 +1,25 @@
+﻿MSBuild version 17.6.1+8ffc3fe3d for .NET
+  Geri y├╝klenecek projeler belirleniyor...
+  Geri y├╝kleme i├ğin t├╝m projeler g├╝ncel.
+  Core -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\bin\Debug\net7.0\Core.dll
+  Entities -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Entities\bin\Debug\net7.0\Entities.dll
+  DataAccess -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\bin\Debug\net7.0\DataAccess.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Abstract\ILocationCityService.cs(9,41): warning CS0108: 'ILocationCityService.GetAll()', 'IGenericService<LocationCity>.GetAll()' devral─▒nan ├╝yesini gizler. Gizleme isteniyorsa yeni anahtar s├Âzc├╝k kullan─▒n. [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Abstract\ILocationCityService.cs(10,35): warning CS0108: 'ILocationCityService.GetById(int)', 'IGenericService<LocationCity>.GetById(int)' devral─▒nan ├╝yesini gizler. Gizleme isteniyorsa yeni anahtar s├Âzc├╝k kullan─▒n. [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\UserOperationClaimManager.cs(22,47): error CS0117: 'Messages' bir 'UserOperationClaimAdded' tan─▒m─▒ i├ğermiyor [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\UserOperationClaimManager.cs(28,47): error CS0117: 'Messages' bir 'UserOperationClaimDeleted' tan─▒m─▒ i├ğermiyor [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\UserOperationClaimManager.cs(33,110): error CS0117: 'Messages' bir 'UserOperationClaimListed' tan─▒m─▒ i├ğermiyor [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\UserOperationClaimManager.cs(49,47): error CS0117: 'Messages' bir 'UserOperationClaimUpdated' tan─▒m─▒ i├ğermiyor [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+
+Olu┼şturma BA┼ŞARISIZ OLDU.
+
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Abstract\ILocationCityService.cs(9,41): warning CS0108: 'ILocationCityService.GetAll()', 'IGenericService<LocationCity>.GetAll()' devral─▒nan ├╝yesini gizler. Gizleme isteniyorsa yeni anahtar s├Âzc├╝k kullan─▒n. [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Abstract\ILocationCityService.cs(10,35): warning CS0108: 'ILocationCityService.GetById(int)', 'IGenericService<LocationCity>.GetById(int)' devral─▒nan ├╝yesini gizler. Gizleme isteniyorsa yeni anahtar s├Âzc├╝k kullan─▒n. [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\UserOperationClaimManager.cs(22,47): error CS0117: 'Messages' bir 'UserOperationClaimAdded' tan─▒m─▒ i├ğermiyor [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\UserOperationClaimManager.cs(28,47): error CS0117: 'Messages' bir 'UserOperationClaimDeleted' tan─▒m─▒ i├ğermiyor [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\UserOperationClaimManager.cs(33,110): error CS0117: 'Messages' bir 'UserOperationClaimListed' tan─▒m─▒ i├ğermiyor [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\UserOperationClaimManager.cs(49,47): error CS0117: 'Messages' bir 'UserOperationClaimUpdated' tan─▒m─▒ i├ğermiyor [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+    2 Uyar─▒
+    4 Hata
+
+Ge├ğen S├╝re 00:00:01.23

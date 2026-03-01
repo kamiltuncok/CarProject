@@ -41,7 +41,6 @@ namespace Entities.DTOs
 
         // Status
         public RentalStatus RentalStatus { get; set; }
-        public CustomerType CustomerType { get; set; }
 
         // Customer info
         public string CustomerEmail { get; set; }

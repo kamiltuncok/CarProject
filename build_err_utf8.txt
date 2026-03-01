@@ -1,0 +1,16 @@
+﻿MSBuild version 17.6.1+8ffc3fe3d for .NET
+  Geri y├╝klenecek projeler belirleniyor...
+  Geri y├╝kleme i├ğin t├╝m projeler g├╝ncel.
+  Core -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\bin\Debug\net7.0\Core.dll
+  Entities -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Entities\bin\Debug\net7.0\Entities.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\Abstract\ICustomerDal.cs(8,34): error CS0246: 'IEntityRepository<>' t├╝r├╝ veya ad alan─▒ ad─▒ bulunamad─▒ (bir using y├Ânergeniz veya derleme ba┼şvurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\DataAccess.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\Abstract\ICustomerDal.cs(8,52): error CS0246: 'Customer' t├╝r├╝ veya ad alan─▒ ad─▒ bulunamad─▒ (bir using y├Ânergeniz veya derleme ba┼şvurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\DataAccess.csproj]
+
+Olu┼şturma BA┼ŞARISIZ OLDU.
+
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\Abstract\ICustomerDal.cs(8,34): error CS0246: 'IEntityRepository<>' t├╝r├╝ veya ad alan─▒ ad─▒ bulunamad─▒ (bir using y├Ânergeniz veya derleme ba┼şvurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\DataAccess.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\Abstract\ICustomerDal.cs(8,52): error CS0246: 'Customer' t├╝r├╝ veya ad alan─▒ ad─▒ bulunamad─▒ (bir using y├Ânergeniz veya derleme ba┼şvurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\DataAccess.csproj]
+    0 Uyar─▒
+    2 Hata
+
+Ge├ğen S├╝re 00:00:01.14

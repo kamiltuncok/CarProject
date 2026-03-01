@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Core.Aspects.Autofac.Transaction;
+using DataAccess.Concrete.EntityFramework;
 
 namespace Business.Concrete
 {
@@ -21,16 +22,12 @@ namespace Business.Concrete
         IRentalDal _rentalDal;
         ICarDal _carDal;
         ICustomerDal _customerDal;
-        ICorporateProfileDal _corporateProfileDal;
-        IIndividualCustomerDal _individualCustomerDal;
 
-        public RentalManager(IRentalDal rentalDal, ICarDal carDal, ICustomerDal customerDal, ICorporateProfileDal corporateProfileDal, IIndividualCustomerDal individualCustomerDal)
+        public RentalManager(IRentalDal rentalDal, ICarDal carDal, ICustomerDal customerDal)
         {
             _rentalDal = rentalDal;
             _carDal = carDal;
             _customerDal = customerDal;
-            _corporateProfileDal = corporateProfileDal;
-            _individualCustomerDal = individualCustomerDal;
         }
 
         [ValidationAspect(typeof(RentalValidator))]
@@ -76,9 +73,9 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Rental>>(rentals, Messages.RentalListed);
         }
 
-        public IDataResult<List<RentalDetailDto>> GetRentalDetailsByUserId(int userId, CustomerType customerType)
+        public IDataResult<List<RentalDetailDto>> GetRentalDetailsByUserId(int userId)
         {
-            var result = _rentalDal.GetRentalDetailsByUserId(userId, customerType);
+            var result = _rentalDal.GetRentalDetailsByUserId(userId);
             return new SuccessDataResult<List<RentalDetailDto>>(result);
         }
 
@@ -86,6 +83,33 @@ namespace Business.Concrete
         {
             var result = _rentalDal.GetRentalDetailsByLocationName(locationName);
             return new SuccessDataResult<List<RentalDetailDto>>(result, Messages.RentalListed);
+        }
+
+        public IDataResult<List<RentalDetailDto>> GetRentalsByManagerLocation(int userId)
+        {
+            // Instead of injecting ILocationUserRoleService, query through a fresh context safely
+            var managerLocations = new List<LocationUserRole>();
+            using (var context = new RentACarContext())
+            {
+                managerLocations = context.LocationUserRoles.Where(loc => loc.UserId == userId).ToList();
+            
+                if (!managerLocations.Any())
+                    return new ErrorDataResult<List<RentalDetailDto>>("User is not managing any locations.");
+
+                var allRentals = new List<RentalDetailDto>();
+
+                foreach (var locRole in managerLocations)
+                {
+                    var location = context.Locations.FirstOrDefault(l => l.Id == locRole.LocationId);
+                    if (location != null)
+                    {
+                        var rentals = _rentalDal.GetRentalDetailsByLocationName(location.LocationName);
+                        if (rentals != null && rentals.Any())
+                            allRentals.AddRange(rentals);
+                    }
+                }
+                return new SuccessDataResult<List<RentalDetailDto>>(allRentals, Messages.RentalListed);
+            }
         }
 
         public IResult AddBulk(List<Rental> rentals)
@@ -189,7 +213,7 @@ namespace Business.Concrete
         }
 
         [TransactionScopeAspect]
-        public IDataResult<RentalResponseDto> CreateRental(RentalCreateRequestDto request, int customerId)
+        public IDataResult<RentalResponseDto> CreateRental(RentalCreateRequestDto request, int userId)
         {
             // 1. Mandatory Validations
             if (request.StartDate >= request.EndDate)
@@ -211,11 +235,28 @@ namespace Business.Concrete
             int days = Math.Max(1, (int)(request.EndDate - request.StartDate).TotalDays);
             decimal totalPrice = car.DailyPrice * days;
 
-            // 4. Create Rental Entity (Pending Payment Simulation)
+            // 4. Resolve CustomerId from UserId
+            var customer = _customerDal.Get(c => c.UserId == userId);
+            if (customer == null)
+            {
+                // Auto-create a base customer profile for this User if they've never rented before
+                var individual = new IndividualCustomer
+                {
+                    UserId = userId,
+                    CreatedDate = DateTime.Now,
+                    FirstName = "Guest",
+                    LastName = "User",
+                    IdentityNumber = "11111111111"
+                };
+                _customerDal.Add(individual);
+                customer = individual;
+            }
+
+            // 5. Create Rental Entity (Pending Payment Simulation)
             var rental = new Rental
             {
                 CarId = car.Id,
-                CustomerId = customerId,
+                CustomerId = customer.Id,
                 StartLocationId = request.StartLocationId,
                 EndLocationId = request.EndLocationId,
                 StartDate = request.StartDate,
@@ -266,44 +307,37 @@ namespace Business.Concrete
             int days = Math.Max(1, (int)(request.EndDate - request.StartDate).TotalDays);
             decimal totalPrice = car.DailyPrice * days;
 
-            // 4. Create the Guest Customer
-            var customer = new Customer
+            // 4. Create the Guest Customer via Polymorphism
+            Customer customer;
+            
+            if (!string.IsNullOrEmpty(request.CompanyName))
             {
-                CustomerType = request.CustomerType,
-                Email = request.Email,
-                PhoneNumber = request.PhoneNumber,
-                Address = request.Address,
-                UserId = null, // Mark as unauthenticated guest
-                CreatedDate = DateTime.Now
-            };
-
-            _customerDal.Add(customer); // Entity Framework sets customer.Id automatically
-
-            // 5. Create CorporateProfile if applicable
-            if (request.CustomerType == CustomerType.Corporate)
-            {
-                var corporateProfile = new CorporateProfile
+                customer = new CorporateCustomer
                 {
-                    CustomerId = customer.Id,
                     CompanyName = request.CompanyName,
-                    TaxNumber = request.TaxNumber
+                    TaxNumber = request.TaxNumber,
+                    Email = request.Email,
+                    PhoneNumber = request.PhoneNumber,
+                    IdentityNumber = request.IdentityNumber,
+                    UserId = null,
+                    CreatedDate = DateTime.Now
                 };
-                _corporateProfileDal.Add(corporateProfile);
             }
-            else if (request.CustomerType == CustomerType.Individual)
+            else
             {
-                var individualCustomer = new IndividualCustomer
+                customer = new IndividualCustomer
                 {
-                    CustomerId = customer.Id,
                     FirstName = request.FirstName,
                     LastName = request.LastName,
                     IdentityNumber = request.IdentityNumber,
                     Email = request.Email,
                     PhoneNumber = request.PhoneNumber,
-                    Address = request.Address
+                    UserId = null,
+                    CreatedDate = DateTime.Now
                 };
-                _individualCustomerDal.Add(individualCustomer);
             }
+
+            _customerDal.Add(customer); // Entity Framework sets customer.Id automatically via TPT
 
             // 6. Create Rental Entity referencing the newly created Customer ID (Pending Payment Simulation)
             var rental = new Rental

@@ -54,6 +54,11 @@ namespace Business.Concrete
             return _userDal.Get(u => u.Email == email);
         }
 
+        public List<User> GetAll()
+        {
+            return _userDal.GetAll();
+        }
+
         public IDataResult<User> GetByEmailWithResult(string email)
         {
             var result = GetByMail(email);

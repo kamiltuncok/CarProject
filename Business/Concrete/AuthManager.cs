@@ -36,11 +36,9 @@ namespace Business.Concrete
                 LastName = userForRegisterDto.LastName,
                 IdentityNumber = userForRegisterDto.IdentityNumber,
                 PhoneNumber = userForRegisterDto.PhoneNumber,
-                Address = userForRegisterDto.Address,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
-                Status = true,
-                CustomerType = CustomerType.Individual
+                Status = true
             };
             _userService.Add(user);
             return new SuccessDataResult<User>(user, Messages.UserRegistered);
@@ -112,11 +110,10 @@ namespace Business.Concrete
                 CompanyName = corporateUserForRegisterDto.CompanyName,
                 TaxNumber = corporateUserForRegisterDto.TaxNumber,
                 PhoneNumber = corporateUserForRegisterDto.PhoneNumber,
-                Address = corporateUserForRegisterDto.Address,
+                IdentityNumber = corporateUserForRegisterDto.IdentityNumber,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
-                Status = true,
-                CustomerType=CustomerType.Corporate
+                Status = true
             };
             _corporateUserService.Add(corporateUser);
             return new SuccessDataResult<CorporateUser>(corporateUser, Messages.UserRegistered);
@@ -195,11 +192,9 @@ namespace Business.Concrete
                 LastName = userForRegisterDto.LastName,
                 IdentityNumber = userForRegisterDto.IdentityNumber,
                 PhoneNumber = userForRegisterDto.PhoneNumber,
-                Address = userForRegisterDto.Address,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
-                Status = true,
-                CustomerType = CustomerType.Individual // Admin role set via OperationClaim, not CustomerType
+                Status = true
             };
 
             _userService.Add(adminUser);
