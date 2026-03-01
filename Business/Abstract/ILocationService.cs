@@ -6,8 +6,8 @@ using System.Text;
 
 namespace Business.Abstract
 {
-    public interface ILocationService:IGenericService<Location>
+    public interface ILocationService : IGenericService<Location>
     {
-        IDataResult<List<Location>> GetByLocationCity(string locationCity);
+        IDataResult<List<Location>> GetByCityId(int locationCityId);
     }
 }

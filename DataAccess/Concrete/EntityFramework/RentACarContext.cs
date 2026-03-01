@@ -35,6 +35,7 @@ namespace DataAccess.Concrete.EntityFramework
         // ─── Rental / Location ───────────────────────────────────────────────────
         public DbSet<Rental> Rentals { get; set; }
         public DbSet<Location> Locations { get; set; }
+        public DbSet<LocationCity> LocationCities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -141,15 +142,29 @@ namespace DataAccess.Concrete.EntityFramework
             modelBuilder.Entity<Gear>(e => { e.ToTable("Gears"); e.HasKey(g => g.GearId); });
             modelBuilder.Entity<Segment>(e => { e.ToTable("Segments"); e.HasKey(s => s.SegmentId); });
 
+            // ─── LocationCity (lookup) ────────────────────────────────────────────
+            modelBuilder.Entity<LocationCity>(e =>
+            {
+                e.ToTable("LocationCities");
+                e.HasKey(lc => lc.Id);
+                e.HasIndex(lc => lc.Name).IsUnique();
+                e.Property(lc => lc.Name).HasMaxLength(100).IsRequired();
+            });
+
             // ─── Location ─────────────────────────────────────────────────────────
             modelBuilder.Entity<Location>(e =>
             {
                 e.ToTable("Locations");
                 e.HasKey(l => l.Id);
                 e.Property(l => l.LocationName).HasMaxLength(200).IsRequired();
-                e.Property(l => l.LocationCity).HasMaxLength(100).IsRequired();
                 e.Property(l => l.Latitude).HasPrecision(9, 6);
                 e.Property(l => l.Longitude).HasPrecision(9, 6);
+
+                // FK → LocationCities
+                e.HasOne<LocationCity>()
+                    .WithMany()
+                    .HasForeignKey(l => l.LocationCityId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
 
             // ─── Car ─────────────────────────────────────────────────────────────
