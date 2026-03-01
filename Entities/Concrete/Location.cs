@@ -6,7 +6,12 @@ namespace Entities.Concrete
     {
         public int Id { get; set; }
         public string LocationName { get; set; }
-        public string LocationCity { get; set; }
+
+        /// <summary>
+        /// FK → LocationCity.Id — replaces the old free-text LocationCity string.
+        /// </summary>
+        public int LocationCityId { get; set; }
+
         public string Address { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }

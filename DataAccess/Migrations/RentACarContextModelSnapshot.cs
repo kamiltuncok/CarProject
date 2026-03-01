@@ -374,10 +374,8 @@ namespace DataAccess.Migrations
                         .HasPrecision(9, 6)
                         .HasColumnType("decimal(9,6)");
 
-                    b.Property<string>("LocationCity")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<int>("LocationCityId")
+                        .HasColumnType("int");
 
                     b.Property<string>("LocationName")
                         .IsRequired()
@@ -393,7 +391,30 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LocationCityId");
+
                     b.ToTable("Locations", (string)null);
+                });
+
+            modelBuilder.Entity("Entities.Concrete.LocationCity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("LocationCities", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Concrete.LocationUserRole", b =>
@@ -587,6 +608,15 @@ namespace DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.SetNull);
+                });
+
+            modelBuilder.Entity("Entities.Concrete.Location", b =>
+                {
+                    b.HasOne("Entities.Concrete.LocationCity", null)
+                        .WithMany()
+                        .HasForeignKey("LocationCityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Entities.Concrete.LocationUserRole", b =>

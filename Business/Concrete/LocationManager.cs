@@ -41,9 +41,13 @@ namespace Business.Concrete
             return new SuccessDataResult<Location>(_locationDal.Get(l => l.Id == id));
         }
 
-        public IDataResult<List<Location>> GetByLocationCity(string locationCity)
+        /// <summary>
+        /// Returns all offices in the given city (filters by FK instead of error-prone string match).
+        /// </summary>
+        public IDataResult<List<Location>> GetByCityId(int locationCityId)
         {
-            return new SuccessDataResult<List<Location>>(_locationDal.GetAll(l => l.LocationCity == locationCity));
+            return new SuccessDataResult<List<Location>>(
+                _locationDal.GetAll(l => l.LocationCityId == locationCityId));
         }
 
         public IDataResult<List<Location>> GetListById(int id)

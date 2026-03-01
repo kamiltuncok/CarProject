@@ -22,6 +22,7 @@ namespace DataAccess.Concrete.EntityFramework
                    join ge in context.Gears on ca.GearId equals ge.GearId
                    join se in context.Segments on ca.SegmentId equals se.SegmentId
                    join lo in context.Locations on ca.CurrentLocationId equals lo.Id
+                   join lc in context.LocationCities on lo.LocationCityId equals lc.Id
                    select new CarDetailDto
                    {
                        Id = ca.Id,
@@ -36,7 +37,7 @@ namespace DataAccess.Concrete.EntityFramework
                        GearName = ge.GearName,
                        SegmentName = se.SegmentName,
                        LocationName = lo.LocationName,
-                       LocationCity = lo.LocationCity,
+                       LocationCity = lc.Name,        // resolved from LocationCities table
                        DailyPrice = ca.DailyPrice,
                        Deposit = ca.Deposit,
                        Description = ca.Description,
@@ -123,6 +124,7 @@ namespace DataAccess.Concrete.EntityFramework
                                    join ge in context.Gears on ca.GearId equals ge.GearId
                                    join se in context.Segments on ca.SegmentId equals se.SegmentId
                                    join lo in context.Locations on ca.CurrentLocationId equals lo.Id
+                                   join lc in context.LocationCities on lo.LocationCityId equals lc.Id
                                    select new CarDetailDto
                                    {
                                        Id = ca.Id,
@@ -137,7 +139,7 @@ namespace DataAccess.Concrete.EntityFramework
                                        GearName = ge.GearName,
                                        SegmentName = se.SegmentName,
                                        LocationName = lo.LocationName,
-                                       LocationCity = lo.LocationCity,
+                                       LocationCity = lc.Name,        // resolved from LocationCities table
                                        DailyPrice = ca.DailyPrice,
                                        Deposit = ca.Deposit,
                                        Description = ca.Description,

@@ -71,6 +71,9 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<LocationManager>().As<ILocationService>();
             builder.RegisterType<EfLocationDal>().As<ILocationDal>();
 
+            builder.RegisterType<LocationCityManager>().As<ILocationCityService>().SingleInstance();
+            builder.RegisterType<EfLocationCityDal>().As<ILocationCityDal>().SingleInstance();
+
             builder.RegisterType<AuthManager>().As<IAuthService>();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>();
 

@@ -23,7 +23,9 @@ namespace DataAccess.Concrete.EntityFramework
                    join f in context.Fuels on c.FuelId equals f.FuelId
                    join g in context.Gears on c.GearId equals g.GearId
                    join startLoc in context.Locations on r.StartLocationId equals startLoc.Id
+                   join startCity in context.LocationCities on startLoc.LocationCityId equals startCity.Id
                    join endLoc in context.Locations on r.EndLocationId equals endLoc.Id
+                   join endCity in context.LocationCities on endLoc.LocationCityId equals endCity.Id
                    join cust in context.Customers on r.CustomerId equals cust.Id
                    select new RentalDetailDto
                    {
@@ -40,9 +42,9 @@ namespace DataAccess.Concrete.EntityFramework
                        Description = c.Description,
                        PlateNumber = c.PlateNumber,
                        StartLocationName = startLoc.LocationName,
-                       StartLocationCity = startLoc.LocationCity,
+                       StartLocationCity = startCity.Name,    // resolved from LocationCities table
                        EndLocationName = endLoc.LocationName,
-                       EndLocationCity = endLoc.LocationCity,
+                       EndLocationCity = endCity.Name,        // resolved from LocationCities table
                        StartDate = r.StartDate,
                        EndDate = r.EndDate,
                        RentedDailyPrice = r.RentedDailyPrice,
