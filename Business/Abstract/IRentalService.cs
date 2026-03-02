@@ -32,5 +32,9 @@ namespace Business.Abstract
         IDataResult<RentalResponseDto> CreateRental(RentalCreateRequestDto request, int customerId);
         IDataResult<RentalResponseDto> CreateGuestRental(GuestRentalCreateRequestDto request);
         IResult CheckCarAvailability(int carId, DateTime startDate, DateTime endDate);
+
+        IResult CollectDeposit(int rentalId, int userId);
+        IResult DeliverVehicle(int rentalId, int userId);
+        IResult CancelRental(int rentalId, int userId);
     }
 }

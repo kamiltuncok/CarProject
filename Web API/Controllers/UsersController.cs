@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Core.Entities.Concrete;
+using Entities.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,9 +15,12 @@ namespace Web_API.Controllers
     public class UsersController : ControllerBase
     {
         IUserService _userService;
-        public UsersController(IUserService userService)
+        IIndividualCustomerService _individualCustomerService;
+
+        public UsersController(IUserService userService, IIndividualCustomerService individualCustomerService)
         {
             _userService = userService;
+            _individualCustomerService = individualCustomerService;
         }
 
         [HttpGet("getbymail")]
@@ -53,14 +57,24 @@ namespace Web_API.Controllers
         }
 
         [HttpPost("updateusernames")]
-        public IActionResult UpdateUserNames(User user)
+        public IActionResult UpdateUserNames(UserNamesForUpdateDto userNamesForUpdate)
         {
-            var result = _userService.UpdateUserNames(user);
-            if (result.Success)
+            var userResult = _userService.GetById(userNamesForUpdate.Id);
+            if (!userResult.Success) return BadRequest(userResult);
+
+            var icResult = _individualCustomerService.GetById(userResult.Data.CustomerId);
+            if (!icResult.Success) return BadRequest(new Core.Utilities.Results.ErrorResult("Sadece bireysel müşteriler profil ismini güncelleyebilir."));
+
+            var ic = icResult.Data;
+            ic.FirstName = userNamesForUpdate.FirstName;
+            ic.LastName = userNamesForUpdate.LastName;
+
+            var updateResult = _individualCustomerService.Update(ic);
+            if (updateResult.Success)
             {
-                return Ok(result);
+                return Ok(updateResult);
             }
-            return BadRequest(result);
+            return BadRequest(updateResult);
         }
 
         [HttpDelete("delete")]

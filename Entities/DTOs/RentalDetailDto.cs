@@ -6,7 +6,7 @@ namespace Entities.DTOs
 {
     public class RentalDetailDto : IDto
     {
-        public int RentalId { get; set; }
+        public int Id { get; set; }
         public int CarId { get; set; }
         public int CustomerId { get; set; }
 
@@ -40,7 +40,7 @@ namespace Entities.DTOs
         public DepositStatus DepositStatus { get; set; }
 
         // Status
-        public RentalStatus RentalStatus { get; set; }
+        public RentalStatus Status { get; set; }
 
         // Customer info
         public string CustomerEmail { get; set; }

@@ -124,7 +124,7 @@ namespace Web_API.Controllers
         {
             using (var context = new DataAccess.Concrete.EntityFramework.RentACarContext())
             {
-                var customers = context.Customers.Where(c => c.UserId == userId).Select(c => new { c.Id }).ToList();
+                var customers = context.Customers.Where(c => c.Users.Any(u => u.Id == userId)).Select(c => new { c.Id }).ToList();
                 return Ok(customers);
             }
         }
@@ -230,6 +230,42 @@ namespace Web_API.Controllers
             var result = _rentalService.DeleteAndFreeCar(rentalId);
             if (result.Success)
                 return Ok(result);
+            return BadRequest(result);
+        }
+
+        [HttpPost("collectdeposit")]
+        public IActionResult CollectDeposit(int rentalId)
+        {
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier);
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
+                return Unauthorized(new { Message = "Kullanıcı kimliği doğrulanamadı." });
+
+            var result = _rentalService.CollectDeposit(rentalId, userId);
+            if (result.Success) return Ok(result);
+            return BadRequest(result);
+        }
+
+        [HttpPost("delivervehicle")]
+        public IActionResult DeliverVehicle(int rentalId)
+        {
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier);
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
+                return Unauthorized(new { Message = "Kullanıcı kimliği doğrulanamadı." });
+
+            var result = _rentalService.DeliverVehicle(rentalId, userId);
+            if (result.Success) return Ok(result);
+            return BadRequest(result);
+        }
+
+        [HttpPost("cancelrental")]
+        public IActionResult CancelRental(int rentalId)
+        {
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier);
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
+                return Unauthorized(new { Message = "Kullanıcı kimliği doğrulanamadı." });
+
+            var result = _rentalService.CancelRental(rentalId, userId);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 

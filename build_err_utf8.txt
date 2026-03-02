@@ -3,14 +3,15 @@
   Geri y├╝kleme i├ğin t├╝m projeler g├╝ncel.
   Core -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\bin\Debug\net7.0\Core.dll
   Entities -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Entities\bin\Debug\net7.0\Entities.dll
-C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\Abstract\ICustomerDal.cs(8,34): error CS0246: 'IEntityRepository<>' t├╝r├╝ veya ad alan─▒ ad─▒ bulunamad─▒ (bir using y├Ânergeniz veya derleme ba┼şvurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\DataAccess.csproj]
-C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\Abstract\ICustomerDal.cs(8,52): error CS0246: 'Customer' t├╝r├╝ veya ad alan─▒ ad─▒ bulunamad─▒ (bir using y├Ânergeniz veya derleme ba┼şvurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\DataAccess.csproj]
+  DataAccess -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\bin\Debug\net7.0\DataAccess.dll
+  Business -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\bin\Debug\net7.0\Business.dll
+  ConsoleUI -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\ConsoleUI\bin\Debug\net7.0\ConsoleUI.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\Controllers\RentalsController.cs(127,64): error CS1061: 'Customer' bir 'UserId' tan─▒m─▒ i├ğermiyor ve 'Customer' t├╝r├╝nde bir ilk ba─ş─▒ms─▒z de─şi┼şken kabul eden hi├ğbir eri┼şilebilir 'UserId' geni┼şletme y├Ântemi bulunamad─▒ (bir kullanma y├Ânergeniz veya derleme ba┼şvurunuz eksik olabilir mi?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\Web API.csproj]
 
 Olu┼şturma BA┼ŞARISIZ OLDU.
 
-C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\Abstract\ICustomerDal.cs(8,34): error CS0246: 'IEntityRepository<>' t├╝r├╝ veya ad alan─▒ ad─▒ bulunamad─▒ (bir using y├Ânergeniz veya derleme ba┼şvurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\DataAccess.csproj]
-C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\Abstract\ICustomerDal.cs(8,52): error CS0246: 'Customer' t├╝r├╝ veya ad alan─▒ ad─▒ bulunamad─▒ (bir using y├Ânergeniz veya derleme ba┼şvurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\DataAccess.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\Controllers\RentalsController.cs(127,64): error CS1061: 'Customer' bir 'UserId' tan─▒m─▒ i├ğermiyor ve 'Customer' t├╝r├╝nde bir ilk ba─ş─▒ms─▒z de─şi┼şken kabul eden hi├ğbir eri┼şilebilir 'UserId' geni┼şletme y├Ântemi bulunamad─▒ (bir kullanma y├Ânergeniz veya derleme ba┼şvurunuz eksik olabilir mi?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\Web API.csproj]
     0 Uyar─▒
-    2 Hata
+    1 Hata
 
-Ge├ğen S├╝re 00:00:01.14
+Ge├ğen S├╝re 00:00:02.33

@@ -1,0 +1,16 @@
+﻿MSBuild version 17.6.1+8ffc3fe3d for .NET
+  Geri y├╝klenecek projeler belirleniyor...
+  Geri y├╝kleme i├ğin t├╝m projeler g├╝ncel.
+  Core -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\bin\Debug\net7.0\Core.dll
+  Entities -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Entities\bin\Debug\net7.0\Entities.dll
+  DataAccess -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\bin\Debug\net7.0\DataAccess.dll
+  Business -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\bin\Debug\net7.0\Business.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\Controllers\UsersController.cs(59,46): error CS0246: 'UserNamesForUpdateDto' t├╝r├╝ veya ad alan─▒ ad─▒ bulunamad─▒ (bir using y├Ânergeniz veya derleme ba┼şvurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\Web API.csproj]
+
+Olu┼şturma BA┼ŞARISIZ OLDU.
+
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\Controllers\UsersController.cs(59,46): error CS0246: 'UserNamesForUpdateDto' t├╝r├╝ veya ad alan─▒ ad─▒ bulunamad─▒ (bir using y├Ânergeniz veya derleme ba┼şvurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\Web API.csproj]
+    0 Uyar─▒
+    1 Hata
+
+Ge├ğen S├╝re 00:00:03.10

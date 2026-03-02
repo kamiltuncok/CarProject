@@ -36,10 +36,7 @@ namespace Business.Concrete
 
         public IResult UpdateUserNames(User user)
         {
-            var updatedUser = _userDal.Get(u => u.Id == user.Id);
-            updatedUser.FirstName = user.FirstName;
-            updatedUser.LastName = user.LastName;
-            _userDal.Update(updatedUser);
+            // Names are resolved polymorphically from Customer records now.
             return new SuccessResult(Messages.UserUpdated);
         }
 

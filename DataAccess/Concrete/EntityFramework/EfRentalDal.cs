@@ -29,7 +29,7 @@ namespace DataAccess.Concrete.EntityFramework
                    join cust in context.Customers on r.CustomerId equals cust.Id
                    select new RentalDetailDto
                    {
-                       RentalId = r.Id,
+                       Id = r.Id,
                        CarId = c.Id,
                        CustomerId = r.CustomerId,
                        BrandName = b.BrandName,
@@ -53,8 +53,8 @@ namespace DataAccess.Concrete.EntityFramework
                        DepositDeductedAmount = r.DepositDeductedAmount,
                        DepositRefundedDate = r.DepositRefundedDate,
                        DepositStatus = r.DepositStatus,
-                       RentalStatus = r.Status,
-                       CustomerEmail = cust.Email,
+                       Status = r.Status,
+                       CustomerEmail = cust.Users.FirstOrDefault() != null ? cust.Users.FirstOrDefault().Email : null,
                        CustomerPhone = cust.PhoneNumber
                    };
         }
@@ -65,7 +65,7 @@ namespace DataAccess.Concrete.EntityFramework
             {
                 // Find customerId(s) linked to this userId
                 var customerIds = context.Customers
-                    .Where(c => c.UserId == userId)
+                    .Where(c => c.Users.Any(u => u.Id == userId))
                     .Select(c => c.Id)
                     .ToList();
 
@@ -80,7 +80,7 @@ namespace DataAccess.Concrete.EntityFramework
             using (var context = new RentACarContext())
             {
                 return BuildRentalDetailQuery(context)
-                    .Where(r => r.StartLocationName == locationName)
+                    .Where(r => r.StartLocationName == locationName || r.EndLocationName == locationName)
                     .ToList();
             }
         }
@@ -101,17 +101,15 @@ namespace DataAccess.Concrete.EntityFramework
             {
                 var search = name.ToLower().Trim();
 
-                // 1. Search Customers (Base) by IdentityNumber, Phone or Email
+                // 1. Search Customers (Base) by Phone
                 var baseMatchingIds = context.Customers
-                    .Where(c => c.IdentityNumber.Contains(search) || 
-                                c.PhoneNumber.Contains(search) || 
-                                c.Email.ToLower().Contains(search))
+                    .Where(c => c.PhoneNumber.Contains(search))
                     .Select(c => c.Id)
                     .ToList();
 
                 // 2. Search IndividualCustomers directly (Guest or Registered)
                 var individualMatchingIds = context.IndividualCustomers
-                    .Where(ic => (ic.FirstName + " " + ic.LastName).ToLower().Contains(search))
+                    .Where(ic => (ic.FirstName + " " + ic.LastName).ToLower().Contains(search) || ic.IdentityNumber.Contains(search))
                     .Select(ic => ic.Id)
                     .ToList();
 
@@ -121,22 +119,10 @@ namespace DataAccess.Concrete.EntityFramework
                     .Select(cc => cc.Id)
                     .ToList();
 
-                // 4. Search via Users linked to Customers
-                var matchingUserIds = context.Users
-                    .Where(u => (u.FirstName + " " + u.LastName).ToLower().Contains(search))
-                    .Select(u => u.Id)
-                    .ToList();
-
-                var customerIdsFromUsers = context.Customers
-                    .Where(c => c.UserId.HasValue && matchingUserIds.Contains(c.UserId.Value))
-                    .Select(c => c.Id)
-                    .ToList();
-
                 // Combine all unique customer IDs
                 var allCustomerIds = baseMatchingIds
                     .Union(individualMatchingIds)
                     .Union(corporateMatchingIds)
-                    .Union(customerIdsFromUsers)
                     .Distinct()
                     .ToList();
 

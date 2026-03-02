@@ -1,5 +1,7 @@
 ﻿using Core.Entities;
+using Core.Entities.Concrete;
 using System;
+using System.Collections.Generic;
 
 namespace Entities.Concrete
 {
@@ -7,13 +9,8 @@ namespace Entities.Concrete
     {
         public int Id { get; set; }
         public string PhoneNumber { get; set; }
-        public string Email { get; set; }
-        public string IdentityNumber { get; set; }
-
-        /// <summary>
-        /// Null for guest customers, set for registered (auth) customers.
-        /// </summary>
-        public int? UserId { get; set; }
         public DateTime CreatedDate { get; set; }
+
+        public ICollection<User> Users { get; set; }
     }
 }

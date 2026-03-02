@@ -22,7 +22,8 @@ namespace Business.Concrete
 
         public IResult Add(IndividualCustomer entity)
         {
-            throw new NotImplementedException();
+            _customerDal.Add(entity);
+            return new SuccessResult(Messages.CustomerAdded);
         }
 
         [ValidationAspect(typeof(CustomerValidator))]
@@ -55,7 +56,7 @@ namespace Business.Concrete
 
         public IResult Update(IndividualCustomer entity)
         {
-            _customerDal.Delete(entity);
+            _customerDal.Update(entity);
             return new SuccessResult(Messages.CustomerUpdated);
         }
     }

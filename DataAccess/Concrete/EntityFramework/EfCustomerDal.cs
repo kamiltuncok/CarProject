@@ -25,10 +25,10 @@ namespace DataAccess.Concrete.EntityFramework
                              select new CustomerDetailDto
                              {
                                  Id = c.Id,
-                                 Email = c.Email,
+                                 Email = c.Users.FirstOrDefault() != null ? c.Users.FirstOrDefault().Email : null,
                                  PhoneNumber = c.PhoneNumber,
-                                 IdentityNumber = c.IdentityNumber,
-                                 UserId = c.UserId,
+                                 IdentityNumber = (c is IndividualCustomer) ? ((IndividualCustomer)c).IdentityNumber : null,
+                                 UserId = c.Users.FirstOrDefault() != null ? (int?)c.Users.FirstOrDefault().Id : null,
                                  CreatedDate = c.CreatedDate,
                                  FirstName = (c is IndividualCustomer) ? ((IndividualCustomer)c).FirstName : null,
                                  LastName = (c is IndividualCustomer) ? ((IndividualCustomer)c).LastName : null,
@@ -47,10 +47,10 @@ namespace DataAccess.Concrete.EntityFramework
                              select new CustomerDetailDto
                              {
                                  Id = c.Id,
-                                 Email = c.Email,
+                                 Email = c.Users.FirstOrDefault() != null ? c.Users.FirstOrDefault().Email : null,
                                  PhoneNumber = c.PhoneNumber,
-                                 IdentityNumber = c.IdentityNumber,
-                                 UserId = c.UserId,
+                                 IdentityNumber = (c is IndividualCustomer) ? ((IndividualCustomer)c).IdentityNumber : null,
+                                 UserId = c.Users.FirstOrDefault() != null ? (int?)c.Users.FirstOrDefault().Id : null,
                                  CreatedDate = c.CreatedDate,
                                  FirstName = (c is IndividualCustomer) ? ((IndividualCustomer)c).FirstName : null,
                                  LastName = (c is IndividualCustomer) ? ((IndividualCustomer)c).LastName : null,

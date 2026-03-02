@@ -1,14 +1,14 @@
-﻿using Core.Entities;
+using Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Entities.Concrete
+namespace Entities.DTOs
 {
-    public class IndividualCustomer : Customer
+    public class UserNamesForUpdateDto : IDto
     {
+        public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string IdentityNumber { get; set; }
     }
 }

@@ -108,7 +108,7 @@ namespace Business.Concrete
                             allRentals.AddRange(rentals);
                     }
                 }
-                return new SuccessDataResult<List<RentalDetailDto>>(allRentals, Messages.RentalListed);
+                return new SuccessDataResult<List<RentalDetailDto>>(allRentals.GroupBy(r => r.Id).Select(g => g.First()).ToList(), Messages.RentalListed);
             }
         }
 
@@ -168,7 +168,7 @@ namespace Business.Concrete
                 _carDal.Update(car);
             }
 
-            return new SuccessResult("Araç teslim alındı.");
+            return new SuccessResult("Araç teslim edildi.");
         }
 
         public IResult DeleteAndFreeCar(int rentalId)
@@ -236,20 +236,18 @@ namespace Business.Concrete
             decimal totalPrice = car.DailyPrice * days;
 
             // 4. Resolve CustomerId from UserId
-            var customer = _customerDal.Get(c => c.UserId == userId);
+            Customer customer;
+            using (var context = new RentACarContext())
+            {
+                var userRecord = context.Users.FirstOrDefault(u => u.Id == userId);
+                if (userRecord == null) return new ErrorDataResult<RentalResponseDto>("Kullanıcı bulunamadı.");
+                
+                customer = _customerDal.Get(c => c.Id == userRecord.CustomerId);
+            }
+            
             if (customer == null)
             {
-                // Auto-create a base customer profile for this User if they've never rented before
-                var individual = new IndividualCustomer
-                {
-                    UserId = userId,
-                    CreatedDate = DateTime.Now,
-                    FirstName = "Guest",
-                    LastName = "User",
-                    IdentityNumber = "11111111111"
-                };
-                _customerDal.Add(individual);
-                customer = individual;
+                return new ErrorDataResult<RentalResponseDto>("Kullanıcıya ait müşteri kaydı bulunamadı.");
             }
 
             // 5. Create Rental Entity (Pending Payment Simulation)
@@ -316,10 +314,7 @@ namespace Business.Concrete
                 {
                     CompanyName = request.CompanyName,
                     TaxNumber = request.TaxNumber,
-                    Email = request.Email,
                     PhoneNumber = request.PhoneNumber,
-                    IdentityNumber = request.IdentityNumber,
-                    UserId = null,
                     CreatedDate = DateTime.Now
                 };
             }
@@ -330,9 +325,7 @@ namespace Business.Concrete
                     FirstName = request.FirstName,
                     LastName = request.LastName,
                     IdentityNumber = request.IdentityNumber,
-                    Email = request.Email,
                     PhoneNumber = request.PhoneNumber,
-                    UserId = null,
                     CreatedDate = DateTime.Now
                 };
             }
@@ -366,6 +359,93 @@ namespace Business.Concrete
                 new RentalResponseDto { RentalId = rental.Id, TotalPrice = totalPrice },
                 "Kayıtsız misafir olarak kiralama işlemi ve (simüle edilen) ödeme başarıyla gerçekleşti."
             );
+        }
+
+        [TransactionScopeAspect]
+        public IResult CollectDeposit(int rentalId, int userId)
+        {
+            var rental = _rentalDal.Get(r => r.Id == rentalId);
+            if (rental == null) return new ErrorResult("Kiralama bulunamadı.");
+
+            if (rental.Status != RentalStatus.Active)
+                return new ErrorResult("Sadece aktif kiralamalar için depozito tahsil edilebilir.");
+            if (rental.DepositStatus != DepositStatus.Blocked)
+                return new ErrorResult("Depozito zaten tahsil edilmiş veya bekleyen bir depozito yok.");
+
+            using (var context = new RentACarContext())
+            {
+                var isManager = context.LocationUserRoles.Any(l => l.UserId == userId && l.LocationId == rental.StartLocationId);
+                var isAdmin = context.UserOperationClaims.Any(u => u.UserId == userId && context.OperationClaims.Any(c => c.Id == u.OperationClaimId && c.Name == "admin"));
+                if (!isManager && !isAdmin) return new ErrorResult("Bu işlem için yetkiniz yok (Alış lokasyonu yöneticisi değilsiniz).");
+            }
+
+            rental.DepositStatus = DepositStatus.Charged;
+            _rentalDal.Update(rental);
+            
+            return new SuccessResult("Depozito başarıyla tahsil edildi.");
+        }
+
+        [TransactionScopeAspect]
+        public IResult DeliverVehicle(int rentalId, int userId)
+        {
+            var rental = _rentalDal.Get(r => r.Id == rentalId);
+            if (rental == null) return new ErrorResult("Kiralama bulunamadı.");
+
+            if (rental.Status != RentalStatus.Active)
+                return new ErrorResult("Sadece aktif kiralamalar teslim alınabilir.");
+
+            using (var context = new RentACarContext())
+            {
+                var isManager = context.LocationUserRoles.Any(l => l.UserId == userId && l.LocationId == rental.EndLocationId);
+                var isAdmin = context.UserOperationClaims.Any(u => u.UserId == userId && context.OperationClaims.Any(c => c.Id == u.OperationClaimId && c.Name == "admin"));
+                if (!isManager && !isAdmin) return new ErrorResult("Bu işlem için yetkiniz yok (Bırakış lokasyonu yöneticisi değilsiniz).");
+            }
+
+            rental.Status = RentalStatus.Completed;
+            rental.DepositStatus = DepositStatus.Refunded;
+            rental.DepositRefundedDate = DateTime.Now;
+            _rentalDal.Update(rental);
+
+            var car = _carDal.Get(c => c.Id == rental.CarId);
+            if (car != null)
+            {
+                car.Status = CarStatus.Available;
+                car.CurrentLocationId = rental.EndLocationId;
+                _carDal.Update(car); // row version optimistic concurrency checks handle race conditions automatically.
+            }
+
+            return new SuccessResult("Araç başarıyla teslim edildi.");
+        }
+
+        [TransactionScopeAspect]
+        public IResult CancelRental(int rentalId, int userId)
+        {
+            var rental = _rentalDal.Get(r => r.Id == rentalId);
+            if (rental == null) return new ErrorResult("Kiralama bulunamadı.");
+
+            if (rental.Status != RentalStatus.Active && rental.Status != RentalStatus.Pending)
+                return new ErrorResult("Sadece aktif veya bekleyen kiralamalar iptal edilebilir.");
+
+            using (var context = new RentACarContext())
+            {
+                var isManager = context.LocationUserRoles.Any(l => l.UserId == userId && (l.LocationId == rental.StartLocationId || l.LocationId == rental.EndLocationId));
+                var isAdmin = context.UserOperationClaims.Any(u => u.UserId == userId && context.OperationClaims.Any(c => c.Id == u.OperationClaimId && c.Name == "admin"));
+                if (!isManager && !isAdmin) return new ErrorResult("Bu işlem için yetkiniz yok (Alış veya Bırakış lokasyonu yöneticisi değilsiniz).");
+            }
+
+            rental.Status = RentalStatus.Cancelled;
+            rental.DepositStatus = DepositStatus.Refunded;
+            rental.DepositRefundedDate = DateTime.Now;
+            _rentalDal.Update(rental);
+
+            var car = _carDal.Get(c => c.Id == rental.CarId);
+            if (car != null)
+            {
+                car.Status = CarStatus.Available;
+                _carDal.Update(car);
+            }
+
+            return new SuccessResult("Kiralama başarıyla iptal edildi.");
         }
     }
 }
