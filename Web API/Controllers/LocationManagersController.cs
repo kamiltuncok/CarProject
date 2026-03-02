@@ -1,4 +1,5 @@
 using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Entities.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +17,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
+        [SecuredOperation("admin")]
         public IActionResult Add(LocationManagerAddDto dto)
         {
             var result = _locationManagerUserService.AddLocationManager(dto);
@@ -38,6 +40,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("update")]
+        [SecuredOperation("admin")]
         public IActionResult Update(LocationManagerUpdateDto dto)
         {
             var result = _locationManagerUserService.UpdateLocationManager(dto);
@@ -49,6 +52,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("revoke")]
+        [SecuredOperation("admin")]
         public IActionResult Revoke([FromQuery] int userId, [FromQuery] int locationId)
         {
             var result = _locationManagerUserService.RevokeLocationManager(userId, locationId);

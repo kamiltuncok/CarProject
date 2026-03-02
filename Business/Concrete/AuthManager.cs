@@ -4,42 +4,93 @@ using Core.Entities.Concrete;
 using Core.Utilities.Results;
 using Core.Utilities.Security.Hashing;
 using Core.Utilities.Security.JWT;
+using Entities.Concrete;
 using Entities.DTOs;
-using Entities.Enums;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Security.Claims;
 
 namespace Business.Concrete
 {
     public class AuthManager : IAuthService
     {
-        private IUserService _userService;
-        private ITokenHelper _tokenHelper;
-        private ICorporateUserService _corporateUserService;
+        private readonly IUserService _userService;
+        private readonly ITokenHelper _tokenHelper;
+        private readonly ICustomerService _customerService;
+        private readonly IIndividualCustomerService _individualCustomerService;
+        private readonly ICorporateCustomerService _corporateCustomerService;
 
-        public AuthManager(IUserService userService, ITokenHelper tokenHelper, ICorporateUserService corporateUserService)
+        public AuthManager(IUserService userService, ITokenHelper tokenHelper, 
+            ICustomerService customerService, 
+            IIndividualCustomerService individualCustomerService, 
+            ICorporateCustomerService corporateCustomerService)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
-            _corporateUserService = corporateUserService;
+            _customerService = customerService;
+            _individualCustomerService = individualCustomerService;
+            _corporateCustomerService = corporateCustomerService;
         }
 
-        public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
+        public IDataResult<User> RegisterIndividual(IndividualRegisterDto registerDto)
         {
+            if (_userService.GetByMail(registerDto.Email) != null)
+                return new ErrorDataResult<User>(Messages.UserAlreadyExists);
+
             byte[] passwordHash, passwordSalt;
-            HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
+            HashingHelper.CreatePasswordHash(registerDto.Password, out passwordHash, out passwordSalt);
+
+            var individualCustomer = new IndividualCustomer
+            {
+                FirstName = registerDto.FirstName,
+                LastName = registerDto.LastName,
+                IdentityNumber = registerDto.IdentityNumber,
+                PhoneNumber = registerDto.PhoneNumber,
+                CreatedDate = DateTime.Now
+            };
+
+            _individualCustomerService.Add(individualCustomer);
+
             var user = new User
             {
-                Email = userForRegisterDto.Email,
-                FirstName = userForRegisterDto.FirstName,
-                LastName = userForRegisterDto.LastName,
-                IdentityNumber = userForRegisterDto.IdentityNumber,
-                PhoneNumber = userForRegisterDto.PhoneNumber,
+                Email = registerDto.Email,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
-                Status = true
+                Status = true,
+                CustomerId = individualCustomer.Id
             };
+            
+            _userService.Add(user);
+            return new SuccessDataResult<User>(user, Messages.UserRegistered);
+        }
+
+        public IDataResult<User> RegisterCorporate(CorporateRegisterDto registerDto)
+        {
+            if (_userService.GetByMail(registerDto.Email) != null)
+                return new ErrorDataResult<User>(Messages.UserAlreadyExists);
+
+            byte[] passwordHash, passwordSalt;
+            HashingHelper.CreatePasswordHash(registerDto.Password, out passwordHash, out passwordSalt);
+
+            var corporateCustomer = new CorporateCustomer
+            {
+                CompanyName = registerDto.CompanyName,
+                TaxNumber = registerDto.TaxNumber,
+                PhoneNumber = registerDto.PhoneNumber,
+                CreatedDate = DateTime.Now
+            };
+
+            _corporateCustomerService.Add(corporateCustomer);
+
+            var user = new User
+            {
+                Email = registerDto.Email,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                Status = true,
+                CustomerId = corporateCustomer.Id
+            };
+            
             _userService.Add(user);
             return new SuccessDataResult<User>(user, Messages.UserRegistered);
         }
@@ -72,13 +123,31 @@ namespace Business.Concrete
         public IDataResult<AccessToken> CreateAccessToken(User user)
         {
             var claims = _userService.GetClaims(user);
-            var accessToken = _tokenHelper.CreateToken(user, claims);
+
+            var customer = _customerService.GetById(user.CustomerId).Data;
+            string displayName = "Unknown";
+
+            if (customer is IndividualCustomer individual)
+            {
+                displayName = $"{individual.FirstName} {individual.LastName}";
+            }
+            else if (customer is CorporateCustomer corporate)
+            {
+                displayName = corporate.CompanyName;
+            }
+
+            var additionalClaims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, displayName),
+                new Claim("CustomerId", user.CustomerId.ToString())
+            };
+
+            var accessToken = _tokenHelper.CreateToken(user, claims, additionalClaims);
             return new SuccessDataResult<AccessToken>(accessToken, Messages.AccessTokenCreated);
         }
 
         public IDataResult<User> UpdatePassword(UserForPasswordDto userForPasswordDto, string newPassword)
         {
-            //Business Rules
             byte[] passwordHash, passwordSalt;
             HashingHelper.CreatePasswordHash(newPassword, out passwordHash, out passwordSalt);
             var updatedUser = _userService.GetById(userForPasswordDto.UserId).Data;
@@ -100,101 +169,35 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(updatedUser, Messages.UserPasswordUpdated);
         }
 
-        public IDataResult<CorporateUser> RegisterForCorporate(CorporateUserForRegisterDto corporateUserForRegisterDto, string password)
+        public IDataResult<User> RegisterAdmin(IndividualRegisterDto registerDto)
         {
-            byte[] passwordHash, passwordSalt;
-            HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
-            var corporateUser = new CorporateUser
-            {
-                Email = corporateUserForRegisterDto.Email,
-                CompanyName = corporateUserForRegisterDto.CompanyName,
-                TaxNumber = corporateUserForRegisterDto.TaxNumber,
-                PhoneNumber = corporateUserForRegisterDto.PhoneNumber,
-                IdentityNumber = corporateUserForRegisterDto.IdentityNumber,
-                PasswordHash = passwordHash,
-                PasswordSalt = passwordSalt,
-                Status = true
-            };
-            _corporateUserService.Add(corporateUser);
-            return new SuccessDataResult<CorporateUser>(corporateUser, Messages.UserRegistered);
-        }
-
-        public IDataResult<CorporateUser> LoginForCorporateUser(UserForLoginDto userForLoginDto)
-        {
-            var userToCheck = _corporateUserService.GetByMail(userForLoginDto.Email);
-            if (userToCheck == null)
-            {
-                return new ErrorDataResult<CorporateUser>(Messages.UserNotFound);
-            }
-
-            if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.PasswordHash, userToCheck.PasswordSalt))
-            {
-                return new ErrorDataResult<CorporateUser>(Messages.PasswordError);
-            }
-
-            return new SuccessDataResult<CorporateUser>(userToCheck, Messages.SuccessfulLogin);
-        }
-
-        public IDataResult<AccessToken> CreateAccessTokenForCorporate(CorporateUser corporateUser)
-        {
-            var claims = _corporateUserService.GetClaims(corporateUser);
-            var accessToken = _tokenHelper.CreateTokenForCorporate(corporateUser, claims);
-            return new SuccessDataResult<AccessToken>(accessToken, Messages.AccessTokenCreated);
-        }
-
-        public IDataResult<CorporateUser> UpdateCorporatePassword(UserForPasswordDto userForPasswordDto, string password)
-        {
-            byte[] passwordHash, passwordSalt;
-            HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
-            var updatedUser = _corporateUserService.GetById(userForPasswordDto.UserId).Data;
-
-            if (!HashingHelper.VerifyPasswordHash(userForPasswordDto.OldPassword, updatedUser.PasswordHash, updatedUser.PasswordSalt))
-            {
-                return new ErrorDataResult<CorporateUser>(Messages.PasswordError);
-            }
-
-            if (!userForPasswordDto.NewPassword.Equals(userForPasswordDto.RepeatNewPassword))
-            {
-                return new ErrorDataResult<CorporateUser>("Şifre tekrarı yanlış!");
-            };
-
-            updatedUser.PasswordHash = passwordHash;
-            updatedUser.PasswordSalt = passwordSalt;
-
-            _corporateUserService.Update(updatedUser);
-            return new SuccessDataResult<CorporateUser>(updatedUser, Messages.UserPasswordUpdated);
-        }
-
-        public IResult CorporateUserExists(string email)
-        {
-            if (_corporateUserService.GetByMail(email) != null)
-            {
-                return new ErrorResult(Messages.UserAlreadyExists);
-            }
-            return new SuccessResult();
-        }
-
-        public IDataResult<User> RegisterAdmin(UserForRegisterDto userForRegisterDto, string password)
-        {
-            // Önce kullanıcı var mı kontrol et
-            if (_userService.GetByMail(userForRegisterDto.Email) != null)
+            if (_userService.GetByMail(registerDto.Email) != null)
             {
                 return new ErrorDataResult<User>(Messages.UserAlreadyExists);
             }
 
+            // Create admin context customer (individual)
+            var individualCustomer = new IndividualCustomer
+            {
+                FirstName = registerDto.FirstName,
+                LastName = registerDto.LastName,
+                IdentityNumber = registerDto.IdentityNumber,
+                PhoneNumber = registerDto.PhoneNumber,
+                CreatedDate = DateTime.Now
+            };
+
+            _individualCustomerService.Add(individualCustomer);
+
             byte[] passwordHash, passwordSalt;
-            HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
+            HashingHelper.CreatePasswordHash(registerDto.Password, out passwordHash, out passwordSalt);
 
             var adminUser = new User
             {
-                Email = userForRegisterDto.Email,
-                FirstName = userForRegisterDto.FirstName,
-                LastName = userForRegisterDto.LastName,
-                IdentityNumber = userForRegisterDto.IdentityNumber,
-                PhoneNumber = userForRegisterDto.PhoneNumber,
+                Email = registerDto.Email,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
-                Status = true
+                Status = true,
+                CustomerId = individualCustomer.Id
             };
 
             _userService.Add(adminUser);

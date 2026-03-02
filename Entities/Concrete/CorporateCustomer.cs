@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Entities.Concrete
 {
-    public class CorporateCustomer : Customer, IEntity
+    public class CorporateCustomer : Customer
     {
         public string CompanyName { get; set; }
         public string TaxNumber { get; set; }

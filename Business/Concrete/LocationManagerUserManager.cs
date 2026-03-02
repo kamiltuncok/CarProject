@@ -7,6 +7,8 @@ using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
+using DataAccess.Concrete.EntityFramework;
 
 namespace Business.Concrete
 {
@@ -56,26 +58,27 @@ namespace Business.Concrete
 
             // 3. Coordinate creation process
             // We use AuthManager to ensure everything is encrypted properly.
-            var userForRegisterDto = new UserForRegisterDto
+            var userForRegisterDto = new IndividualRegisterDto
             {
                 Email = dto.Email,
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 PhoneNumber = dto.PhoneNumber,
+                Password = dto.Password,
+                IdentityNumber = "00000000000" // System admin identity fallback
             };
 
-            // Using standard user reg limits the scope. If we need a dedicated Admin register, use RegisterAdmin.
-            // Using RegisterAdmin per plan to enforce non-customer type.
-            var authResult = _authService.RegisterAdmin(userForRegisterDto, dto.Password);
-            if (!authResult.Success)
+            using (var transactionScope = new TransactionScope())
             {
-                return new ErrorResult(authResult.Message);
-            }
+                // Using RegisterAdmin per plan to enforce non-customer type.
+                var authResult = _authService.RegisterAdmin(userForRegisterDto);
+                if (!authResult.Success)
+                {
+                    return new ErrorResult(authResult.Message);
+                }
 
-            var userId = authResult.Data.Id;
+                var userId = authResult.Data.Id;
 
-            try
-            {
                 // 4. Assign base Claim
                 _userOperationClaimService.Add(new UserOperationClaim
                 {
@@ -91,13 +94,8 @@ namespace Business.Concrete
                     OperationClaimId = claimId
                 });
 
+                transactionScope.Complete();
                 return new SuccessResult("Location Manager successfully created and assigned.");
-            }
-            catch (Exception ex)
-            {
-                // If claim assignments fail after user creation, we need to rollback the user.
-                _userService.Delete(authResult.Data);
-                return new ErrorResult("Failed to assign manager roles. Registration reverted. Error: " + ex.Message);
             }
         }
 
@@ -121,17 +119,21 @@ namespace Business.Concrete
                     var user = userCheck.Data;
                     var locCheck = _locationService.GetById(role.LocationId);
                     
-                    dtos.Add(new LocationManagerDto
-                    {
-                        UserId = user.Id,
-                        FirstName = user.FirstName,
-                        LastName = user.LastName,
-                        Email = user.Email,
-                        PhoneNumber = user.PhoneNumber,
-                        LocationId = role.LocationId,
-                        LocationName = (locCheck.Success && locCheck.Data != null) ? locCheck.Data.LocationName : "Unknown",
-                        LocationUserRoleId = role.Id
-                    });
+                    // Cross context fetch for admin names
+                    using (var context = new RentACarContext()) {
+                        var customer = context.IndividualCustomers.FirstOrDefault(c => c.Id == user.CustomerId);
+                        dtos.Add(new LocationManagerDto
+                        {
+                            UserId = user.Id,
+                            FirstName = customer != null ? customer.FirstName : "Admin",
+                            LastName = customer != null ? customer.LastName : "User",
+                            Email = user.Email,
+                            PhoneNumber = customer != null ? customer.PhoneNumber : "",
+                            LocationId = role.LocationId,
+                            LocationName = (locCheck.Success && locCheck.Data != null) ? locCheck.Data.LocationName : "Unknown",
+                            LocationUserRoleId = role.Id
+                        });
+                    }
                 }
             }
 
@@ -146,26 +148,31 @@ namespace Business.Concrete
                 return new ErrorResult("User is not managing this location.");
             }
 
-            _locationUserRoleService.Delete(roleResult.Data);
-
-            // Check if user has other locations to manage
-            var remainingRoles = _locationUserRoleService.GetByUserId(userId);
-            if (remainingRoles.Success && remainingRoles.Data.Count == 0)
+            using (var transactionScope = new TransactionScope())
             {
-                // If 0, revoke global claim
-                var globalClaims = _userOperationClaimService.GetByUserId(userId);
-                if (globalClaims.Success)
+                _locationUserRoleService.Delete(roleResult.Data);
+
+                // Check if user has other locations to manage
+                var remainingRoles = _locationUserRoleService.GetByUserId(userId);
+                if (remainingRoles.Success && remainingRoles.Data.Count == 0)
                 {
-                    var claimResult = _operationClaimService.GetByName("locationmanager");
-                    if (claimResult.Success && claimResult.Data != null)
+                    // If 0, revoke global claim
+                    var globalClaims = _userOperationClaimService.GetByUserId(userId);
+                    if (globalClaims.Success)
                     {
-                        var managerClaim = globalClaims.Data.FirstOrDefault(c => c.OperationClaimId == claimResult.Data.Id);
-                        if (managerClaim != null)
+                        var claimResult = _operationClaimService.GetByName("locationmanager");
+                        if (claimResult.Success && claimResult.Data != null)
                         {
-                            _userOperationClaimService.Delete(managerClaim);
+                            var managerClaim = globalClaims.Data.FirstOrDefault(c => c.OperationClaimId == claimResult.Data.Id);
+                            if (managerClaim != null)
+                            {
+                                _userOperationClaimService.Delete(managerClaim);
+                            }
                         }
                     }
                 }
+                
+                transactionScope.Complete();
             }
             return new SuccessResult("Location Manager privilege revoked.");
         }
@@ -178,26 +185,23 @@ namespace Business.Concrete
                  return new ErrorResult("User not found.");
              }
 
-             // Update Profile
-             var user = userCheck.Data;
-             user.FirstName = dto.FirstName;
-             user.LastName = dto.LastName;
-             user.Email = dto.Email;
-             user.PhoneNumber = dto.PhoneNumber;
-             _userService.UpdateUserNames(user);
-
              if (dto.OldLocationId != dto.NewLocationId)
              {
-                 var roleResult = _locationUserRoleService.GetByUserAndLocation(dto.UserId, dto.OldLocationId);
-                 if (roleResult.Success && roleResult.Data != null)
+                 using (var transactionScope = new TransactionScope())
                  {
-                     var role = roleResult.Data;
-                     role.LocationId = dto.NewLocationId;
-                     _locationUserRoleService.Update(role);
-                 }
-                 else 
-                 {
-                      return new ErrorResult("User was not mapped to the specified old location.");
+                     var roleResult = _locationUserRoleService.GetByUserAndLocation(dto.UserId, dto.OldLocationId);
+                     if (roleResult.Success && roleResult.Data != null)
+                     {
+                         var role = roleResult.Data;
+                         role.LocationId = dto.NewLocationId;
+                         _locationUserRoleService.Update(role);
+                     }
+                     else 
+                     {
+                          return new ErrorResult("User was not mapped to the specified old location.");
+                     }
+
+                     transactionScope.Complete();
                  }
              }
 

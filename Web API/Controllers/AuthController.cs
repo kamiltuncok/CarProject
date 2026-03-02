@@ -38,8 +38,15 @@ namespace Web_API.Controllers
             return BadRequest(result.Message);
         }
 
+        [HttpPost("loginforcorporate")]
+        public ActionResult LoginForCorporateUser(UserForLoginDto userForLoginDto)
+        {
+            // Corporate login is now exactly the same as Individual login (polymorphic JWT generation)
+            return Login(userForLoginDto);
+        }
+
         [HttpPost("register")]
-        public ActionResult Register(UserForRegisterDto userForRegisterDto)
+        public ActionResult Register(IndividualRegisterDto userForRegisterDto)
         {
             var userExists = _authService.UserExists(userForRegisterDto.Email);
             if (!userExists.Success)
@@ -47,7 +54,36 @@ namespace Web_API.Controllers
                 return BadRequest(userExists.Message);
             }
 
-            var registerResult = _authService.Register(userForRegisterDto, userForRegisterDto.Password);
+            var registerResult = _authService.RegisterIndividual(userForRegisterDto);
+            if (!registerResult.Success)
+            {
+                return BadRequest(registerResult.Message);
+            }
+
+            var result = _authService.CreateAccessToken(registerResult.Data);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
+        }
+
+        [HttpPost("registerforcorporate")]
+        public ActionResult RegisterForCorporate(CorporateRegisterDto userForRegisterDto)
+        {
+            var userExists = _authService.UserExists(userForRegisterDto.Email);
+            if (!userExists.Success)
+            {
+                return BadRequest(userExists.Message);
+            }
+
+            var registerResult = _authService.RegisterCorporate(userForRegisterDto);
+            if (!registerResult.Success)
+            {
+                return BadRequest(registerResult.Message);
+            }
+
             var result = _authService.CreateAccessToken(registerResult.Data);
             if (result.Success)
             {
@@ -58,7 +94,7 @@ namespace Web_API.Controllers
         }
 
         [HttpPost("registeradmin")]
-        public ActionResult RegisterAdmin(UserForRegisterDto userForRegisterDto)
+        public ActionResult RegisterAdmin(IndividualRegisterDto userForRegisterDto)
         {
             var userExists = _authService.UserExists(userForRegisterDto.Email);
             if (!userExists.Success)
@@ -66,7 +102,7 @@ namespace Web_API.Controllers
                 return BadRequest(userExists.Message);
             }
 
-            var registerResult = _authService.RegisterAdmin(userForRegisterDto, userForRegisterDto.Password);
+            var registerResult = _authService.RegisterAdmin(userForRegisterDto);
             if (!registerResult.Success)
             {
                 return BadRequest(registerResult.Message);
@@ -85,55 +121,6 @@ namespace Web_API.Controllers
         public ActionResult UpdatePassword(UserForPasswordDto userForPasswordDto)
         {
             var result = _authService.UpdatePassword(userForPasswordDto, userForPasswordDto.NewPassword);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result.Message);
-        }
-
-        [HttpPost("loginforcorporate")]
-        public ActionResult LoginForCorporateUser(UserForLoginDto userForLoginDto)
-        {
-            var userToLogin = _authService.LoginForCorporateUser(userForLoginDto);
-            if (!userToLogin.Success)
-            {
-                return BadRequest(userToLogin.Message);
-            }
-
-            var result = _authService.CreateAccessTokenForCorporate(userToLogin.Data);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result.Message);
-        }
-
-        [HttpPost("registerforcorporate")]
-        public ActionResult Register(CorporateUserForRegisterDto userForRegisterDto)
-        {
-            var userExists = _authService.CorporateUserExists(userForRegisterDto.Email);
-            if (!userExists.Success)
-            {
-                return BadRequest(userExists.Message);
-            }
-
-            var registerResult = _authService.RegisterForCorporate(userForRegisterDto, userForRegisterDto.Password);
-            var result = _authService.CreateAccessTokenForCorporate(registerResult.Data);
-            if (result.Success)
-            {
-                return Ok(result.Data);
-            }
-
-            return BadRequest(result.Message);
-        }
-
-        [HttpPost("updatepasswordforcorporate")]
-        public ActionResult UpdatePasswordForCorporate(UserForPasswordDto userForPasswordDto)
-        {
-            var result = _authService.UpdateCorporatePassword(userForPasswordDto, userForPasswordDto.NewPassword);
             if (result.Success)
             {
                 return Ok(result);

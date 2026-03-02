@@ -1,0 +1,22 @@
+﻿MSBuild version 17.6.1+8ffc3fe3d for .NET
+  Geri y├╝klenecek projeler belirleniyor...
+  Geri y├╝kleme i├ğin t├╝m projeler g├╝ncel.
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Extensions\ValidationErrorDetails.cs(10,47): warning CS0108: 'ValidationErrorDetails.Errors', 'ErrorDetails.Errors' devral─▒nan ├╝yesini gizler. Gizleme isteniyorsa yeni anahtar s├Âzc├╝k kullan─▒n. [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Core.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Utilities\Security\JWT\ITokenHelper.cs(10,94): error CS0246: 'Claim' t├╝r├╝ veya ad alan─▒ ad─▒ bulunamad─▒ (bir using y├Ânergeniz veya derleme ba┼şvurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Core.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Utilities\Security\JWT\JwtHelper.cs(73,52): error CS0246: 'CorporateUser' t├╝r├╝ veya ad alan─▒ ad─▒ bulunamad─▒ (bir using y├Ânergeniz veya derleme ba┼şvurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Core.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Utilities\Security\JWT\JwtHelper.cs(89,95): error CS0246: 'CorporateUser' t├╝r├╝ veya ad alan─▒ ad─▒ bulunamad─▒ (bir using y├Ânergeniz veya derleme ba┼şvurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Core.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Utilities\Security\JWT\JwtHelper.cs(103,58): error CS0246: 'CorporateUser' t├╝r├╝ veya ad alan─▒ ad─▒ bulunamad─▒ (bir using y├Ânergeniz veya derleme ba┼şvurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Core.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Utilities\Security\JWT\JwtHelper.cs(15,30): error CS0535: 'JwtHelper', 'ITokenHelper.CreateToken(User, List<OperationClaim>, IEnumerable<Claim>)' arabirim ├╝yesini uygulamaz [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Core.csproj]
+
+Olu┼şturma BA┼ŞARISIZ OLDU.
+
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Extensions\ValidationErrorDetails.cs(10,47): warning CS0108: 'ValidationErrorDetails.Errors', 'ErrorDetails.Errors' devral─▒nan ├╝yesini gizler. Gizleme isteniyorsa yeni anahtar s├Âzc├╝k kullan─▒n. [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Core.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Utilities\Security\JWT\ITokenHelper.cs(10,94): error CS0246: 'Claim' t├╝r├╝ veya ad alan─▒ ad─▒ bulunamad─▒ (bir using y├Ânergeniz veya derleme ba┼şvurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Core.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Utilities\Security\JWT\JwtHelper.cs(73,52): error CS0246: 'CorporateUser' t├╝r├╝ veya ad alan─▒ ad─▒ bulunamad─▒ (bir using y├Ânergeniz veya derleme ba┼şvurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Core.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Utilities\Security\JWT\JwtHelper.cs(89,95): error CS0246: 'CorporateUser' t├╝r├╝ veya ad alan─▒ ad─▒ bulunamad─▒ (bir using y├Ânergeniz veya derleme ba┼şvurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Core.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Utilities\Security\JWT\JwtHelper.cs(103,58): error CS0246: 'CorporateUser' t├╝r├╝ veya ad alan─▒ ad─▒ bulunamad─▒ (bir using y├Ânergeniz veya derleme ba┼şvurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Core.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Utilities\Security\JWT\JwtHelper.cs(15,30): error CS0535: 'JwtHelper', 'ITokenHelper.CreateToken(User, List<OperationClaim>, IEnumerable<Claim>)' arabirim ├╝yesini uygulamaz [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\Core.csproj]
+    1 Uyar─▒
+    5 Hata
+
+Ge├ğen S├╝re 00:00:00.95

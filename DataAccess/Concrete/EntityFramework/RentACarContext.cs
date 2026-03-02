@@ -103,18 +103,14 @@ namespace DataAccess.Concrete.EntityFramework
             {
                 e.ToTable("Customers");
                 e.HasKey(c => c.Id);
-                e.HasIndex(c => c.Email).IsUnique();
-                e.Property(c => c.Email).HasMaxLength(200).IsRequired();
                 e.Property(c => c.PhoneNumber).HasMaxLength(20);
-                e.Property(c => c.IdentityNumber).HasMaxLength(11);
                 e.Property(c => c.CreatedDate).IsRequired();
 
-                // Nullable FK to User — null means guest customer
-                e.HasOne<User>()
-                    .WithMany()
-                    .HasForeignKey(c => c.UserId)
-                    .IsRequired(false)
-                    .OnDelete(DeleteBehavior.SetNull);
+                // Customer -> Users (1-to-N Auth relationship)
+                e.HasMany(c => c.Users)
+                    .WithOne() // User doesn't contain reference to Customer struct avoiding cyclic ref
+                    .HasForeignKey(u => u.CustomerId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             // ─── IndividualCustomer (Derived TPT) ─────────────────────────────────
@@ -124,6 +120,7 @@ namespace DataAccess.Concrete.EntityFramework
                 // EF Core uses the base Id as PK automatically for TPT
                 e.Property(ic => ic.FirstName).HasMaxLength(150).IsRequired();
                 e.Property(ic => ic.LastName).HasMaxLength(150).IsRequired();
+                e.Property(ic => ic.IdentityNumber).HasMaxLength(11);
             });
 
             // ─── CorporateCustomer (Derived TPT) ──────────────────────────────────
