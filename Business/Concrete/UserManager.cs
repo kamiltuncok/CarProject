@@ -1,4 +1,4 @@
-﻿using Business.Abstract;
+using Business.Abstract;
 using Business.Constants;
 using Core.Entities.Concrete;
 using Core.Utilities.Results;
@@ -6,6 +6,7 @@ using DataAccess.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
@@ -71,5 +72,57 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(_userDal.Get(u => u.Id == userId));
         }
 
+        public async Task<List<OperationClaim>> GetClaimsAsync(User user)
+        {
+            return await _userDal.GetClaimsAsync(user);
+        }
+
+        public async Task AddAsync(User user)
+        {
+            await _userDal.AddAsync(user);
+        }
+
+        public async Task<IResult> UpdateAsync(User user)
+        {
+            await _userDal.UpdateAsync(user);
+            return new SuccessResult(Messages.UserUpdated);
+        }
+
+        public async Task<IResult> UpdateUserNamesAsync(User user)
+        {
+            return new SuccessResult(Messages.UserUpdated);
+        }
+
+        public async Task<IResult> DeleteAsync(User user)
+        {
+            await _userDal.DeleteAsync(user);
+            return new SuccessResult(Messages.UserDeleted);
+        }
+
+        public async Task<User> GetByMailAsync(string email)
+        {
+            return await _userDal.GetAsync(u => u.Email == email);
+        }
+
+        public async Task<List<User>> GetAllAsync()
+        {
+            return await _userDal.GetAllAsync();
+        }
+
+        public async Task<IDataResult<User>> GetByEmailWithResultAsync(string email)
+        {
+            var result = await GetByMailAsync(email);
+            if (result == null)
+            {
+                return new ErrorDataResult<User>(Messages.UserNotFound);
+            }
+            return new SuccessDataResult<User>(result);
+        }
+
+        public async Task<IDataResult<User>> GetByIdAsync(int userId)
+        {
+            return new SuccessDataResult<User>(await _userDal.GetAsync(u => u.Id == userId));
+        }
     }
 }
+

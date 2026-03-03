@@ -1,0 +1,67 @@
+MSBuild version 17.6.1+8ffc3fe3d for .NET
+  Geri y??klenecek projeler belirleniyor...
+  Geri y??kleme i??in t??m projeler g??ncel.
+  Core -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\bin\Debug\net7.0\Core.dll
+  Entities -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Entities\bin\Debug\net7.0\Entities.dll
+  DataAccess -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\bin\Debug\net7.0\DataAccess.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\GearManager.cs(56,84): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\ColorManager.cs(57,95): error CS0117: 'Messages' bir 'ColorListed' tan??m?? i??ermiyor [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\FuelManager.cs(57,84): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\GearManager.cs(68,38): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\GearManager.cs(74,38): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\FuelManager.cs(69,38): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\FuelManager.cs(75,38): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\GearManager.cs(84,38): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\SegmentManager.cs(56,90): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\SegmentManager.cs(68,38): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\FuelManager.cs(85,38): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\SegmentManager.cs(74,38): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\SegmentManager.cs(84,38): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationCityManager.cs(54,68): error CS0103: '_locationcityDal' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationCityManager.cs(54,100): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationManager.cs(67,101): error CS0117: 'Messages' bir 'LocationListed' tan??m?? i??ermiyor [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationManager.cs(79,47): error CS0117: 'Messages' bir 'LocationAdded' tan??m?? i??ermiyor [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationManager.cs(85,47): error CS0117: 'Messages' bir 'LocationUpdated' tan??m?? i??ermiyor [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationManager.cs(95,47): error CS0117: 'Messages' bir 'LocationDeleted' tan??m?? i??ermiyor [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationCityManager.cs(59,62): error CS0103: '_locationcityDal' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationCityManager.cs(65,19): error CS0103: '_locationcityDal' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationCityManager.cs(66,38): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationCityManager.cs(71,19): error CS0103: '_locationcityDal' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationCityManager.cs(72,38): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationCityManager.cs(77,32): error CS0103: '_locationcityDal' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationCityManager.cs(80,23): error CS0103: '_locationcityDal' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationCityManager.cs(82,38): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+
+Olu??turma BA??ARISIZ OLDU.
+
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\GearManager.cs(56,84): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\ColorManager.cs(57,95): error CS0117: 'Messages' bir 'ColorListed' tan??m?? i??ermiyor [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\FuelManager.cs(57,84): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\GearManager.cs(68,38): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\GearManager.cs(74,38): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\FuelManager.cs(69,38): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\FuelManager.cs(75,38): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\GearManager.cs(84,38): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\SegmentManager.cs(56,90): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\SegmentManager.cs(68,38): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\FuelManager.cs(85,38): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\SegmentManager.cs(74,38): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\SegmentManager.cs(84,38): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationCityManager.cs(54,68): error CS0103: '_locationcityDal' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationCityManager.cs(54,100): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationManager.cs(67,101): error CS0117: 'Messages' bir 'LocationListed' tan??m?? i??ermiyor [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationManager.cs(79,47): error CS0117: 'Messages' bir 'LocationAdded' tan??m?? i??ermiyor [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationManager.cs(85,47): error CS0117: 'Messages' bir 'LocationUpdated' tan??m?? i??ermiyor [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationManager.cs(95,47): error CS0117: 'Messages' bir 'LocationDeleted' tan??m?? i??ermiyor [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationCityManager.cs(59,62): error CS0103: '_locationcityDal' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationCityManager.cs(65,19): error CS0103: '_locationcityDal' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationCityManager.cs(66,38): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationCityManager.cs(71,19): error CS0103: '_locationcityDal' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationCityManager.cs(72,38): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationCityManager.cs(77,32): error CS0103: '_locationcityDal' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationCityManager.cs(80,23): error CS0103: '_locationcityDal' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationCityManager.cs(82,38): error CS0103: 'Messages' ad?? ge??erli ba??lamda yok [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+    0 Uyar??
+    27 Hata
+
+Ge??en S??re 00:00:01.95

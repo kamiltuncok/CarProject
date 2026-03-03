@@ -1,9 +1,11 @@
-﻿using Business.Abstract;
+using Business.Constants;
+using Business.Abstract;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Text;
 
 namespace Business.Concrete
@@ -49,5 +51,39 @@ namespace Business.Concrete
             _gearDal.Update(entity);
             return new SuccessResult();
         }
+    
+        public async Task<IDataResult<List<Gear>>> GetAllAsync()
+        {
+            return new SuccessDataResult<List<Gear>>(await _gearDal.GetAllAsync(), Messages.GearListed);
+        }
+
+        public async Task<IDataResult<Gear>> GetByIdAsync(int id)
+        {
+            return new SuccessDataResult<Gear>(await _gearDal.GetAsync(e => e.GearId == id));
+        }
+
+        public async Task<IResult> AddAsync(Gear entity)
+        {
+            // Omit fluent validation here for brevity unless needed, or just call normal pipeline
+            await _gearDal.AddAsync(entity);
+            return new SuccessResult(Messages.GearAdded);
+        }
+
+        public async Task<IResult> UpdateAsync(Gear entity)
+        {
+            await _gearDal.UpdateAsync(entity);
+            return new SuccessResult(Messages.GearUpdated);
+        }
+
+        public async Task<IResult> DeleteAsync(int id)
+        {
+            var entity = await _gearDal.GetAsync(e => e.GearId == id);
+            if (entity != null)
+            {
+                await _gearDal.DeleteAsync(entity);
+            }
+            return new SuccessResult(Messages.GearDeleted);
+        }
     }
 }
+

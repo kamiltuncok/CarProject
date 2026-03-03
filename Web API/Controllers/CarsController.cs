@@ -24,185 +24,129 @@ namespace Web_API.Controllers
             _pricingService = pricingService;
         }
 
-        [HttpGet("getall")]
-        public IActionResult GetAll()
+        // GET api/cars
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            var result = _carService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = await _carService.GetAllAsync();
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
         
-        [HttpPost("add")]
-        public IActionResult Post(Car car)
+        // GET api/cars/5
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = _carService.Add(car);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-        [HttpGet("getbybrandid")]
-        public IActionResult GetByBrandId(int brandid)
-        {
-            var result = _carService.GetCarsByBrandId(brandid);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-        [HttpGet("getbycolorid")]
-        public IActionResult GetByColorId(int colorid)
-        {
-            var result = _carService.GetCarsByBrandId(colorid);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-        [HttpPost("update")]
-        public IActionResult Update(Car car)
-        {
-            var result = _carService.Update(car);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-        [HttpDelete("delete")]
-        public IActionResult Delete(Car car)
-        {
-            var result = _carService.Delete(car);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = await _carService.GetByIdAsync(id);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
-        [HttpPost("transaction")]
-        public IActionResult TransactionTest(Car car)
+        // POST api/cars
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] CarCreateDto carDto)
         {
-            var result = _carService.AddTransactionalTest(car);
-            if (result.Success)
-            {
-                return Ok(result.Message);
-            }
-
-            return BadRequest(result.Message);
-        }
-        [HttpGet("getcardetails")]
-        public IActionResult GetCarDetails()
-        {
-            var result = _carService.GetCarDetails();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-        [HttpGet("getbybrands")]
-        public IActionResult GetByBrands(int brandId)
-        {
-            var result = _carService.GetCarDetailsByBrandId(brandId);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-        }
-        [HttpGet("getbycolors")]
-        public IActionResult GetByColors(int colorId)
-        {
-            var result = _carService.GetCarDetailsByColorId(colorId);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
+            var result = await _carService.AddAsync(carDto);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
-        [HttpGet("getbycarid")]
-        public IActionResult GetByCarId(int carId)
+        // PUT api/cars/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] CarUpdateDto carDto)
         {
-            var result = _carService.GetCarDetailsById(carId);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
+            carDto.Id = id; // Ensure ID matches URL
+            var result = await _carService.UpdateAsync(carDto);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
-        [HttpGet("getbyid")]
-        public IActionResult Get(int id)
+        // DELETE api/cars/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            var result = _carService.GetById(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = await _carService.DeleteAsync(id);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
+        // --- Detail Projection Endpoints ---
+        
+        // GET api/cars/details
+        [HttpGet("details")]
+        public async Task<IActionResult> GetCarDetails()
+        {
+            var result = await _carService.GetCarDetailDtosAsync();
+            if (result.Success) return Ok(result);
+            return BadRequest(result);
+        }
+
+        // GET api/cars/details/5
+        [HttpGet("details/{id}")]
+        public async Task<IActionResult> GetCarDetailsById(int id)
+        {
+            var result = await _carService.GetCarDetailsByIdAsync(id);
+            if (result.Success) return Ok(result);
+            return BadRequest(result);
+        }
+
+        // GET api/cars/brand/5
+        [HttpGet("brand/{brandId}")]
+        public async Task<IActionResult> GetByBrands(int brandId)
+        {
+            var result = await _carService.GetCarDetailsByBrandIdAsync(brandId);
+            if (result.Success) return Ok(result);
+            return BadRequest(result);
+        }
+
+        // GET api/cars/color/5
+        [HttpGet("color/{colorId}")]
+        public async Task<IActionResult> GetByColors(int colorId)
+        {
+            var result = await _carService.GetCarDetailsByColorIdAsync(colorId);
+            if (result.Success) return Ok(result);
+            return BadRequest(result);
+        }
+
+        // POST api/cars/available
         [HttpPost("available")]
-        public IActionResult GetAvailableCars([FromBody] CarAvailabilityFilterDto filter)
+        public async Task<IActionResult> GetAvailableCars([FromBody] CarAvailabilityFilterDto filter)
         {
-            var result = _carService.GetAvailableCars(filter);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = await _carService.GetAvailableCarsAsync(filter);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
+        // --- Pricing Endpoints ---
 
-        [HttpGet("getrecommendedprice")]
+        // GET api/cars/5/recommended-price
+        [HttpGet("{carId}/recommended-price")]
         public async Task<IActionResult> GetRecommendedPrice(int carId)
         {
             try
             {
                 var action = await _pricingService.GetRecommendedActionAsync(carId);
-                return Ok(new
-                {
-                    CarId = carId,
-                    RecommendedAction = action
-                });
+                return Ok(new { CarId = carId, RecommendedAction = action });
             }
             catch (Exception ex)
             {
-                // Detaylı hatayı JSON olarak döndür
-                return StatusCode(500, new
-                {
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return StatusCode(500, new { Message = ex.Message, StackTrace = ex.StackTrace });
             }
         }
 
-
-        [HttpPost("updateprice")]
+        // POST api/cars/5/update-price
+        [HttpPost("{carId}/update-price")]
         public async Task<IActionResult> UpdatePrice(int carId)
         {
             string action = await _pricingService.GetRecommendedActionAsync(carId);
-            var result = _carService.UpdatePriceByAction(carId, action);
+            var result = await _carService.UpdatePriceByActionAsync(carId, action);
 
-            if (result.Success)
-                return Ok(new { CarId = carId, NewPrice = result.Data, Action = action });
-
+            if (result.Success) return Ok(new { CarId = carId, NewPrice = result.Data, Action = action });
             return BadRequest(result.Message);
         }
 
-
-        [HttpPost("update-prices")]
+        // POST api/cars/update-prices-batch
+        [HttpPost("update-prices-batch")]
         public async Task<IActionResult> UpdateAllPrices()
         {
             try
@@ -216,20 +160,13 @@ namespace Web_API.Controllers
             }
         }
 
-
-        [HttpGet("getlowestpricebysegment")]
-        public IActionResult GetLowestPriceBySegment(int segmentId)
+        // GET api/cars/segment/5/lowest-price
+        [HttpGet("segment/{segmentId}/lowest-price")]
+        public async Task<IActionResult> GetLowestPriceBySegment(int segmentId, [FromQuery] bool isRented = false)
         {
-            var result = _carService.GetLowestPriceBySegmentId(segmentId, false);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = await _carService.GetLowestPriceBySegmentIdAsync(segmentId, isRented);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
-
-
-
-
     }
 }

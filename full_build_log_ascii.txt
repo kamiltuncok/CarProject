@@ -1,0 +1,11 @@
+MSBuild version 17.6.1+8ffc3fe3d for .NET
+  Geri y??klenecek projeler belirleniyor...
+  Geri y??kleme i??in t??m projeler g??ncel.
+  Core -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\bin\Debug\net7.0\Core.dll
+  Entities -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Entities\bin\Debug\net7.0\Entities.dll
+  DataAccess -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\bin\Debug\net7.0\DataAccess.dll
+  Business -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\bin\Debug\net7.0\Business.dll
+  ConsoleUI -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\ConsoleUI\bin\Debug\net7.0\ConsoleUI.dll
+C:\Program Files\dotnet\sdk\7.0.302\Microsoft.Common.CurrentVersion.targets(4862,5): warning MSB3026: "C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\bin\Debug\net7.0\DataAccess.dll", "bin\Debug\net7.0\DataAccess.dll" ??zerine kopyalanamad??. 1 numaral?? yeniden denemeye 1000 ms i??inde ba??lanacak. The process cannot access the file 'C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\net7.0\DataAccess.dll' because it is being used by another process. Dosya ??unun taraf??ndan kilitlendi: "Microsoft Visual Studio 2022 (18216), IIS Express Worker Process (20432)" [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\Web API.csproj]
+C:\Program Files\dotnet\sdk\7.0.302\Microsoft.Common.CurrentVersion.targets(4862,5): warning MSB3026: "C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\bin\Debug\net7.0\Business.dll", "bin\Debug\net7.0\Business.dll" ??zerine kopyalanamad??. 1 numaral?? yeniden denemeye 1000 ms i??inde ba??lanacak. The process cannot access the file 'C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\net7.0\Business.dll' because it is being used by another process. Dosya ??unun taraf??ndan kilitlendi: "Microsoft Visual Studio 2022 (18216), IIS Express Worker Process (20432)" [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\Web API.csproj]
+Olu??turma iptal edilmeye ??al??????l??yor...

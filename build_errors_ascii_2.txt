@@ -1,0 +1,11 @@
+MSBuild version 17.6.1+8ffc3fe3d for .NET
+C:\Program Files\dotnet\sdk\7.0.302\Microsoft.Common.CurrentVersion.targets(4862,5): error MSB3027: Could not copy "C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\bin\Debug\net7.0\Business.dll" to "bin\Debug\net7.0\Business.dll". Exceeded retry count of 10. Failed. The file is locked by: "Microsoft Visual Studio 2022 (18216), IIS Express Worker Process (20432)" [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\Web API.csproj]
+C:\Program Files\dotnet\sdk\7.0.302\Microsoft.Common.CurrentVersion.targets(4862,5): error MSB3021: Unable to copy file "C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\bin\Debug\net7.0\Business.dll" to "bin\Debug\net7.0\Business.dll". The process cannot access the file 'C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\net7.0\Business.dll' because it is being used by another process. [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\Web API.csproj]
+C:\Program Files\dotnet\sdk\7.0.302\Microsoft.Common.CurrentVersion.targets(4862,5): error MSB3027: Could not copy "C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\bin\Debug\net7.0\DataAccess.dll" to "bin\Debug\net7.0\DataAccess.dll". Exceeded retry count of 10. Failed. The file is locked by: "Microsoft Visual Studio 2022 (18216), IIS Express Worker Process (20432)" [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\Web API.csproj]
+C:\Program Files\dotnet\sdk\7.0.302\Microsoft.Common.CurrentVersion.targets(4862,5): error MSB3021: Unable to copy file "C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\bin\Debug\net7.0\DataAccess.dll" to "bin\Debug\net7.0\DataAccess.dll". The process cannot access the file 'C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\net7.0\DataAccess.dll' because it is being used by another process. [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\Web API.csproj]
+
+Build FAILED.
+    20 Warning(s)
+    4 Error(s)
+
+Time Elapsed 00:00:13.81

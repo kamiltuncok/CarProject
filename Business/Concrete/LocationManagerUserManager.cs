@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
+using System.Threading.Tasks;
 using DataAccess.Concrete.EntityFramework;
 
 namespace Business.Concrete
@@ -206,6 +207,26 @@ namespace Business.Concrete
              }
 
              return new SuccessResult("Location Manager updated.");
+        }
+
+        public async Task<IResult> AddLocationManagerAsync(LocationManagerAddDto dto)
+        {
+            return await Task.Run(() => AddLocationManager(dto));
+        }
+
+        public async Task<IDataResult<List<LocationManagerDto>>> GetLocationManagersAsync()
+        {
+            return await Task.Run(() => GetLocationManagers());
+        }
+
+        public async Task<IResult> RevokeLocationManagerAsync(int userId, int locationId)
+        {
+            return await Task.Run(() => RevokeLocationManager(userId, locationId));
+        }
+
+        public async Task<IResult> UpdateLocationManagerAsync(LocationManagerUpdateDto dto)
+        {
+             return await Task.Run(() => UpdateLocationManager(dto));
         }
     }
 }

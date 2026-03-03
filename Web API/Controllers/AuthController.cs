@@ -1,4 +1,4 @@
-﻿using Business.Abstract;
+using Business.Abstract;
 using Entities.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,15 +21,15 @@ namespace Web_API.Controllers
         }
 
         [HttpPost("login")]
-        public ActionResult Login(UserForLoginDto userForLoginDto)
+        public async Task<ActionResult> Login(UserForLoginDto userForLoginDto)
         {
-            var userToLogin = _authService.Login(userForLoginDto);
+            var userToLogin = await _authService.LoginAsync(userForLoginDto);
             if (!userToLogin.Success)
             {
                 return BadRequest(userToLogin.Message);
             }
 
-            var result = _authService.CreateAccessToken(userToLogin.Data);
+            var result = await _authService.CreateAccessTokenAsync(userToLogin.Data);
             if (result.Success)
             {
                 return Ok(result);
@@ -39,28 +39,28 @@ namespace Web_API.Controllers
         }
 
         [HttpPost("loginforcorporate")]
-        public ActionResult LoginForCorporateUser(UserForLoginDto userForLoginDto)
+        public async Task<ActionResult> LoginForCorporateUser(UserForLoginDto userForLoginDto)
         {
             // Corporate login is now exactly the same as Individual login (polymorphic JWT generation)
-            return Login(userForLoginDto);
+            return await Login(userForLoginDto);
         }
 
         [HttpPost("register")]
-        public ActionResult Register(IndividualRegisterDto userForRegisterDto)
+        public async Task<ActionResult> Register(IndividualRegisterDto userForRegisterDto)
         {
-            var userExists = _authService.UserExists(userForRegisterDto.Email);
+            var userExists = await _authService.UserExistsAsync(userForRegisterDto.Email);
             if (!userExists.Success)
             {
                 return BadRequest(userExists.Message);
             }
 
-            var registerResult = _authService.RegisterIndividual(userForRegisterDto);
+            var registerResult = await _authService.RegisterIndividualAsync(userForRegisterDto);
             if (!registerResult.Success)
             {
                 return BadRequest(registerResult.Message);
             }
 
-            var result = _authService.CreateAccessToken(registerResult.Data);
+            var result = await _authService.CreateAccessTokenAsync(registerResult.Data);
             if (result.Success)
             {
                 return Ok(result.Data);
@@ -70,21 +70,21 @@ namespace Web_API.Controllers
         }
 
         [HttpPost("registerforcorporate")]
-        public ActionResult RegisterForCorporate(CorporateRegisterDto userForRegisterDto)
+        public async Task<ActionResult> RegisterForCorporate(CorporateRegisterDto userForRegisterDto)
         {
-            var userExists = _authService.UserExists(userForRegisterDto.Email);
+            var userExists = await _authService.UserExistsAsync(userForRegisterDto.Email);
             if (!userExists.Success)
             {
                 return BadRequest(userExists.Message);
             }
 
-            var registerResult = _authService.RegisterCorporate(userForRegisterDto);
+            var registerResult = await _authService.RegisterCorporateAsync(userForRegisterDto);
             if (!registerResult.Success)
             {
                 return BadRequest(registerResult.Message);
             }
 
-            var result = _authService.CreateAccessToken(registerResult.Data);
+            var result = await _authService.CreateAccessTokenAsync(registerResult.Data);
             if (result.Success)
             {
                 return Ok(result.Data);
@@ -94,21 +94,21 @@ namespace Web_API.Controllers
         }
 
         [HttpPost("registeradmin")]
-        public ActionResult RegisterAdmin(IndividualRegisterDto userForRegisterDto)
+        public async Task<ActionResult> RegisterAdmin(IndividualRegisterDto userForRegisterDto)
         {
-            var userExists = _authService.UserExists(userForRegisterDto.Email);
+            var userExists = await _authService.UserExistsAsync(userForRegisterDto.Email);
             if (!userExists.Success)
             {
                 return BadRequest(userExists.Message);
             }
 
-            var registerResult = _authService.RegisterAdmin(userForRegisterDto);
+            var registerResult = await _authService.RegisterAdminAsync(userForRegisterDto);
             if (!registerResult.Success)
             {
                 return BadRequest(registerResult.Message);
             }
 
-            var result = _authService.CreateAccessToken(registerResult.Data);
+            var result = await _authService.CreateAccessTokenAsync(registerResult.Data);
             if (result.Success)
             {
                 return Ok(result.Data);
@@ -117,10 +117,10 @@ namespace Web_API.Controllers
             return BadRequest(result.Message);
         }
 
-        [HttpPost("updatepassword")]
-        public ActionResult UpdatePassword(UserForPasswordDto userForPasswordDto)
+        [HttpPut("password")]
+        public async Task<ActionResult> UpdatePassword(UserForPasswordDto userForPasswordDto)
         {
-            var result = _authService.UpdatePassword(userForPasswordDto, userForPasswordDto.NewPassword);
+            var result = await _authService.UpdatePasswordAsync(userForPasswordDto, userForPasswordDto.NewPassword);
             if (result.Success)
             {
                 return Ok(result);
@@ -130,3 +130,4 @@ namespace Web_API.Controllers
         }
     }
 }
+

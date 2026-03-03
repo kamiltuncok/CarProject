@@ -1,0 +1,24 @@
+MSBuild version 17.6.1+8ffc3fe3d for .NET
+  Geri y??klenecek projeler belirleniyor...
+  Geri y??kleme i??in t??m projeler g??ncel.
+  Core -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\bin\Debug\net7.0\Core.dll
+  Entities -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Entities\bin\Debug\net7.0\Entities.dll
+  DataAccess -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\bin\Debug\net7.0\DataAccess.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\UserManager.cs(91,36): warning CS1998: Bu zaman uyumsuz y??ntemde 'await' i??le??leri yok ve zaman uyumlu ??al????acak. 'await' i??lecini kullanarak engelleyici olmayan API ??a??r??lar??n?? beklemeyi veya 'await Task.Run(...)' kullanarak bir arka plan i?? par??ac??????nda CPU ba??lant??l?? i?? yapmay?? d??????n??n. [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+  Business -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\bin\Debug\net7.0\Business.dll
+  ConsoleUI -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\ConsoleUI\bin\Debug\net7.0\ConsoleUI.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\Controllers\IndividualCustomersController.cs(9,7): warning CS0105: 'System.Threading.Tasks' i??in using y??nergesi bu ad alan??nda daha ??nce g??r??nd?? [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\Web API.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\Controllers\CorporateCustomersController.cs(21,42): warning CS1998: Bu zaman uyumsuz y??ntemde 'await' i??le??leri yok ve zaman uyumlu ??al????acak. 'await' i??lecini kullanarak engelleyici olmayan API ??a??r??lar??n?? beklemeyi veya 'await Task.Run(...)' kullanarak bir arka plan i?? par??ac??????nda CPU ba??lant??l?? i?? yapmay?? d??????n??n. [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\Web API.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\Controllers\IndividualCustomersController.cs(25,42): warning CS1998: Bu zaman uyumsuz y??ntemde 'await' i??le??leri yok ve zaman uyumlu ??al????acak. 'await' i??lecini kullanarak engelleyici olmayan API ??a??r??lar??n?? beklemeyi veya 'await Task.Run(...)' kullanarak bir arka plan i?? par??ac??????nda CPU ba??lant??l?? i?? yapmay?? d??????n??n. [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\Web API.csproj]
+  Web API -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\net7.0\Web API.dll
+
+Olu??turma ba??ar??l?? oldu.
+
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\UserManager.cs(91,36): warning CS1998: Bu zaman uyumsuz y??ntemde 'await' i??le??leri yok ve zaman uyumlu ??al????acak. 'await' i??lecini kullanarak engelleyici olmayan API ??a??r??lar??n?? beklemeyi veya 'await Task.Run(...)' kullanarak bir arka plan i?? par??ac??????nda CPU ba??lant??l?? i?? yapmay?? d??????n??n. [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\Controllers\IndividualCustomersController.cs(9,7): warning CS0105: 'System.Threading.Tasks' i??in using y??nergesi bu ad alan??nda daha ??nce g??r??nd?? [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\Web API.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\Controllers\CorporateCustomersController.cs(21,42): warning CS1998: Bu zaman uyumsuz y??ntemde 'await' i??le??leri yok ve zaman uyumlu ??al????acak. 'await' i??lecini kullanarak engelleyici olmayan API ??a??r??lar??n?? beklemeyi veya 'await Task.Run(...)' kullanarak bir arka plan i?? par??ac??????nda CPU ba??lant??l?? i?? yapmay?? d??????n??n. [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\Web API.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\Controllers\IndividualCustomersController.cs(25,42): warning CS1998: Bu zaman uyumsuz y??ntemde 'await' i??le??leri yok ve zaman uyumlu ??al????acak. 'await' i??lecini kullanarak engelleyici olmayan API ??a??r??lar??n?? beklemeyi veya 'await Task.Run(...)' kullanarak bir arka plan i?? par??ac??????nda CPU ba??lant??l?? i?? yapmay?? d??????n??n. [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\Web API.csproj]
+    4 Uyar??
+    0 Hata
+
+Ge??en S??re 00:00:03.26

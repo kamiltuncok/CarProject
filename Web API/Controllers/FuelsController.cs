@@ -1,7 +1,7 @@
-﻿using Business.Abstract;
+using Business.Abstract;
 using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Web_API.Controllers
 {
@@ -9,61 +9,51 @@ namespace Web_API.Controllers
     [ApiController]
     public class FuelsController : ControllerBase
     {
-        IFuelService _fuelService;
+        private readonly IFuelService _service;
 
-        public FuelsController(IFuelService fuelService)
+        public FuelsController(IFuelService service)
         {
-            _fuelService = fuelService;
+            _service = service;
         }
 
-        [HttpGet("getall")]
-        public IActionResult GetAll()
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            var result = _fuelService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = await _service.GetAllAsync();
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
-        [HttpGet("getbyid")]
-        public IActionResult GetById(int fuelId)
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = _fuelService.GetById(fuelId);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = await _service.GetByIdAsync(id);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
-        [HttpPost("update")]
-        public IActionResult Update(Fuel fuel)
+
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] Fuel entity)
         {
-            var result = _fuelService.Update(fuel);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = await _service.AddAsync(entity);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
-        [HttpDelete("delete")]
-        public IActionResult Delete(Fuel fuel)
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] Fuel entity)
         {
-            var result = _fuelService.Delete(fuel);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            entity.FuelId = id;
+            var result = await _service.UpdateAsync(entity);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
-        [HttpPost("add")]
-        public IActionResult Post(Fuel fuel)
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            var result = _fuelService.Add(fuel);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = await _service.DeleteAsync(id);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
     }

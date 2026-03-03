@@ -3,6 +3,7 @@ using Core.Utilities.Results;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Text;
 
 namespace Business.Abstract
@@ -14,5 +15,12 @@ namespace Business.Abstract
         IResult Add(Brand brand);
         IResult Delete(Brand brand);
         IResult Update(Brand brand);
+    
+        Task<IDataResult<List<Brand>>> GetAllAsync();
+        Task<IDataResult<Brand>> GetByIdAsync(int id);
+        Task<IResult> AddAsync(Brand entity);
+        Task<IResult> UpdateAsync(Brand entity);
+        Task<IResult> DeleteAsync(int id);
     }
+
 }

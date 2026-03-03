@@ -5,6 +5,7 @@ using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
@@ -25,14 +26,25 @@ namespace Business.Abstract
         IDataResult<List<CarDetailDto>> GetCarDetailsByColorId(int colorId);
         IDataResult<CarDetailDto> GetCarDetailsById(int id);
         
-        // Single unified availability endpoint
-        IDataResult<List<CarDetailDto>> GetAvailableCars(CarAvailabilityFilterDto filter);
+        // Async unified availability endpoint
+        Task<IDataResult<List<CarDetailDto>>> GetAvailableCarsAsync(CarAvailabilityFilterDto filter);
 
-        void CarRented(int carId);
+        Task<IResult> CarRentedAsync(int carId);
 
-        IDataResult<decimal> UpdatePriceByAction(int carId, string action);
+        Task<IDataResult<decimal>> UpdatePriceByActionAsync(int carId, string action);
 
-        IDataResult<decimal> GetLowestPriceBySegmentId(int segmentId, bool isRented);
+        Task<IDataResult<decimal>> GetLowestPriceBySegmentIdAsync(int segmentId, bool isRented);
+        
+        // Async standard endpoints with DTO decoupling
+        Task<IDataResult<List<Car>>> GetAllAsync();
+        Task<IDataResult<List<CarDetailDto>>> GetCarDetailDtosAsync();
+        Task<IDataResult<List<CarDetailDto>>> GetCarDetailsByBrandIdAsync(int brandId);
+        Task<IDataResult<List<CarDetailDto>>> GetCarDetailsByColorIdAsync(int colorId);
+        Task<IDataResult<CarDetailDto>> GetCarDetailsByIdAsync(int id);
+        Task<IDataResult<List<Car>>> GetByIdAsync(int id);
+        Task<IResult> AddAsync(CarCreateDto carDto);
+        Task<IResult> UpdateAsync(CarUpdateDto carDto);
+        Task<IResult> DeleteAsync(int id);
     }
 
 }

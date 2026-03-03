@@ -1,10 +1,12 @@
-﻿using Core.DataAccess.EntityFramework;
+using Core.DataAccess.EntityFramework;
 using Core.Entities.Concrete;
 using DataAccess.Abstract;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace DataAccess.Concrete.EntityFramework
 {
@@ -20,7 +22,19 @@ namespace DataAccess.Concrete.EntityFramework
                              where userOperationClaim.UserId == user.Id
                              select new OperationClaim { Id = operationClaim.Id, Name = operationClaim.Name };
                 return result.ToList();
+            }
+        }
 
+        public async Task<List<OperationClaim>> GetClaimsAsync(User user)
+        {
+            using (var context = new RentACarContext())
+            {
+                var result = from operationClaim in context.OperationClaims
+                             join userOperationClaim in context.UserOperationClaims
+                                 on operationClaim.Id equals userOperationClaim.OperationClaimId
+                             where userOperationClaim.UserId == user.Id
+                             select new OperationClaim { Id = operationClaim.Id, Name = operationClaim.Name };
+                return await result.ToListAsync();
             }
         }
     }

@@ -3,6 +3,7 @@ using Core.Utilities.Results;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Text;
 
 namespace Business.Abstract
@@ -14,5 +15,12 @@ namespace Business.Abstract
         IResult Add(Color color);
         IResult Delete(Color color);
         IResult Update(Color color);
+    
+        Task<IDataResult<List<Color>>> GetAllAsync();
+        Task<IDataResult<Color>> GetByIdAsync(int id);
+        Task<IResult> AddAsync(Color entity);
+        Task<IResult> UpdateAsync(Color entity);
+        Task<IResult> DeleteAsync(int id);
     }
+
 }
