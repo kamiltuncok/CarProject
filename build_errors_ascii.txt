@@ -1,0 +1,13 @@
+MSBuild version 17.6.1+8ffc3fe3d for .NET
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationManager.cs(11,36): error CS0535: 'LocationManager' does not implement interface member 'IGenericService<Location>.GetAll()' [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationManager.cs(11,36): error CS0535: 'LocationManager' does not implement interface member 'IGenericService<Location>.GetListById(int)' [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationManager.cs(11,36): error CS0535: 'LocationManager' does not implement interface member 'IGenericService<Location>.GetById(int)' [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationManager.cs(11,36): error CS0535: 'LocationManager' does not implement interface member 'IGenericService<Location>.Add(Location)' [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationManager.cs(11,36): error CS0535: 'LocationManager' does not implement interface member 'IGenericService<Location>.Delete(Location)' [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationManager.cs(11,36): error CS0535: 'LocationManager' does not implement interface member 'IGenericService<Location>.Update(Location)' [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+
+Build FAILED.
+    0 Warning(s)
+    6 Error(s)
+
+Time Elapsed 00:00:01.22

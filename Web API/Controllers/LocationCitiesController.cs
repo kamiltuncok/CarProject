@@ -1,66 +1,59 @@
 using Business.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Web_API.Controllers
 {
-    /// <summary>
-    /// Exposes city lookup data.
-    /// GET /api/locationcities/getall  →  dropdown list for the frontend
-    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class LocationCitiesController : ControllerBase
     {
-        private readonly ILocationCityService _locationCityService;
+        private readonly ILocationCityService _service;
 
-        public LocationCitiesController(ILocationCityService locationCityService)
+        public LocationCitiesController(ILocationCityService service)
         {
-            _locationCityService = locationCityService;
+            _service = service;
         }
 
-        [HttpGet("getall")]
-        public IActionResult GetAll()
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            var result = _locationCityService.GetAll();
-            if (result.Success)
-                return Ok(result);
+            var result = await _service.GetAllAsync();
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
-        [HttpGet("getbyid")]
-        public IActionResult GetById(int id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = _locationCityService.GetById(id);
-            if (result.Success)
-                return Ok(result);
+            var result = await _service.GetByIdAsync(id);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
-        [HttpPost("add")]
-        public IActionResult Add(LocationCity locationCity)
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] LocationCity entity)
         {
-            var result = _locationCityService.Add(locationCity);
-            if (result.Success)
-                return Ok(result);
+            var result = await _service.AddAsync(entity);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
-        [HttpPost("update")]
-        public IActionResult Update(LocationCity locationCity)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] LocationCity entity)
         {
-            var result = _locationCityService.Update(locationCity);
-            if (result.Success)
-                return Ok(result);
+            entity.Id = id;
+            var result = await _service.UpdateAsync(entity);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
-        [HttpDelete("delete")]
-        public IActionResult Delete(LocationCity locationCity)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            var result = _locationCityService.Delete(locationCity);
-            if (result.Success)
-                return Ok(result);
+            var result = await _service.DeleteAsync(id);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
     }

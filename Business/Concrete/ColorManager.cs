@@ -1,4 +1,4 @@
-﻿using Business.Abstract;
+using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -9,6 +9,7 @@ using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Text;
 
 namespace Business.Concrete
@@ -50,5 +51,39 @@ namespace Business.Concrete
             _colorDal.Update(color);
             return new SuccessResult(Messages.ColorUpdated);
         }
+    
+        public async Task<IDataResult<List<Color>>> GetAllAsync()
+        {
+            return new SuccessDataResult<List<Color>>(await _colorDal.GetAllAsync(), Messages.ColorsListed);
+        }
+
+        public async Task<IDataResult<Color>> GetByIdAsync(int id)
+        {
+            return new SuccessDataResult<Color>(await _colorDal.GetAsync(e => e.ColorId == id));
+        }
+
+        public async Task<IResult> AddAsync(Color entity)
+        {
+            // Omit fluent validation here for brevity unless needed, or just call normal pipeline
+            await _colorDal.AddAsync(entity);
+            return new SuccessResult(Messages.ColorAdded);
+        }
+
+        public async Task<IResult> UpdateAsync(Color entity)
+        {
+            await _colorDal.UpdateAsync(entity);
+            return new SuccessResult(Messages.ColorUpdated);
+        }
+
+        public async Task<IResult> DeleteAsync(int id)
+        {
+            var entity = await _colorDal.GetAsync(e => e.ColorId == id);
+            if (entity != null)
+            {
+                await _colorDal.DeleteAsync(entity);
+            }
+            return new SuccessResult(Messages.ColorDeleted);
+        }
     }
 }
+

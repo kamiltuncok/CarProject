@@ -1,10 +1,6 @@
-﻿using Business.Abstract;
+using Business.Abstract;
 using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Web_API.Controllers
@@ -13,59 +9,51 @@ namespace Web_API.Controllers
     [ApiController]
     public class ColorsController : ControllerBase
     {
-        IColorService _colorService;
-        public ColorsController(IColorService colorService)
+        private readonly IColorService _service;
+
+        public ColorsController(IColorService service)
         {
-            _colorService = colorService;
+            _service = service;
         }
-        [HttpGet("getall")]
-        public IActionResult GetAll()
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            var result = _colorService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = await _service.GetAllAsync();
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
-        [HttpGet("getbyid")]
-        public IActionResult GetById(int colorid)
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = _colorService.GetById(colorid);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = await _service.GetByIdAsync(id);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
-        [HttpPost("update")]
-        public IActionResult Update(Color color)
+
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] Color entity)
         {
-            var result = _colorService.Update(color);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = await _service.AddAsync(entity);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
-        [HttpDelete("delete")]
-        public IActionResult Delete(Color color)
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] Color entity)
         {
-            var result = _colorService.Delete(color);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            entity.ColorId = id;
+            var result = await _service.UpdateAsync(entity);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
-        [HttpPost("add")]
-        public IActionResult Post(Color color)
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            var result = _colorService.Add(color);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = await _service.DeleteAsync(id);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
     }

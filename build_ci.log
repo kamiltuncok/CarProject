@@ -1,0 +1,21 @@
+MSBuild version 17.6.1+8ffc3fe3d for .NET
+  Geri y??klenecek projeler belirleniyor...
+  Geri y??kleme i??in t??m projeler g??ncel.
+  Core -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\bin\Debug\net7.0\Core.dll
+  Entities -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Entities\bin\Debug\net7.0\Entities.dll
+  DataAccess -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\bin\Debug\net7.0\DataAccess.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\CarImageManager.cs(20,36): error CS0535: 'CarImageManager', 'ICarImageService.GetAllAsync()' arabirim ??yesini uygulamaz [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\CarImageManager.cs(20,36): error CS0535: 'CarImageManager', 'ICarImageService.AddAsync(IFormFile, CarImage)' arabirim ??yesini uygulamaz [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\CarImageManager.cs(20,36): error CS0535: 'CarImageManager', 'ICarImageService.UpdateAsync(CarImage, IFormFile)' arabirim ??yesini uygulamaz [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\CarImageManager.cs(20,36): error CS0535: 'CarImageManager', 'ICarImageService.DeleteAsync(CarImage)' arabirim ??yesini uygulamaz [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+
+Olu??turma BA??ARISIZ OLDU.
+
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\CarImageManager.cs(20,36): error CS0535: 'CarImageManager', 'ICarImageService.GetAllAsync()' arabirim ??yesini uygulamaz [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\CarImageManager.cs(20,36): error CS0535: 'CarImageManager', 'ICarImageService.AddAsync(IFormFile, CarImage)' arabirim ??yesini uygulamaz [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\CarImageManager.cs(20,36): error CS0535: 'CarImageManager', 'ICarImageService.UpdateAsync(CarImage, IFormFile)' arabirim ??yesini uygulamaz [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\CarImageManager.cs(20,36): error CS0535: 'CarImageManager', 'ICarImageService.DeleteAsync(CarImage)' arabirim ??yesini uygulamaz [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+    0 Uyar??
+    4 Hata
+
+Ge??en S??re 00:00:01.78

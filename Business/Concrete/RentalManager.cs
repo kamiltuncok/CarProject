@@ -12,6 +12,7 @@ using Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Core.Aspects.Autofac.Transaction;
 using DataAccess.Concrete.EntityFramework;
 
@@ -55,14 +56,48 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(), Messages.RentalListed);
         }
 
-        public IDataResult<List<Rental>> GetById(int rentalid)
+        public IDataResult<Rental> GetById(int rentalid)
         {
-            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(r => r.Id == rentalid), Messages.RentalListed);
+            return new SuccessDataResult<Rental>(_rentalDal.Get(r => r.Id == rentalid), Messages.RentalListed);
         }
 
         public IResult Update(Rental rental)
         {
             _rentalDal.Update(rental);
+            return new SuccessResult(Messages.RetalUpdated);
+        }
+
+        public async Task<IResult> AddAsync(Rental rental)
+        {
+            ValidationTool.Validate(new RentalValidator(), rental);
+
+            rental.Status = RentalStatus.Active;
+            rental.DepositStatus = DepositStatus.Blocked;
+            rental.DepositDeductedAmount = 0;
+
+            await _rentalDal.AddAsync(rental);
+            return new SuccessResult(Messages.RentalAdded);
+        }
+
+        public async Task<IResult> DeleteAsync(Rental rental)
+        {
+            await _rentalDal.DeleteAsync(rental);
+            return new SuccessResult(Messages.RentalDeleted);
+        }
+
+        public async Task<IDataResult<List<Rental>>> GetAllAsync()
+        {
+            return new SuccessDataResult<List<Rental>>(await _rentalDal.GetAllAsync(), Messages.RentalListed);
+        }
+
+        public async Task<IDataResult<Rental>> GetByIdAsync(int id)
+        {
+            return new SuccessDataResult<Rental>(await _rentalDal.GetAsync(r => r.Id == id), Messages.RentalListed);
+        }
+
+        public async Task<IResult> UpdateAsync(Rental rental)
+        {
+            await _rentalDal.UpdateAsync(rental);
             return new SuccessResult(Messages.RetalUpdated);
         }
 

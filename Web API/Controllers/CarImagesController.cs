@@ -1,4 +1,4 @@
-﻿using Business.Abstract;
+using Business.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,51 +18,51 @@ namespace Web_API.Controllers
         {
             _carImageService = carImageService;
         }
-        [HttpPost("add")]
-        public IActionResult Add([FromForm] IFormFile file, [FromForm] CarImage carImage)
+        [HttpPost]
+        public async Task<IActionResult> Add([FromForm] IFormFile file, [FromForm] CarImage carImage)
         {
-            var result = _carImageService.Add(file, carImage);
+            var result = await _carImageService.AddAsync(file, carImage);
             if (result.Success)
             {
                 return Ok(result);
             }
             return BadRequest(result);
         }
-        [HttpPost("update")]
-        public IActionResult Update([FromForm(Name = ("Image"))] IFormFile file, [FromForm(Name = ("Id"))] int id)
+        [HttpPut]
+        public async Task<IActionResult> Update([FromForm(Name = ("Image"))] IFormFile file, [FromForm(Name = ("Id"))] int id)
         {
-            var carImage = _carImageService.GetById(id).Data;
-            var result = _carImageService.Update(carImage, file);
+            var carImage = (await _carImageService.GetByIdAsync(id)).Data;
+            var result = await _carImageService.UpdateAsync(carImage, file);
             if (result.Success)
             {
                 return Ok(result);
             }
             return BadRequest(result);
         }
-        [HttpDelete("delete")]
-        public IActionResult Delete(CarImage carImage)
+        [HttpDelete]
+        public async Task<IActionResult> Delete(CarImage carImage)
         {
-            var result = _carImageService.Delete(carImage);
+            var result = await _carImageService.DeleteAsync(carImage);
             if (result.Success)
             {
                 return Ok(result);
             }
             return BadRequest(result);
         }
-        [HttpGet("getall")]
-        public IActionResult GetAll()
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            var result = _carImageService.GetAll();
+            var result = await _carImageService.GetAllAsync();
             if (result.Success)
             {
                 return Ok(result);
             }
             return BadRequest(result);
         }
-        [HttpGet("getbyid")]
-        public IActionResult GetById(int carId)
+        [HttpGet("{carId}")]
+        public async Task<IActionResult> GetById(int carId)
         {
-            var result = _carImageService.GetById(carId);
+            var result = await _carImageService.GetByIdAsync(carId);
             if (result.Success)
             {
                 return Ok(result);
@@ -70,10 +70,10 @@ namespace Web_API.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getcarimagebycolorandbrandid")]
-        public IActionResult GetCarImageByColorAndBrandId(int brandId, int colorId)
+        [HttpGet("brand/{brandId}/color/{colorId}")]
+        public async Task<IActionResult> GetCarImageByColorAndBrandId(int brandId, int colorId)
         {
-            var result = _carImageService.GetCarImageByColorAndBrandId(brandId,colorId);
+            var result = await _carImageService.GetCarImageByColorAndBrandIdAsync(brandId, colorId);
             if (result.Success)
             {
                 return Ok(result);
@@ -83,3 +83,4 @@ namespace Web_API.Controllers
 
     }
 }
+

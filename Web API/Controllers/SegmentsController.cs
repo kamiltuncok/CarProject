@@ -1,7 +1,7 @@
-﻿using Business.Abstract;
+using Business.Abstract;
 using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Web_API.Controllers
 {
@@ -9,65 +9,51 @@ namespace Web_API.Controllers
     [ApiController]
     public class SegmentsController : ControllerBase
     {
-        ISegmentService _segmentService;
+        private readonly ISegmentService _service;
 
-        public SegmentsController(ISegmentService segmentService)
+        public SegmentsController(ISegmentService service)
         {
-            _segmentService = segmentService;
+            _service = service;
         }
 
-        [HttpGet("getall")]
-        public IActionResult GetAll()
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            var result = _segmentService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = await _service.GetAllAsync();
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
-        [HttpGet("getbyid")]
-        public IActionResult GetById(int segmentId)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = _segmentService.GetById(segmentId);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = await _service.GetByIdAsync(id);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
-        [HttpPost("update")]
-        public IActionResult Update(Segment segment)
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] Segment entity)
         {
-            var result = _segmentService.Update(segment);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = await _service.AddAsync(entity);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
-        [HttpDelete("delete")]
-        public IActionResult Delete(Segment segment)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] Segment entity)
         {
-            var result = _segmentService.Delete(segment);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            entity.SegmentId = id;
+            var result = await _service.UpdateAsync(entity);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
-        [HttpPost("add")]
-        public IActionResult Add(Segment segment)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            var result = _segmentService.Add(segment);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = await _service.DeleteAsync(id);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
     }

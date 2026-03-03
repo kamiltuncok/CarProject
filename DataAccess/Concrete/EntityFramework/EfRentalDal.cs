@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DataAccess.Concrete.EntityFramework
 {
@@ -148,6 +149,98 @@ namespace DataAccess.Concrete.EntityFramework
             {
                 context.Rentals.AddRange(rentals);
                 context.SaveChanges();
+            }
+        }
+
+        public async Task<List<RentalDetailDto>> GetRentalDetailsByUserIdAsync(int userId)
+        {
+            using (var context = new RentACarContext())
+            {
+                var customerIds = await context.Customers
+                    .Where(c => c.Users.Any(u => u.Id == userId))
+                    .Select(c => c.Id)
+                    .ToListAsync();
+
+                return await BuildRentalDetailQuery(context)
+                    .Where(r => customerIds.Contains(r.CustomerId))
+                    .AsNoTracking()
+                    .ToListAsync();
+            }
+        }
+
+        public async Task<List<RentalDetailDto>> GetRentalDetailsByLocationNameAsync(string locationName)
+        {
+            using (var context = new RentACarContext())
+            {
+                return await BuildRentalDetailQuery(context)
+                    .Where(r => r.StartLocationName == locationName || r.EndLocationName == locationName)
+                    .AsNoTracking()
+                    .ToListAsync();
+            }
+        }
+
+        public async Task<List<RentalDetailDto>> GetRentalsByEmailAsync(string email)
+        {
+            using (var context = new RentACarContext())
+            {
+                return await BuildRentalDetailQuery(context)
+                    .Where(r => r.CustomerEmail == email)
+                    .AsNoTracking()
+                    .ToListAsync();
+            }
+        }
+
+        public async Task<List<RentalDetailDto>> GetRentalsByNameAsync(string name)
+        {
+            using (var context = new RentACarContext())
+            {
+                var search = name.ToLower().Trim();
+
+                var baseMatchingIds = await context.Customers
+                    .Where(c => c.PhoneNumber.Contains(search))
+                    .Select(c => c.Id)
+                    .ToListAsync();
+
+                var individualMatchingIds = await context.IndividualCustomers
+                    .Where(ic => (ic.FirstName + " " + ic.LastName).ToLower().Contains(search) || ic.IdentityNumber.Contains(search))
+                    .Select(ic => ic.Id)
+                    .ToListAsync();
+
+                var corporateMatchingIds = await context.CorporateCustomers
+                    .Where(cc => cc.CompanyName.ToLower().Contains(search))
+                    .Select(cc => cc.Id)
+                    .ToListAsync();
+
+                var allCustomerIds = baseMatchingIds
+                    .Union(individualMatchingIds)
+                    .Union(corporateMatchingIds)
+                    .Distinct()
+                    .ToList();
+
+                return await BuildRentalDetailQuery(context)
+                    .Where(r => allCustomerIds.Contains(r.CustomerId))
+                    .AsNoTracking()
+                    .ToListAsync();
+            }
+        }
+
+        public async Task<List<RentalDetailDto>> GetRentalsByDateRangeAsync(DateTime startDate, DateTime endDate)
+        {
+            using (var context = new RentACarContext())
+            {
+                return await BuildRentalDetailQuery(context)
+                    .Where(r => r.StartDate >= startDate.Date && r.StartDate < endDate.Date.AddDays(1))
+                    .AsNoTracking()
+                    .ToListAsync();
+            }
+        }
+
+        public async Task AddRangeAsync(List<Rental> rentals)
+        {
+            using (var context = new RentACarContext())
+            {
+                await context.Rentals.AddRangeAsync(rentals);
+                await context.SaveChangesAsync();
             }
         }
     }

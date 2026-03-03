@@ -1,7 +1,7 @@
-﻿using Business.Abstract;
+using Business.Abstract;
 using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Web_API.Controllers
 {
@@ -9,71 +9,54 @@ namespace Web_API.Controllers
     [ApiController]
     public class CorporateCustomersController : ControllerBase
     {
-        ICorporateCustomerService _customerService;
+        private readonly ICorporateCustomerService _service;
 
-        public CorporateCustomersController(ICorporateCustomerService customerService)
+        public CorporateCustomersController(ICorporateCustomerService service)
         {
-            _customerService = customerService;
+            _service = service;
         }
 
-        [HttpGet("getall")]
-        public IActionResult GetAll()
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            var result = _customerService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = await _service.GetAllAsync();
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
-        [HttpGet("getbyid")]
-        public IActionResult GetById(int customerid)
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = _customerService.GetById(customerid);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = await _service.GetByIdAsync(id);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
-        [HttpGet("getlistbyid")]
-        public IActionResult GetListById(int customerid)
+
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] CorporateCustomer entity)
         {
-            var result = _customerService.GetListById(customerid);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = await _service.AddAsync(entity);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
-        [HttpPost("update")]
-        public IActionResult Update(CorporateCustomer customer)
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] CorporateCustomer entity)
         {
-            var result = _customerService.Update(customer);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            entity.Id = id;
+            var result = await _service.UpdateAsync(entity);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
-        [HttpDelete("delete")]
-        public IActionResult Delete(CorporateCustomer customer)
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            var result = _customerService.Delete(customer);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-        [HttpPost("add")]
-        public IActionResult Post(CorporateCustomer customer)
-        {
-            var result = _customerService.AddCustomer(customer);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var entityResult = await _service.GetByIdAsync(id);
+            if (!entityResult.Success || entityResult.Data == null) return BadRequest("Kurumsal müşteri bulunamadı.");
+            
+            var result = await _service.DeleteAsync(entityResult.Data);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
     }

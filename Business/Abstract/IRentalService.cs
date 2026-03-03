@@ -5,6 +5,7 @@ using Entities.DTOs;
 using Entities.Enums;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Text;
 
 namespace Business.Abstract
@@ -12,10 +13,16 @@ namespace Business.Abstract
    public interface IRentalService
     {
         IDataResult<List<Rental>> GetAll();
-        IDataResult<List<Rental>> GetById(int rentalid);
+        IDataResult<Rental> GetById(int rentalid);
         IResult Add(Rental rental);
         IResult Delete(Rental rental);
         IResult Update(Rental rental);
+
+        Task<IDataResult<List<Rental>>> GetAllAsync();
+        Task<IDataResult<Rental>> GetByIdAsync(int rentalid);
+        Task<IResult> AddAsync(Rental rental);
+        Task<IResult> DeleteAsync(Rental rental);
+        Task<IResult> UpdateAsync(Rental rental);
         IDataResult<List<Rental>> GetRentalsByCarId(int carId);
         IDataResult<List<RentalDetailDto>> GetRentalDetailsByUserId(int userId);
         IDataResult<List<RentalDetailDto>> GetRentalDetailsByLocationName(string locationName);

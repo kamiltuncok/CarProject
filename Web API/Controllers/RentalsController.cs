@@ -15,259 +15,160 @@ namespace Web_API.Controllers
     [ApiController]
     public class RentalsController : ControllerBase
     {
-        IRentalService _rentalService;
+        private readonly IRentalService _rentalService;
+
         public RentalsController(IRentalService rentalService)
         {
             _rentalService = rentalService;
         }
-        [HttpGet("getall")]
-        public IActionResult GetAll()
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            var result = _rentalService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = await _rentalService.GetAllAsync();
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
-        [HttpGet("getbyid")]
-        public IActionResult GetById(int rentalid)
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = _rentalService.GetById(rentalid);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = await _rentalService.GetByIdAsync(id);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
-        [HttpPost("update")]
-        public IActionResult Update(Rental rental)
+
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] Rental rental)
         {
-            var result = _rentalService.Update(rental);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = await _rentalService.AddAsync(rental);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
-        [HttpDelete("delete")]
-        public IActionResult Delete(Rental rental)
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] Rental rental)
         {
-            var result = _rentalService.Delete(rental);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            rental.Id = id;
+            var result = await _rentalService.UpdateAsync(rental);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
-        [HttpPost("add")] // Keeping old Add for whatever reason, probably unused but safe
-        public IActionResult Post(Rental rental)
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            var result = _rentalService.Add(rental);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var rentalResult = await _rentalService.GetByIdAsync(id);
+            if (!rentalResult.Success || rentalResult.Data == null) 
+                return BadRequest("Kiralama bulunamadı.");
+
+            var result = await _rentalService.DeleteAsync(rentalResult.Data);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
         [HttpPost("create")]
-        public IActionResult CreateRental([FromBody] Entities.DTOs.RentalCreateRequestDto request)
+        public async Task<IActionResult> CreateRental([FromBody] Entities.DTOs.RentalCreateRequestDto request)
         {
-            // Extract the user ID from the JWT token.
-            // Assuming default ASP.NET Core Identity/JWT claims handling where NameIdentifier holds User ID.
             var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier);
-            
             if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
             {
-                return Unauthorized(new { Message = "Kuallnıcı kimliği doğrulanamadı (Token eksik veya geçersiz)." });
+                return Unauthorized(new { Message = "Kullanıcı kimliği doğrulanamadı (Token eksik veya geçersiz)." });
             }
 
-            // Route to the new strict domain Service
             var result = _rentalService.CreateRental(request, userId);
-            
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
         [HttpPost("createguest")]
-        public IActionResult CreateGuestRental([FromBody] Entities.DTOs.GuestRentalCreateRequestDto request)
+        public async Task<IActionResult> CreateGuestRental([FromBody] Entities.DTOs.GuestRentalCreateRequestDto request)
         {
             var result = _rentalService.CreateGuestRental(request);
-            
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
-
-        [HttpGet("getrentalsbyuserid")]
-        public IActionResult GetRentalsByUserId(int userId)
+        [HttpGet("user/{userId}")]
+        public async Task<IActionResult> GetRentalsByUserId(int userId)
         {
             var result = _rentalService.GetRentalDetailsByUserId(userId);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
-        [HttpGet("diagnosticcustomer")]
-        public IActionResult DiagnosticCustomer(int userId)
-        {
-            using (var context = new DataAccess.Concrete.EntityFramework.RentACarContext())
-            {
-                var customers = context.Customers.Where(c => c.Users.Any(u => u.Id == userId)).Select(c => new { c.Id }).ToList();
-                return Ok(customers);
-            }
-        }
-
-        [HttpGet("getrentalsbymanagerlocation")]
-        public IActionResult GetRentalsByManagerLocation(int userId)
+        [HttpGet("manager/{userId}")]
+        public async Task<IActionResult> GetRentalsByManagerLocation(int userId)
         {
             var result = _rentalService.GetRentalsByManagerLocation(userId);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
-        [HttpPost("add-bulk")]
-        public IActionResult AddBulk([FromBody] List<Rental> rentals)
+        [HttpPost("bulk")]
+        public async Task<IActionResult> AddBulk([FromBody] List<Rental> rentals)
         {
-            if (rentals == null || !rentals.Any())  // HATA BURADA
+            if (rentals == null || !rentals.Any())
             {
-                return BadRequest(new
-                {
-                    success = false,
-                    message = "Rental listesi boş"
-                });
+                return BadRequest(new { success = false, message = "Rental listesi boş" });
             }
 
             var result = _rentalService.AddBulk(rentals);
-
-            if (result.Success)
-            {
-                return Ok(new
-                {
-                    success = true,
-                    count = rentals.Count,
-                    message = result.Message
-                });
-            }
-
-            return BadRequest(new
-            {
-                success = false,
-                message = result.Message
-            });
-        }
-
-        [HttpGet("getbystartdate")]
-        public IActionResult GetRentalsByStartDate(DateTime startDate)
-        {
-            var result = _rentalService.GetRentalsByStartDate(startDate);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
-        [HttpGet("getbyemail")]
-        public IActionResult GetRentalsByEmail(string email)
-        {
-            var result = _rentalService.GetRentalsByEmail(email);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpGet("getbyname")]
-        public IActionResult GetRentalsByName(string name)
-        {
-            var result = _rentalService.GetRentalsByName(name);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpGet("getbydaterange")]
-        public IActionResult GetRentalsByDateRange(DateTime startDate, DateTime endDate)
+        [HttpGet("date-range")]
+        public async Task<IActionResult> GetRentalsByDateRange([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
         {
             var result = _rentalService.GetRentalsByDateRange(startDate, endDate);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
-        [HttpPost("markasreturned")]
-        public IActionResult MarkAsReturned(int rentalId)
+        [HttpPost("{id}/mark-as-returned")]
+        public async Task<IActionResult> MarkAsReturned(int id)
         {
-            var result = _rentalService.MarkAsReturned(rentalId);
-            if (result.Success)
-                return Ok(result);
+            var result = _rentalService.MarkAsReturned(id);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
-        [HttpPost("deleteandfreecardendpoint")]
-        public IActionResult DeleteAndFreeCar(int rentalId)
-        {
-            var result = _rentalService.DeleteAndFreeCar(rentalId);
-            if (result.Success)
-                return Ok(result);
-            return BadRequest(result);
-        }
-
-        [HttpPost("collectdeposit")]
-        public IActionResult CollectDeposit(int rentalId)
+        [HttpPost("{id}/collect-deposit")]
+        public async Task<IActionResult> CollectDeposit(int id)
         {
             var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier);
             if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
                 return Unauthorized(new { Message = "Kullanıcı kimliği doğrulanamadı." });
 
-            var result = _rentalService.CollectDeposit(rentalId, userId);
+            var result = _rentalService.CollectDeposit(id, userId);
             if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
-        [HttpPost("delivervehicle")]
-        public IActionResult DeliverVehicle(int rentalId)
+        [HttpPost("{id}/deliver")]
+        public async Task<IActionResult> DeliverVehicle(int id)
         {
             var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier);
             if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
                 return Unauthorized(new { Message = "Kullanıcı kimliği doğrulanamadı." });
 
-            var result = _rentalService.DeliverVehicle(rentalId, userId);
+            var result = _rentalService.DeliverVehicle(id, userId);
             if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
-        [HttpPost("cancelrental")]
-        public IActionResult CancelRental(int rentalId)
+        [HttpPost("{id}/cancel")]
+        public async Task<IActionResult> CancelRental(int id)
         {
             var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier);
             if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
                 return Unauthorized(new { Message = "Kullanıcı kimliği doğrulanamadı." });
 
-            var result = _rentalService.CancelRental(rentalId, userId);
+            var result = _rentalService.CancelRental(id, userId);
             if (result.Success) return Ok(result);
             return BadRequest(result);
         }
-
     }
 }
+

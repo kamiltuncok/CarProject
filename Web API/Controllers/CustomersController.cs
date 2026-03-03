@@ -1,8 +1,7 @@
-﻿using Business.Abstract;
+using Business.Abstract;
 using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Entities.DTOs;
+using System.Threading.Tasks;
 
 namespace Web_API.Controllers
 {
@@ -10,73 +9,63 @@ namespace Web_API.Controllers
     [ApiController]
     public class CustomersController : ControllerBase
     {
-        ICustomerService _customerService;
+        private readonly ICustomerService _service;
 
-        public CustomersController(ICustomerService customerService)
+        public CustomersController(ICustomerService service)
         {
-            _customerService = customerService;
+            _service = service;
         }
 
-        [HttpGet("getall")]
-        public IActionResult GetAll()
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            var result = _customerService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = await _service.GetAllAsync();
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
-        [HttpGet("getbyid")]
-        public IActionResult GetById(int customerid)
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = _customerService.GetCustomerDetailById(customerid);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = await _service.GetByIdAsync(id);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
-        // [HttpGet("getlistbyid")]
-        // public IActionResult GetListById(int customerid)
-        // {
-        //    var result = _customerService.GetListById(customerid);
-        //    if (result.Success)
-        //    {
-        //        return Ok(result);
-        //    }
-        //    return BadRequest(result);
-        // }
-        [HttpPost("update")]
-        public IActionResult Update(Customer customer)
+
+        [HttpGet("detail/{id}")]
+        public async Task<IActionResult> GetDetailById(int id)
         {
-            var result = _customerService.Update(customer);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = await _service.GetCustomerDetailByIdAsync(id);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
-        [HttpDelete("delete")]
-        public IActionResult Delete(Customer customer)
+
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] Customer entity)
         {
-            var result = _customerService.Delete(customer);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = await _service.AddAsync(entity);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
-        [HttpPost("add")]
-        public IActionResult Post(Customer customer)
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] Customer entity)
         {
-            var result = _customerService.Add(customer);
-            if (result.Success)
-            {
-                return Ok(customer.Id);
-            }
+            entity.Id = id;
+            var result = await _service.UpdateAsync(entity);
+            if (result.Success) return Ok(result);
+            return BadRequest(result);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var entityResult = await _service.GetByIdAsync(id);
+            if (!entityResult.Success || entityResult.Data == null) return BadRequest("Müşteri bulunamadı.");
+            
+            var result = await _service.DeleteAsync(entityResult.Data);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
     }
 }
-

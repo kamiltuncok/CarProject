@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
@@ -177,5 +178,161 @@ namespace Business.Concrete
             }
         }
 
+        public async Task<IDataResult<List<CarDetailDto>>> GetAvailableCarsAsync(CarAvailabilityFilterDto filter)
+        {
+            var result = await _carDal.GetAvailableCarsAsync(filter);
+            return new SuccessDataResult<List<CarDetailDto>>(result, "Müsait araçlar listelendi.");
+        }
+
+        public async Task<IResult> CarRentedAsync(int carId)
+        {
+            var car = await _carDal.GetAsync(c => c.Id == carId);
+            if (car != null)
+            {
+                car.Status = CarStatus.Rented;
+                await _carDal.UpdateAsync(car);
+                return new SuccessResult("Araç statusu kiralandı olarak güncellendi.");
+            }
+            return new ErrorResult("Araç bulunamadı.");
+        }
+
+        public async Task<IDataResult<decimal>> UpdatePriceByActionAsync(int carId, string action)
+        {
+            var car = await _carDal.GetAsync(c => c.Id == carId);
+            if (car == null)
+                return new ErrorDataResult<decimal>(0, "Car not found");
+
+            int step = 100;
+            switch (action.ToLower())
+            {
+                case "increase":
+                    car.DailyPrice += step;
+                    break;
+                case "decrease":
+                    car.DailyPrice = Math.Max(car.DailyPrice - step, 0);
+                    break;
+                case "same":
+                    break;
+                default:
+                    return new ErrorDataResult<decimal>(car.DailyPrice, "Unknown action");
+            }
+
+            await _carDal.UpdateAsync(car);
+            return new SuccessDataResult<decimal>(car.DailyPrice, $"Price {action} applied successfully");
+        }
+
+        public async Task<IDataResult<decimal>> GetLowestPriceBySegmentIdAsync(int segmentId, bool isRented)
+        {
+            try
+            {
+                var lowestPrice = await _carDal.GetLowestPriceBySegmentIdAsync(segmentId, isRented);
+                return new SuccessDataResult<decimal>(lowestPrice, "En düşük fiyat getirildi");
+            }
+            catch (Exception ex)
+            {
+                return new ErrorDataResult<decimal>(0, "Fiyat getirilirken hata oluştu: " + ex.Message);
+            }
+        }
+
+        [CacheAspect]
+        [PerformanceAspect(5)]
+        public async Task<IDataResult<List<Car>>> GetAllAsync()
+        {
+            var cars = await _carDal.GetAllAsync();
+            return new SuccessDataResult<List<Car>>(cars, Messages.CarsListed);
+        }
+
+        public async Task<IDataResult<List<CarDetailDto>>> GetCarDetailDtosAsync()
+        {
+            var details = await _carDal.GetCarDetailsAsync();
+            return new SuccessDataResult<List<CarDetailDto>>(details, Messages.CarsListed);
+        }
+
+        public async Task<IDataResult<List<CarDetailDto>>> GetCarDetailsByBrandIdAsync(int brandId)
+        {
+            var details = await _carDal.GetCarDetailsByBrandIdAsync(brandId);
+            return new SuccessDataResult<List<CarDetailDto>>(details);
+        }
+
+        public async Task<IDataResult<List<CarDetailDto>>> GetCarDetailsByColorIdAsync(int colorId)
+        {
+            var details = await _carDal.GetCarDetailsByColorIdAsync(colorId);
+            return new SuccessDataResult<List<CarDetailDto>>(details);
+        }
+
+        public async Task<IDataResult<CarDetailDto>> GetCarDetailsByIdAsync(int id)
+        {
+            var detail = await _carDal.GetCarDetailsByIdAsync(id);
+            return new SuccessDataResult<CarDetailDto>(detail);
+        }
+
+        public async Task<IDataResult<List<Car>>> GetByIdAsync(int id)
+        {
+            return new SuccessDataResult<List<Car>>(await _carDal.GetAllAsync(c => c.Id == id));
+        }
+
+        [CacheRemoveAspect("ICarService.Get")]
+        // Since we removed raw Entity param, we would ideally need a DTO validator. For now we just implement the mapping.
+        public async Task<IResult> AddAsync(CarCreateDto carDto)
+        {
+            var car = new Car
+            {
+                BrandId = carDto.BrandId,
+                ColorId = carDto.ColorId,
+                CurrentLocationId = carDto.CurrentLocationId,
+                ModelYear = carDto.ModelYear,
+                DailyPrice = carDto.DailyPrice,
+                Deposit = carDto.Deposit,
+                PlateNumber = carDto.PlateNumber,
+                KM = carDto.KM,
+                Status = CarStatus.Available, // Enforce starting rule
+                FuelId = carDto.FuelId,
+                GearId = carDto.GearId,
+                SegmentId = carDto.SegmentId,
+                Description = carDto.Description
+            };
+            
+            await _carDal.AddAsync(car);
+            return new SuccessResult(Messages.CarAdded);
+        }
+
+        [CacheRemoveAspect("ICarService.Get")]
+        public async Task<IResult> UpdateAsync(CarUpdateDto carDto)
+        {
+            var car = await _carDal.GetAsync(c => c.Id == carDto.Id);
+            if (car == null)
+            {
+                return new ErrorResult("Kayıt bulunamadı.");
+            }
+
+            car.BrandId = carDto.BrandId;
+            car.ColorId = carDto.ColorId;
+            car.CurrentLocationId = carDto.CurrentLocationId;
+            car.ModelYear = carDto.ModelYear;
+            car.DailyPrice = carDto.DailyPrice;
+            car.Deposit = carDto.Deposit;
+            car.PlateNumber = carDto.PlateNumber;
+            car.KM = carDto.KM;
+            car.Status = carDto.Status;
+            car.FuelId = carDto.FuelId;
+            car.GearId = carDto.GearId;
+            car.SegmentId = carDto.SegmentId;
+            car.Description = carDto.Description;
+            car.RowVersion = carDto.RowVersion;
+
+            await _carDal.UpdateAsync(car);
+            return new SuccessResult(Messages.CarUpdated);
+        }
+
+        public async Task<IResult> DeleteAsync(int id)
+        {
+            var car = await _carDal.GetAsync(c => c.Id == id);
+            if (car != null)
+            {
+                await _carDal.DeleteAsync(car);
+                return new SuccessResult(Messages.CarDeleted);
+            }
+            return new ErrorResult("Silinecek araç bulunamadı.");
+        }
     }
 }

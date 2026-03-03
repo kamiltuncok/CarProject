@@ -1,0 +1,25 @@
+MSBuild version 17.6.1+8ffc3fe3d for .NET
+  Geri y??klenecek projeler belirleniyor...
+  Geri y??kleme i??in t??m projeler g??ncel.
+  Core -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\bin\Debug\net7.0\Core.dll
+  Entities -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Entities\bin\Debug\net7.0\Entities.dll
+  DataAccess -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\bin\Debug\net7.0\DataAccess.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Abstract\ILocationManagerUserService.cs(12,9): error CS0246: 'Task<>' t??r?? veya ad alan?? ad?? bulunamad?? (bir using y??nergeniz veya derleme ba??vurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationManagerUserManager.cs(210,22): error CS0246: 'Task<>' t??r?? veya ad alan?? ad?? bulunamad?? (bir using y??nergeniz veya derleme ba??vurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationManagerUserManager.cs(222,22): error CS0246: 'Task<>' t??r?? veya ad alan?? ad?? bulunamad?? (bir using y??nergeniz veya derleme ba??vurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationManagerUserManager.cs(234,22): error CS0246: 'Task<>' t??r?? veya ad alan?? ad?? bulunamad?? (bir using y??nergeniz veya derleme ba??vurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationManagerUserManager.cs(245,22): error CS0246: 'Task<>' t??r?? veya ad alan?? ad?? bulunamad?? (bir using y??nergeniz veya derleme ba??vurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationManagerUserManager.cs(245,44): error CS0246: 'LocationManagerDetailDto' t??r?? veya ad alan?? ad?? bulunamad?? (bir using y??nergeniz veya derleme ba??vurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+
+Olu??turma BA??ARISIZ OLDU.
+
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Abstract\ILocationManagerUserService.cs(12,9): error CS0246: 'Task<>' t??r?? veya ad alan?? ad?? bulunamad?? (bir using y??nergeniz veya derleme ba??vurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationManagerUserManager.cs(210,22): error CS0246: 'Task<>' t??r?? veya ad alan?? ad?? bulunamad?? (bir using y??nergeniz veya derleme ba??vurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationManagerUserManager.cs(222,22): error CS0246: 'Task<>' t??r?? veya ad alan?? ad?? bulunamad?? (bir using y??nergeniz veya derleme ba??vurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationManagerUserManager.cs(234,22): error CS0246: 'Task<>' t??r?? veya ad alan?? ad?? bulunamad?? (bir using y??nergeniz veya derleme ba??vurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationManagerUserManager.cs(245,22): error CS0246: 'Task<>' t??r?? veya ad alan?? ad?? bulunamad?? (bir using y??nergeniz veya derleme ba??vurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Concrete\LocationManagerUserManager.cs(245,44): error CS0246: 'LocationManagerDetailDto' t??r?? veya ad alan?? ad?? bulunamad?? (bir using y??nergeniz veya derleme ba??vurunuz mu eksik?) [C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\Business.csproj]
+    0 Uyar??
+    6 Hata
+
+Ge??en S??re 00:00:01.92

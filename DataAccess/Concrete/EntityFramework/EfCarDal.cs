@@ -3,10 +3,12 @@ using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
 using Entities.Enums;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace DataAccess.Concrete.EntityFramework
 {
@@ -163,6 +165,94 @@ namespace DataAccess.Concrete.EntityFramework
                     .OrderBy(c => c.DailyPrice)
                     .Select(c => c.DailyPrice)
                     .FirstOrDefault();
+            }
+        }
+
+        public async Task<List<CarDetailDto>> GetCarDetailsByColorIdAsync(int colorId)
+        {
+            using (var context = new RentACarContext())
+            {
+                return await BuildCarDetailQuery(context)
+                    .Where(c => c.ColorId == colorId)
+                    .AsNoTracking()
+                    .ToListAsync();
+            }
+        }
+
+        public async Task<List<CarDetailDto>> GetCarDetailsByBrandIdAsync(int brandId)
+        {
+            using (var context = new RentACarContext())
+            {
+                return await BuildCarDetailQuery(context)
+                    .Where(c => c.BrandId == brandId)
+                    .AsNoTracking()
+                    .ToListAsync();
+            }
+        }
+
+        public async Task<CarDetailDto> GetCarDetailsByIdAsync(int id)
+        {
+            using (var context = new RentACarContext())
+            {
+                return await BuildCarDetailQuery(context)
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(c => c.Id == id);
+            }
+        }
+
+        public async Task<List<CarDetailDto>> GetCarDetailsAsync(Expression<Func<CarDetailDto, bool>> filter = null)
+        {
+            using (var context = new RentACarContext())
+            {
+                var query = BuildCarDetailQuery(context);
+                return filter == null ? await query.AsNoTracking().ToListAsync() : await query.Where(filter).AsNoTracking().ToListAsync();
+            }
+        }
+
+        public async Task<List<CarDetailDto>> GetAvailableCarsAsync(CarAvailabilityFilterDto filter)
+        {
+            using (var context = new RentACarContext())
+            {
+                var query = context.Cars.Where(c => c.CurrentLocationId == filter.StartLocationId && c.Status != CarStatus.Maintenance);
+
+                query = query.Where(c => !context.Rentals.Any(r =>
+                    r.CarId == c.Id &&
+                    (r.Status == RentalStatus.Active || r.Status == RentalStatus.Pending) &&
+                    r.StartDate < filter.EndDate &&
+                    r.EndDate > filter.StartDate
+                ));
+
+                if (filter.FuelIds != null && filter.FuelIds.Any()) query = query.Where(c => filter.FuelIds.Contains(c.FuelId));
+                if (filter.GearIds != null && filter.GearIds.Any()) query = query.Where(c => filter.GearIds.Contains(c.GearId));
+                if (filter.SegmentIds != null && filter.SegmentIds.Any()) query = query.Where(c => filter.SegmentIds.Contains(c.SegmentId));
+
+                var detailedQuery = from ca in query
+                                   join co in context.Colors on ca.ColorId equals co.ColorId
+                                   join br in context.Brands on ca.BrandId equals br.BrandId
+                                   join fu in context.Fuels on ca.FuelId equals fu.FuelId
+                                   join ge in context.Gears on ca.GearId equals ge.GearId
+                                   join se in context.Segments on ca.SegmentId equals se.SegmentId
+                                   join lo in context.Locations on ca.CurrentLocationId equals lo.Id
+                                   join lc in context.LocationCities on lo.LocationCityId equals lc.Id
+                                   select new CarDetailDto
+                                   {
+                                       Id = ca.Id, BrandId = ca.BrandId, ColorId = ca.ColorId, FuelId = ca.FuelId, GearId = ca.GearId, SegmentId = ca.SegmentId, BrandName = br.BrandName, ColorName = co.ColorName, FuelName = fu.FuelName, GearName = ge.GearName, SegmentName = se.SegmentName, LocationName = lo.LocationName, LocationCity = lc.Name, DailyPrice = ca.DailyPrice, Deposit = ca.Deposit, Description = ca.Description, ModelYear = ca.ModelYear, Status = ca.Status, PlateNumber = ca.PlateNumber, KM = ca.KM
+                                   };
+
+                return await detailedQuery.AsNoTracking().ToListAsync();
+            }
+        }
+
+        public async Task<decimal> GetLowestPriceBySegmentIdAsync(int segmentId, bool isRented)
+        {
+            using (var context = new RentACarContext())
+            {
+                var statusFilter = isRented ? CarStatus.Rented : CarStatus.Available;
+                return await context.Cars
+                    .Where(c => c.SegmentId == segmentId && c.Status == statusFilter)
+                    .OrderBy(c => c.DailyPrice)
+                    .Select(c => c.DailyPrice)
+                    .FirstOrDefaultAsync();
             }
         }
     }

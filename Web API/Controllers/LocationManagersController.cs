@@ -2,6 +2,7 @@ using Business.Abstract;
 using Business.BusinessAspects.Autofac;
 using Entities.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
 {
@@ -16,11 +17,11 @@ namespace WebAPI.Controllers
             _locationManagerUserService = locationManagerUserService;
         }
 
-        [HttpPost("add")]
+        [HttpPost]
         [SecuredOperation("admin")]
-        public IActionResult Add(LocationManagerAddDto dto)
+        public async Task<IActionResult> Add([FromBody] LocationManagerAddDto dto)
         {
-            var result = _locationManagerUserService.AddLocationManager(dto);
+            var result = await _locationManagerUserService.AddLocationManagerAsync(dto);
             if (result.Success)
             {
                 return Ok(result);
@@ -28,10 +29,10 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getall")]
-        public IActionResult GetAll()
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            var result = _locationManagerUserService.GetLocationManagers();
+            var result = await _locationManagerUserService.GetLocationManagersAsync();
             if (result.Success)
             {
                 return Ok(result);
@@ -39,11 +40,11 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("update")]
+        [HttpPut]
         [SecuredOperation("admin")]
-        public IActionResult Update(LocationManagerUpdateDto dto)
+        public async Task<IActionResult> Update([FromBody] LocationManagerUpdateDto dto)
         {
-            var result = _locationManagerUserService.UpdateLocationManager(dto);
+            var result = await _locationManagerUserService.UpdateLocationManagerAsync(dto);
             if (result.Success)
             {
                 return Ok(result);
@@ -51,11 +52,11 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("revoke")]
+        [HttpDelete("revoke")]
         [SecuredOperation("admin")]
-        public IActionResult Revoke([FromQuery] int userId, [FromQuery] int locationId)
+        public async Task<IActionResult> Revoke([FromQuery] int userId, [FromQuery] int locationId)
         {
-            var result = _locationManagerUserService.RevokeLocationManager(userId, locationId);
+            var result = await _locationManagerUserService.RevokeLocationManagerAsync(userId, locationId);
             if (result.Success)
             {
                 return Ok(result);
@@ -64,3 +65,4 @@ namespace WebAPI.Controllers
         }
     }
 }
+

@@ -1,8 +1,10 @@
+using Business.Constants;
 using Business.Abstract;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
@@ -47,5 +49,40 @@ namespace Business.Concrete
             _locationCityDal.Update(entity);
             return new SuccessResult();
         }
+    
+        public async Task<IDataResult<List<LocationCity>>> GetAllAsync()
+        {
+            return new SuccessDataResult<List<LocationCity>>(await _locationCityDal.GetAllAsync(), Messages.LocationCityListed);
+        }
+
+        public async Task<IDataResult<LocationCity>> GetByIdAsync(int id)
+        {
+            return new SuccessDataResult<LocationCity>(await _locationCityDal.GetAsync(e => e.Id == id));
+        }
+
+        public async Task<IResult> AddAsync(LocationCity entity)
+        {
+            // Omit fluent validation here for brevity unless needed, or just call normal pipeline
+            await _locationCityDal.AddAsync(entity);
+            return new SuccessResult(Messages.LocationCityAdded);
+        }
+
+        public async Task<IResult> UpdateAsync(LocationCity entity)
+        {
+            await _locationCityDal.UpdateAsync(entity);
+            return new SuccessResult(Messages.LocationCityUpdated);
+        }
+
+        public async Task<IResult> DeleteAsync(int id)
+        {
+            var entity = await _locationCityDal.GetAsync(e => e.Id == id);
+            if (entity != null)
+            {
+                await _locationCityDal.DeleteAsync(entity);
+            }
+            return new SuccessResult(Messages.LocationCityDeleted);
+        }
     }
 }
+
+

@@ -1,7 +1,7 @@
-﻿using Business.Abstract;
+using Business.Abstract;
 using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Web_API.Controllers
 {
@@ -9,68 +9,59 @@ namespace Web_API.Controllers
     [ApiController]
     public class LocationsController : ControllerBase
     {
-        ILocationService _locationService;
+        private readonly ILocationService _service;
 
-        public LocationsController(ILocationService locationService)
+        public LocationsController(ILocationService service)
         {
-            _locationService = locationService;
+            _service = service;
         }
 
-        [HttpGet("getall")]
-        public IActionResult GetAll()
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            var result = _locationService.GetAll();
-            if (result.Success)
-                return Ok(result);
+            var result = await _service.GetAllAsync();
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
-        [HttpGet("getbyid")]
-        public IActionResult GetById(int locationId)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = _locationService.GetById(locationId);
-            if (result.Success)
-                return Ok(result);
+            var result = await _service.GetByIdAsync(id);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
-        [HttpPost("update")]
-        public IActionResult Update(Location location)
+        [HttpGet("city/{cityId}")]
+        public async Task<IActionResult> GetByCityId(int cityId)
         {
-            var result = _locationService.Update(location);
-            if (result.Success)
-                return Ok(result);
+            var result = await _service.GetByCityIdAsync(cityId);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
-        [HttpDelete("delete")]
-        public IActionResult Delete(Location location)
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] Location entity)
         {
-            var result = _locationService.Delete(location);
-            if (result.Success)
-                return Ok(result);
+            var result = await _service.AddAsync(entity);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
-        [HttpPost("add")]
-        public IActionResult Post(Location location)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] Location entity)
         {
-            var result = _locationService.Add(location);
-            if (result.Success)
-                return Ok(result);
+            entity.Id = id;
+            var result = await _service.UpdateAsync(entity);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
 
-        /// <summary>
-        /// Returns all offices in the specified city.
-        /// GET /api/locations/getbycityid?locationCityId=1
-        /// </summary>
-        [HttpGet("getbycityid")]
-        public IActionResult GetByCityId(int locationCityId)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            var result = _locationService.GetByCityId(locationCityId);
-            if (result.Success)
-                return Ok(result);
+            var result = await _service.DeleteAsync(id);
+            if (result.Success) return Ok(result);
             return BadRequest(result);
         }
     }
