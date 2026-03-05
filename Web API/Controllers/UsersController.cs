@@ -59,9 +59,9 @@ namespace Web_API.Controllers
         }
 
         [HttpPost("update-names")]
-        public async Task<IActionResult> UpdateUserNames([FromBody] User user)
+        public async Task<IActionResult> UpdateUserNames([FromBody] Entities.DTOs.UserNamesForUpdateDto dto)
         {
-            var result = await _userService.UpdateUserNamesAsync(user);
+            var result = await _userService.UpdateUserNamesAsync(dto);
             if (result.Success) return Ok(result);
             return BadRequest(result);
         }
