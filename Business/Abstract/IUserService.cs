@@ -21,8 +21,8 @@ namespace Business.Abstract
         Task<IDataResult<User>> GetByIdAsync(int userId);
         IResult Update(User user);
         Task<IResult> UpdateAsync(User user);
-        IResult UpdateUserNames(User user);
-        Task<IResult> UpdateUserNamesAsync(User user);
+        IResult UpdateUserNames(Entities.DTOs.UserNamesForUpdateDto dto);
+        Task<IResult> UpdateUserNamesAsync(Entities.DTOs.UserNamesForUpdateDto dto);
         IResult Delete(User user);
         Task<IResult> DeleteAsync(User user);
         List<User> GetAll();

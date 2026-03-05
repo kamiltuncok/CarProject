@@ -13,10 +13,12 @@ namespace Business.Concrete
     public class UserManager : IUserService
     {
         IUserDal _userDal;
+        IIndividualCustomerDal _individualCustomerDal;
 
-        public UserManager(IUserDal userDal)
+        public UserManager(IUserDal userDal, IIndividualCustomerDal individualCustomerDal)
         {
             _userDal = userDal;
+            _individualCustomerDal = individualCustomerDal;
         }
 
         public List<OperationClaim> GetClaims(User user)
@@ -35,9 +37,18 @@ namespace Business.Concrete
             return new SuccessResult(Messages.UserUpdated);
         }
 
-        public IResult UpdateUserNames(User user)
+        public IResult UpdateUserNames(Entities.DTOs.UserNamesForUpdateDto dto)
         {
-            // Names are resolved polymorphically from Customer records now.
+            var user = _userDal.Get(u => u.Id == dto.Id);
+            if (user == null) return new ErrorResult(Messages.UserNotFound);
+
+            var customer = _individualCustomerDal.Get(c => c.Id == user.CustomerId);
+            if (customer != null)
+            {
+                customer.FirstName = dto.FirstName;
+                customer.LastName = dto.LastName;
+                _individualCustomerDal.Update(customer);
+            }
             return new SuccessResult(Messages.UserUpdated);
         }
 
@@ -88,8 +99,18 @@ namespace Business.Concrete
             return new SuccessResult(Messages.UserUpdated);
         }
 
-        public async Task<IResult> UpdateUserNamesAsync(User user)
+        public async Task<IResult> UpdateUserNamesAsync(Entities.DTOs.UserNamesForUpdateDto dto)
         {
+            var user = await _userDal.GetAsync(u => u.Id == dto.Id);
+            if (user == null) return new ErrorResult(Messages.UserNotFound);
+
+            var customer = await _individualCustomerDal.GetAsync(c => c.Id == user.CustomerId);
+            if (customer != null)
+            {
+                customer.FirstName = dto.FirstName;
+                customer.LastName = dto.LastName;
+                await _individualCustomerDal.UpdateAsync(customer);
+            }
             return new SuccessResult(Messages.UserUpdated);
         }
 
