@@ -12,8 +12,9 @@ C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\obj\Debug\net7.0\B
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\obj\Debug\net7.0\Business.AssemblyInfoInputs.cache
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\obj\Debug\net7.0\Business.AssemblyInfo.cs
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\obj\Debug\net7.0\Business.csproj.CoreCompileInputs.cache
-C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\obj\Debug\net7.0\Business.csproj.CopyComplete
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\obj\Debug\net7.0\Business.dll
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\obj\Debug\net7.0\refint\Business.dll
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\obj\Debug\net7.0\Business.pdb
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\obj\Debug\net7.0\ref\Business.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\obj\Debug\net7.0\Business.sourcelink.json
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Business\obj\Debug\net7.0\Business.csproj.Up2Date

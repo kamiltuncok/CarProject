@@ -10,8 +10,9 @@ namespace DataAccess.Concrete.EntityFramework
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(
-                @"Server=DESKTOP-PH8K0NT\SQLMONSTER;Database=RentACar_V2;Trusted_Connection=true;TrustServerCertificate=True");
+                @"Server=localhost,1433;Database=RentACar;User Id=sa;Password=StrongPass123!;TrustServerCertificate=True");
         }
+        
 
         // ─── Auth / RBAC ────────────────────────────────────────────────────────
         public DbSet<User> Users { get; set; }

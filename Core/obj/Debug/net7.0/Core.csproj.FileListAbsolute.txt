@@ -10,3 +10,4 @@ C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\obj\Debug\net7.0\Core.
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\obj\Debug\net7.0\refint\Core.dll
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\obj\Debug\net7.0\Core.pdb
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\obj\Debug\net7.0\ref\Core.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\obj\Debug\net7.0\Core.sourcelink.json

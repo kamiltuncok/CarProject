@@ -10,8 +10,9 @@ C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\obj\Debug\net7.0
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\obj\Debug\net7.0\DataAccess.AssemblyInfoInputs.cache
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\obj\Debug\net7.0\DataAccess.AssemblyInfo.cs
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\obj\Debug\net7.0\DataAccess.csproj.CoreCompileInputs.cache
-C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\obj\Debug\net7.0\DataAccess.csproj.CopyComplete
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\obj\Debug\net7.0\DataAccess.dll
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\obj\Debug\net7.0\refint\DataAccess.dll
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\obj\Debug\net7.0\DataAccess.pdb
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\obj\Debug\net7.0\ref\DataAccess.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\obj\Debug\net7.0\DataAccess.sourcelink.json
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\DataAccess\obj\Debug\net7.0\DataAccess.csproj.Up2Date

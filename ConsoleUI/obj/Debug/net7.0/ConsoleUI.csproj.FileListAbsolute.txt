@@ -112,9 +112,10 @@ C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\ConsoleUI\obj\Debug\net7.0\
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\ConsoleUI\obj\Debug\net7.0\ConsoleUI.AssemblyInfoInputs.cache
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\ConsoleUI\obj\Debug\net7.0\ConsoleUI.AssemblyInfo.cs
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\ConsoleUI\obj\Debug\net7.0\ConsoleUI.csproj.CoreCompileInputs.cache
-C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\ConsoleUI\obj\Debug\net7.0\ConsoleUI.csproj.CopyComplete
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\ConsoleUI\obj\Debug\net7.0\ConsoleUI.dll
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\ConsoleUI\obj\Debug\net7.0\refint\ConsoleUI.dll
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\ConsoleUI\obj\Debug\net7.0\ConsoleUI.pdb
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\ConsoleUI\obj\Debug\net7.0\ConsoleUI.genruntimeconfig.cache
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\ConsoleUI\obj\Debug\net7.0\ref\ConsoleUI.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\ConsoleUI\obj\Debug\net7.0\ConsoleUI.sourcelink.json
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\ConsoleUI\obj\Debug\net7.0\ConsoleUI.csproj.Up2Date

@@ -118,11 +118,6 @@ C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\net7.0\We
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\net7.0\Web API.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\net7.0\Web API.RazorAssemblyInfo.cache
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\net7.0\Web API.RazorAssemblyInfo.cs
-C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\net7.0\staticwebassets\msbuild.Web API.Microsoft.AspNetCore.StaticWebAssets.props
-C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\net7.0\staticwebassets\msbuild.build.Web API.props
-C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.Web API.props
-C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.Web API.props
-C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\net7.0\staticwebassets.pack.json
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\net7.0\staticwebassets.build.json
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\net7.0\staticwebassets.development.json
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\net7.0\scopedcss\bundle\Web API.styles.css
@@ -136,6 +131,14 @@ C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\net7.0\We
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\net7.0\Web API.deps.json
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\net7.0\Web API.runtimeconfig.json
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\net7.0\Web API.pdb
-C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\net7.0\Web API.csproj.CopyComplete
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\net7.0\Web API.genruntimeconfig.cache
 C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\net7.0\ref\Web API.dll
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\bin\Debug\net7.0\Web API.staticwebassets.endpoints.json
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\net7.0\rpswa.dswa.cache.json
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\net7.0\Web API.sourcelink.json
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\net7.0\rjimswa.dswa.cache.json
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\net7.0\rjsmrazor.dswa.cache.json
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\net7.0\rjsmcshtml.dswa.cache.json
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\net7.0\staticwebassets.build.json.cache
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\net7.0\staticwebassets.build.endpoints.json
+C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Web API\obj\Debug\net7.0\Web API.csproj.Up2Date
