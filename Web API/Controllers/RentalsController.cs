@@ -67,6 +67,13 @@ namespace Web_API.Controllers
             return BadRequest(result);
         }
 
+                [HttpPost("test-claims")]
+        public IActionResult TestClaims()
+        {
+            var claims = User.Claims.Select(c => new { c.Type, c.Value }).ToList();
+            var authHeader = Request.Headers["Authorization"].ToString();
+            return Ok(new { Claims = claims, IsAuthenticated = User.Identity.IsAuthenticated, AuthHeader = authHeader });
+        }
         [HttpPost("create")]
         public async Task<IActionResult> CreateRental([FromBody] Entities.DTOs.RentalCreateRequestDto request)
         {
