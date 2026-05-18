@@ -1,4 +1,4 @@
-﻿using Business.Abstract;
+using Business.Abstract;
 using Core.Entities.Requests;
 using Newtonsoft.Json.Linq;
 using Entities.Concrete;
@@ -42,13 +42,14 @@ namespace Business.Concrete
                 {
                     CarId = car.Id,
                     CurrentPrice = car.DailyPrice,
-                    RentalCount = rentalCount
+                    RentalCount = rentalCount,
+                    SegmentId = car.SegmentId
                 };
 
                 var json = JsonSerializer.Serialize(request);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await _httpClient.PostAsync("http://127.0.0.1:8000/update-price", content);
+                var response = await _httpClient.PostAsync("http://127.0.0.1:8001/update-price", content);
                 response.EnsureSuccessStatusCode();
 
                 var respJson = await response.Content.ReadAsStringAsync();
@@ -68,7 +69,7 @@ namespace Business.Concrete
 
         public async Task<string> GetRecommendedActionAsync(int carId)
         {
-            var url = $"http://127.0.0.1:8000/api/pricing/recommend?carId={carId}";
+            var url = $"http://127.0.0.1:8001/api/pricing/recommend?carId={carId}";
 
             var response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
