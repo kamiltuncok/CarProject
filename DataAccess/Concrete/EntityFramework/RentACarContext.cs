@@ -1,4 +1,4 @@
-﻿using Core.Entities.Concrete;
+using Core.Entities.Concrete;
 using Entities.Concrete;
 using Entities.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -201,9 +201,12 @@ namespace DataAccess.Concrete.EntityFramework
             modelBuilder.Entity<CarImage>(e =>
             {
                 e.ToTable("CarImages");
-                e.HasKey(ci => ci.CarImageId);
+                e.HasKey(ci => ci.Id);
                 e.Property(ci => ci.ImagePath).HasMaxLength(500);
-                // Note: CarImage uses BrandId/ColorId as reference — no direct Car FK in current design
+                e.HasOne<Car>()
+                    .WithMany()
+                    .HasForeignKey(ci => ci.CarId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             // ─── Rental ───────────────────────────────────────────────────────────

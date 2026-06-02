@@ -14,16 +14,15 @@ namespace Business.Abstract
     {
         IDataResult<List<CarImage>> GetAll();
         Task<IDataResult<List<CarImage>>> GetAllAsync();
-        IDataResult<CarImage> GetById(int carimageid);
-        Task<IDataResult<CarImage>> GetByIdAsync(int carimageid);
+        IDataResult<CarImage> GetById(int id);
+        Task<IDataResult<CarImage>> GetByIdAsync(int id);
         IResult Add(IFormFile file, CarImage carImage);
         Task<IResult> AddAsync(IFormFile file, CarImage carImage);
         IResult Update(CarImage carImage, IFormFile file);
         Task<IResult> UpdateAsync(CarImage carImage, IFormFile file);
         IResult Delete(CarImage carImage);
         Task<IResult> DeleteAsync(CarImage carImage);
-        IDataResult<CarImage> GetCarImageByColorAndBrandId(int brandId, int colorId);
-        Task<IDataResult<CarImage>> GetCarImageByColorAndBrandIdAsync(int brandId, int colorId);
+        IDataResult<List<CarImage>> GetByCarId(int carId);
+        Task<IDataResult<List<CarImage>>> GetByCarIdAsync(int carId);
     }
 }
-

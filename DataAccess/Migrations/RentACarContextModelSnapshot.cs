@@ -200,23 +200,22 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.Concrete.CarImage", b =>
                 {
-                    b.Property<int>("CarImageId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CarImageId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BrandId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ColorId")
+                    b.Property<int>("CarId")
                         .HasColumnType("int");
 
                     b.Property<string>("ImagePath")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.HasKey("CarImageId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
 
                     b.ToTable("CarImages", (string)null);
                 });
@@ -571,6 +570,15 @@ namespace DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("SegmentId")
                         .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Entities.Concrete.CarImage", b =>
+                {
+                    b.HasOne("Entities.Concrete.Car", null)
+                        .WithMany()
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
