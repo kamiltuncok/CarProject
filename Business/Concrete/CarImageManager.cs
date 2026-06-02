@@ -1,20 +1,17 @@
 using Business.Abstract;
-using Business.Constants;
 using Core.Utilities.Helpers;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
     public class CarImageManager : ICarImageService
     {
-        ICarImageDal _carImageDal;
+        private readonly ICarImageDal _carImageDal;
 
         public CarImageManager(ICarImageDal carImageDal)
         {
@@ -40,21 +37,22 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll());
         }
 
-        public IDataResult<CarImage> GetById(int carimageid)
+        public IDataResult<CarImage> GetById(int id)
         {
-            return new SuccessDataResult<CarImage>(_carImageDal.Get(c => c.CarImageId == carimageid));
+            return new SuccessDataResult<CarImage>(_carImageDal.Get(c => c.Id == id));
         }
 
-        public IDataResult<CarImage> GetCarImageByColorAndBrandId(int brandId, int colorId)
+        public IDataResult<List<CarImage>> GetByCarId(int carId)
         {
-            return new SuccessDataResult<CarImage>(_carImageDal.Get(i => i.BrandId == brandId && i.ColorId == colorId));
+            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(c => c.CarId == carId));
         }
 
         public IResult Update(CarImage carImage, IFormFile file)
         {
-            carImage.ImagePath = FileHelper.Update(_carImageDal.Get(p => p.CarImageId == carImage.CarImageId).ImagePath, file);
+            var existingImage = _carImageDal.Get(p => p.Id == carImage.Id);
+            carImage.ImagePath = FileHelper.Update(existingImage?.ImagePath, file);
             _carImageDal.Update(carImage);
-            return new SuccessResult("Resim g?ncellendi");
+            return new SuccessResult("Resim güncellendi");
         }
 
         public async Task<IResult> AddAsync(IFormFile file, CarImage carImage)
@@ -76,22 +74,22 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarImage>>(await _carImageDal.GetAllAsync());
         }
 
-        public async Task<IDataResult<CarImage>> GetByIdAsync(int carimageid)
+        public async Task<IDataResult<CarImage>> GetByIdAsync(int id)
         {
-            return new SuccessDataResult<CarImage>(await _carImageDal.GetAsync(c => c.CarImageId == carimageid));
+            return new SuccessDataResult<CarImage>(await _carImageDal.GetAsync(c => c.Id == id));
+        }
+
+        public async Task<IDataResult<List<CarImage>>> GetByCarIdAsync(int carId)
+        {
+            return new SuccessDataResult<List<CarImage>>(await _carImageDal.GetAllAsync(c => c.CarId == carId));
         }
 
         public async Task<IResult> UpdateAsync(CarImage carImage, IFormFile file)
         {
-            var existingImage = await _carImageDal.GetAsync(p => p.CarImageId == carImage.CarImageId);
-            carImage.ImagePath = FileHelper.Update(existingImage.ImagePath, file);
+            var existingImage = await _carImageDal.GetAsync(p => p.Id == carImage.Id);
+            carImage.ImagePath = FileHelper.Update(existingImage?.ImagePath, file);
             await _carImageDal.UpdateAsync(carImage);
-            return new SuccessResult("Resim g?ncellendi");
-        }
-
-        public async Task<IDataResult<CarImage>> GetCarImageByColorAndBrandIdAsync(int brandId, int colorId)
-        {
-            return new SuccessDataResult<CarImage>(await _carImageDal.GetAsync(i => i.BrandId == brandId && i.ColorId == colorId)); 
+            return new SuccessResult("Resim güncellendi");
         }
     }
 }

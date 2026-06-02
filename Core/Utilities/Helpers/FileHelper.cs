@@ -1,84 +1,76 @@
-﻿using Core.Utilities.Results;
+using Core.Utilities.Results;
 using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Core.Utilities.Helpers
 {
-   public class FileHelper
+    public class FileHelper
     {
+        private static string ImageDirectory => Path.Combine(Environment.CurrentDirectory, "wwwroot", "Uploads", "Images");
+
         public static string Add(IFormFile file)
         {
-            var result = newPath(file);
+            if (!Directory.Exists(ImageDirectory))
+            {
+                Directory.CreateDirectory(ImageDirectory);
+            }
+
+            var extension = Path.GetExtension(file.FileName);
+            var newFileName = Guid.NewGuid().ToString("N") + extension;
+            var fullPath = Path.Combine(ImageDirectory, newFileName);
+
             try
             {
-                var sourcePath = Path.GetTempFileName();
-                if (file.Length > 0)
+                using (var stream = new FileStream(fullPath, FileMode.Create))
                 {
-                    using (var stream = new FileStream(sourcePath, FileMode.Create))
-                    {
-                        file.CopyTo(stream);
-                    }
+                    file.CopyTo(stream);
                 }
-
-                File.Move(sourcePath, result.newPath);
             }
             catch (Exception exception)
             {
                 return exception.Message;
             }
 
-            return result.Path2;
+            return newFileName;
         }
 
-        public static string Update(string sourcePath, IFormFile file)
+        public static string Update(string oldFileName, IFormFile file)
         {
-            var result = newPath(file);
-            try
+            if (!string.IsNullOrEmpty(oldFileName))
             {
-                if (file.Length > 0)
+                var oldFullPath = Path.Combine(ImageDirectory, oldFileName);
+                if (File.Exists(oldFullPath))
                 {
-                    using (var stream = new FileStream(sourcePath, FileMode.Create))
+                    try
                     {
-                        file.CopyTo(stream);
+                        File.Delete(oldFullPath);
+                    }
+                    catch { }
+                }
+            }
+            return Add(file);
+        }
+
+        public Core.Utilities.Results.IResult Delete(string fileName)
+        {
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                var fullPath = Path.Combine(ImageDirectory, fileName);
+                if (File.Exists(fullPath))
+                {
+                    try
+                    {
+                        File.Delete(fullPath);
+                    }
+                    catch (Exception exception)
+                    {
+                        return new ErrorResult(exception.Message);
                     }
                 }
-                File.Delete(sourcePath);
-            }
-            catch (Exception exception)
-            {
-                return exception.Message;
-            }
-            return result.Path2;
-        }
-
-        public IResult Delete(string path)
-        {
-            try
-            {
-                File.Delete(path);
-            }
-            catch (Exception exception)
-            {
-                return new ErrorResult(exception.Message);
             }
 
             return new SuccessResult();
-        }
-
-        private static (string newPath, string Path2) newPath(IFormFile file)
-        {
-            FileInfo fileInfo = new FileInfo(file.FileName);
-            string fileExtansion = fileInfo.Extension;
-
-
-            string path = Environment.CurrentDirectory + @"\wwwroot\";
-            var newPath = Guid.NewGuid().ToString("N") + fileExtansion;
-
-            string result = $@"{path}\{newPath}";
-            return (result, $"\\Images\\{newPath}");
         }
 
         private static bool IsValidImage(IFormFile file)

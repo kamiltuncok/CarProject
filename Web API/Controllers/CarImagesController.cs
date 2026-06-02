@@ -1,8 +1,8 @@
 using Business.Abstract;
+using DataAccess.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,11 +13,13 @@ namespace Web_API.Controllers
     [ApiController]
     public class CarImagesController : ControllerBase
     {
-        ICarImageService _carImageService;
+        private readonly ICarImageService _carImageService;
+
         public CarImagesController(ICarImageService carImageService)
         {
             _carImageService = carImageService;
         }
+
         [HttpPost]
         public async Task<IActionResult> Add([FromForm] IFormFile file, [FromForm] CarImage carImage)
         {
@@ -28,10 +30,15 @@ namespace Web_API.Controllers
             }
             return BadRequest(result);
         }
+
         [HttpPut]
-        public async Task<IActionResult> Update([FromForm(Name = ("Image"))] IFormFile file, [FromForm(Name = ("Id"))] int id)
+        public async Task<IActionResult> Update([FromForm(Name = "Image")] IFormFile file, [FromForm(Name = "Id")] int id)
         {
             var carImage = (await _carImageService.GetByIdAsync(id)).Data;
+            if (carImage == null)
+            {
+                return BadRequest("Resim bulunamadı.");
+            }
             var result = await _carImageService.UpdateAsync(carImage, file);
             if (result.Success)
             {
@@ -39,6 +46,7 @@ namespace Web_API.Controllers
             }
             return BadRequest(result);
         }
+
         [HttpDelete]
         public async Task<IActionResult> Delete(CarImage carImage)
         {
@@ -49,6 +57,7 @@ namespace Web_API.Controllers
             }
             return BadRequest(result);
         }
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -59,10 +68,11 @@ namespace Web_API.Controllers
             }
             return BadRequest(result);
         }
-        [HttpGet("{carId}")]
-        public async Task<IActionResult> GetById(int carId)
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = await _carImageService.GetByIdAsync(carId);
+            var result = await _carImageService.GetByIdAsync(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -70,17 +80,15 @@ namespace Web_API.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("brand/{brandId}/color/{colorId}")]
-        public async Task<IActionResult> GetCarImageByColorAndBrandId(int brandId, int colorId)
+        [HttpGet("car/{carId}")]
+        public async Task<IActionResult> GetByCarId(int carId)
         {
-            var result = await _carImageService.GetCarImageByColorAndBrandIdAsync(brandId, colorId);
+            var result = await _carImageService.GetByCarIdAsync(carId);
             if (result.Success)
             {
                 return Ok(result);
             }
             return BadRequest(result);
         }
-
     }
 }
-
