@@ -1,3 +1,4 @@
+using System;
 using Core.Entities.Concrete;
 using Entities.Concrete;
 using Entities.Enums;
@@ -9,8 +10,22 @@ namespace DataAccess.Concrete.EntityFramework
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(
-                @"REDACTED_CONNECTION_STRING");
+            if (optionsBuilder.IsConfigured)
+                return;
+
+            // Bağlantı dizesi ARTIK kaynak kodda gömülü değil. Uygulama çalışırken
+            // Startup.ConfigureServices bu ortam değişkenini appsettings.Local.json'daki
+            // ConnectionStrings:RentACar değerinden set eder. Tasarım-zamanı (dotnet ef) veya
+            // ConsoleUI için ortam değişkenini elle ayarlayın.
+            var connectionString = Environment.GetEnvironmentVariable("RENTACAR_CONNECTION_STRING");
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                throw new InvalidOperationException(
+                    "Veritabanı bağlantı dizesi bulunamadı. 'Web API/appsettings.Local.json' içinde " +
+                    "ConnectionStrings:RentACar tanımlayın ya da RENTACAR_CONNECTION_STRING ortam değişkenini ayarlayın.");
+            }
+
+            optionsBuilder.UseSqlServer(connectionString);
         }
         
 

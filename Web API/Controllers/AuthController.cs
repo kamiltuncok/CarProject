@@ -1,5 +1,6 @@
 using Business.Abstract;
 using Entities.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -118,6 +119,7 @@ namespace Web_API.Controllers
         }
 
         [HttpPut("password")]
+        [Authorize] // Anonim parola değişimi (hesap ele geçirme) engellendi.
         public async Task<ActionResult> UpdatePassword(UserForPasswordDto userForPasswordDto)
         {
             var result = await _authService.UpdatePasswordAsync(userForPasswordDto, userForPasswordDto.NewPassword);

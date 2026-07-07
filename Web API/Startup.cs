@@ -36,6 +36,14 @@ namespace Web_API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Sırları git'e girmeyen appsettings.Local.json'dan al ve DbContext'in okuyabilmesi için
+            // bağlantı dizesini process ortam değişkenine köprüle (parametresiz DbContext new'lendiği için).
+            var connectionString = Configuration.GetConnectionString("RentACar");
+            if (!string.IsNullOrWhiteSpace(connectionString))
+            {
+                Environment.SetEnvironmentVariable("RENTACAR_CONNECTION_STRING", connectionString);
+            }
+
             services.AddControllersWithViews();
 
             services.AddCors();
@@ -46,6 +54,12 @@ namespace Web_API
             services.AddHttpClient<IPricingService, PricingManager>();
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
+            if (tokenOptions == null || string.IsNullOrWhiteSpace(tokenOptions.SecurityKey))
+            {
+                throw new InvalidOperationException(
+                    "JWT SecurityKey yapılandırılmamış. 'Web API/appsettings.Local.json' içinde TokenOptions:SecurityKey " +
+                    "tanımlayın ya da TokenOptions__SecurityKey ortam değişkenini ayarlayın.");
+            }
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -84,7 +98,10 @@ namespace Web_API
 
             app.ConfigureCustomExceptionMiddleware();
 
-            app.UseHangfireDashboard("/hangfire");
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                Authorization = new[] { new Web_API.Security.HangfireDashboardAuthorizationFilter() }
+            });
 
             app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod());
 

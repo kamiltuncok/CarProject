@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -44,6 +45,7 @@ namespace Web_API.Controllers
 
         // POST api/cars
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Post([FromBody] CarCreateDto carDto)
         {
             var result = await _carService.AddAsync(carDto);
@@ -53,6 +55,7 @@ namespace Web_API.Controllers
 
         // PUT api/cars/5
         [HttpPut("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Update(int id, [FromBody] CarUpdateDto carDto)
         {
             carDto.Id = id; // Ensure ID matches URL
@@ -63,6 +66,7 @@ namespace Web_API.Controllers
 
         // DELETE api/cars/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _carService.DeleteAsync(id);
@@ -121,6 +125,7 @@ namespace Web_API.Controllers
 
         // GET api/cars/5/recommended-price
         [HttpGet("{carId}/recommended-price")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> GetRecommendedPrice(int carId)
         {
             try
@@ -128,14 +133,16 @@ namespace Web_API.Controllers
                 var action = await _pricingService.GetRecommendedActionAsync(carId);
                 return Ok(new { CarId = carId, RecommendedAction = action });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return StatusCode(500, new { Message = ex.Message, StackTrace = ex.StackTrace });
+                // İç detay/stack trace istemciye sızdırılmaz.
+                return StatusCode(500, new { Message = "Fiyat önerisi alınamadı." });
             }
         }
 
         // POST api/cars/5/update-price
         [HttpPost("{carId}/update-price")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> UpdatePrice(int carId)
         {
             string action = await _pricingService.GetRecommendedActionAsync(carId);
@@ -147,6 +154,7 @@ namespace Web_API.Controllers
 
         // POST api/cars/update-prices-batch
         [HttpPost("update-prices-batch")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> UpdateAllPrices()
         {
             try
@@ -154,9 +162,9 @@ namespace Web_API.Controllers
                 var result = await _pricingService.UpdateAllPricesAsync();
                 return Ok(result);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return StatusCode(500, new { message = "Fiyat güncelleme sırasında bir hata oluştu.", details = ex.Message });
+                return StatusCode(500, new { message = "Fiyat güncelleme sırasında bir hata oluştu." });
             }
         }
 
