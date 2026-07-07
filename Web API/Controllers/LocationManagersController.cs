@@ -1,6 +1,7 @@
 using Business.Abstract;
 using Business.BusinessAspects.Autofac;
 using Entities.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -8,6 +9,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "admin")] // Framework düzeyi gerçek yetki kontrolü (inert [SecuredOperation] yerine).
     public class LocationManagersController : ControllerBase
     {
         private ILocationManagerUserService _locationManagerUserService;

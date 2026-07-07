@@ -22,6 +22,12 @@ namespace Web_API
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((context, config) =>
+                {
+                    // Sırlar (JWT SecurityKey, ConnectionStrings) git'e girmeyen bu dosyadan gelir.
+                    config.AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true);
+                    config.AddEnvironmentVariables();
+                })
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureContainer<ContainerBuilder>(builder =>
                 {
