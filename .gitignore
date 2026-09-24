@@ -63,9 +63,17 @@ Desktop.ini
 
 # ── Build / restore logs and scratch files ─────────────────────────────────
 *.log
-build_*.txt
-core_err*.txt
-*build_err*.txt
+**/*.log
+*.txt
+**/*.txt
+!**/LICENSE*
+!**/license*
+*.tmp
+*.temp
+*.bak
+$*
+refactor_*.js
+update_*.js
 
 # ── EF Core migrations design-time artifacts ──────────────────────────────
 # (Migrations/*.cs files are tracked; only auto-generated cache is excluded)

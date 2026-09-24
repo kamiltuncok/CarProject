@@ -1,6 +1,0 @@
-﻿MSBuild version 17.6.1+8ffc3fe3d for .NET
-  Geri y├╝klenecek projeler belirleniyor...
-  Geri y├╝kleme i├ğin t├╝m projeler g├╝ncel.
-  Core -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Core\bin\Debug\net7.0\Core.dll
-  Entities -> C:\Users\MONSTER\OneDrive\Belgeler\GitHub\CarProject\Entities\bin\Debug\net7.0\Entities.dll
-Olu┼şturma iptal edilmeye ├ğal─▒┼ş─▒l─▒yor...
