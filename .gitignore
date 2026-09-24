@@ -1,16 +1,71 @@
-# Secrets - must never be committed
-Web API/appsettings.json
+# ============================================================================
+# .gitignore — CarProject (.NET / ASP.NET Core)
+# ============================================================================
+
+# ── Secrets & local configuration ──────────────────────────────────────────
+# appsettings.json is tracked (contains safe defaults, no secrets).
+# appsettings.Local.json holds real secrets and must NEVER be committed.
 Web API/appsettings.Local.json
 
-# Uploaded user content
-Web API/wwwroot/Uploads/
-
-# Build output
+# ── Build output ───────────────────────────────────────────────────────────
 [Bb]in/
 [Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+bld/
+[Ll]og/
+[Ll]ogs/
+*.nupkg
+*.snupkg
 
-# Build/restore logs and scratch files
+# ── NuGet ──────────────────────────────────────────────────────────────────
+**/packages/*
+!**/packages/build/
+*.nuget.props
+*.nuget.targets
+
+# ── Visual Studio / IDE ───────────────────────────────────────────────────
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+.vscode/
+*.code-workspace
+
+# ── Rider / JetBrains ─────────────────────────────────────────────────────
+.idea/
+*.sln.iml
+
+# ── Test results ───────────────────────────────────────────────────────────
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+TestResult.xml
+
+# ── User uploads & runtime data ───────────────────────────────────────────
+Web API/wwwroot/Uploads/
+
+# ── Docker & infra ─────────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+docker-compose.override.yml
+
+# ── OS-generated files ─────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*~
+
+# ── Build / restore logs and scratch files ─────────────────────────────────
 *.log
 build_*.txt
 core_err*.txt
 *build_err*.txt
+
+# ── EF Core migrations design-time artifacts ──────────────────────────────
+# (Migrations/*.cs files are tracked; only auto-generated cache is excluded)
