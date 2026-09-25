@@ -1,22 +1,54 @@
-# CarProject — Car Rental Backend & Dynamic Pricing API
+# CarProject — Car Rental Enterprise Backend & Dynamic Pricing API
 
-A multi-layered ASP.NET Core RESTful backend for an enterprise car rental management platform. It implements clean architecture separation (Core, Entities, DataAccess, Business, Web API) with Aspect-Oriented Programming (AOP) via Autofac and Castle DynamicProxy, JWT authentication with granular role/claim management, Entity Framework Core with SQL Server, Hangfire background task scheduling, and an integration layer with a reinforcement learning dynamic pricing engine.
+<div align="center">
 
-This repository serves as the **core backend**. The companion Angular frontend is located in [rentacar](https://github.com/kamiltuncok/rentacar).
+![.NET 7](https://img.shields.io/badge/.NET-7.0-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
+![C#](https://img.shields.io/badge/C%23-11.0-239120?style=for-the-badge&logo=c-sharp&logoColor=white)
+![EF Core](https://img.shields.io/badge/EF_Core-7.0-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
+![Microsoft SQL Server](https://img.shields.io/badge/SQL_Server-2019%2B-CC292B?style=for-the-badge&logo=microsoft-sql-server&logoColor=white)
+![Autofac AOP](https://img.shields.io/badge/Autofac-AOP_DynamicProxy-F15A24?style=for-the-badge)
+![Hangfire](https://img.shields.io/badge/Hangfire-Background_Jobs-8A2BE2?style=for-the-badge)
+![JWT Auth](https://img.shields.io/badge/JWT-HMAC--SHA512-000000?style=for-the-badge&logo=json-web-tokens&logoColor=white)
+
+**A high-performance, N-tier ASP.NET Core REST API featuring Aspect-Oriented Programming (AOP), dynamic reinforcement learning price adjustment proxying, and multi-tenant claim authorization.**
+
+[Live API Endpoints](#api-overview--route-matrix) • [Architecture Guide](#system-architecture) • [Quick Setup](#getting-started--local-setup) • [Frontend Client](https://github.com/kamiltuncok/rentacar)
+
+</div>
 
 ---
 
-## Recruiter & Engineering Summary
-
-- **Primary Stack**: .NET 7 / ASP.NET Core Web API, C#, Entity Framework Core, SQL Server, Autofac (AOP / DynamicProxy), FluentValidation, Hangfire, JWT.
-- **Key Engineering Highlights**: Strict N-tier modular architecture, custom interceptor-based cross-cutting concerns (caching, transactions, validation, performance profiling, role security), asynchronous batch processing with EFCore.BulkExtensions, and periodic background price adjustment scheduling.
-- **Primary Technical Challenge**: Decoupling cross-cutting infrastructure from domain business logic using dynamic proxy interception, and orchestrating batch price recomputations with an external reinforcement learning service without blocking database operations or exposing the ML service directly to clients.
+> ### 📋 GitHub Repository Metadata
+> * **Description:** Enterprise ASP.NET Core 7 car rental backend featuring Autofac AOP interceptors, EF Core, Hangfire batch scheduling, and RL dynamic pricing proxy.
+> * **Topics:** `aspnetcore`, `csharp`, `dotnet-7`, `entity-framework-core`, `autofac-aop`, `clean-architecture`, `hangfire`, `dynamic-pricing`, `jwt`, `sql-server`
 
 ---
 
-## System Architecture
+## 📖 Executive Summary & Core Value
 
-The solution follows a strict onion / layered architecture where each layer depends only on abstractions of inner or core layers:
+CarProject is a multi-layered enterprise backend providing comprehensive vehicle fleet management, location administration, and transactional rental operations. The platform is designed around two key operational pillars:
+1. **Fleet & Rental Operations:** Branch and vehicle inventory CRUD, multi-attribute filtering (Brand, Color, Segment, Fuel, Gear, Branch), reservation processing, customer claim verification, and Findeks score checks.
+2. **Algorithmic Dynamic Pricing:** Coordinates batch pricing adjustments powered by an internal Python FastAPI Q-learning reinforcement learning microservice. Automated recurring repricing cycles are orchestrated via **Hangfire** and written in high-throughput batches using **EFCore.BulkExtensions**.
+
+The architecture adheres to strict **Onion / Clean Architecture** principles, utilizing **Autofac** and **Castle DynamicProxy** to decouple cross-cutting concerns (caching, logging, validation, security, and transactions) from domain managers.
+
+---
+
+## 🎯 Evaluator Guide: Key Architectural Highlights
+
+If you are an evaluator or technical recruiter reviewing code quality, here are the best starting points:
+
+| Evaluated Concept | Key Implementation Files | Key Takeaway |
+|---|---|---|
+| **Aspect-Oriented Programming (AOP)** | `Core/Aspects/Autofac/` & `Business/BusinessAspects/` | Declarative method-level attributes (`[SecuredOperation]`, `[ValidationAspect]`, `[CacheAspect]`, `[PerformanceAspect]`, `[TransactionScopeAspect]`). |
+| **RL Dynamic Pricing Reverse Proxy** | [`PricingManager.cs`](file:///c:/Users/MONSTER/OneDrive/Belgeler/GitHub/CarProject/Business/Concrete/PricingManager.cs) | Acts as a secure intermediary for an internal ML microservice; aggregates fleet metrics, sends batch requests, and updates SQL Server via `EFCore.BulkExtensions`. |
+| **Generic EF Repository Base** | `Core/DataAccess/EntityFramework/EfEntityRepositoryBase.cs` | Universal, strongly-typed CRUD repository base with LINQ expression filtering and include joins. |
+| **Unified Result Contracts** | `Core/Utilities/Results/` | Polymorphic `IDataResult<T>`, `IResult`, `SuccessDataResult<T>`, and `ErrorDataResult<T>` envelopes. |
+| **Background Job Scheduling** | [`Startup.cs`](file:///c:/Users/MONSTER/OneDrive/Belgeler/GitHub/CarProject/Web%20API/Startup.cs) & `PricingManager` | Hangfire recurring jobs (`RecurringJob.AddOrUpdate`) executing automated fleet repricing without blocking user requests. |
+
+---
+
+## 🏛️ System Architecture
 
 ```mermaid
 flowchart TB
@@ -96,122 +128,45 @@ flowchart TB
     Managers <==>|"Secure Reverse Proxy (HTTP Client)"| PythonRL
 ```
 
-### Layer Responsibilities
-
-1. **`Core`**: Reusable framework layer completely independent of the business domain. Provides generic repository patterns (`IEntityRepository`, `EfEntityRepositoryBase`), standardized result wrappers (`IDataResult<T>`, `IResult`), security primitives (JWT helper, hashing, encryption), and Autofac dynamic proxy interceptors.
-2. **`Entities`**: Domain models and Data Transfer Objects (DTOs). Contains concrete business entities (`Car`, `Rental`, `Brand`, `Color`, `Customer`, `IndividualCustomer`, `CorporateCustomer`, `Location`, `PriceDecision`, etc.) and aggregated DTOs (`CarDetailDto`, `RentalDetailDto`, `CustomerDetailDto`).
-3. **`DataAccess`**: Concrete database mapping via Entity Framework Core (`RentACarContext`), entity configurations, and custom Linq/Join queries in specialized DAL classes.
-4. **`Business`**: Domain rules, business logic validation (`FluentValidation`), business managers implementing interfaces, and Autofac dependency injection modules.
-5. **`Web API`**: ASP.NET Core controllers exposing RESTful endpoints, JWT middleware, CORS policy, custom global exception handling middleware, and Hangfire dashboard configuration.
-6. **`ConsoleUI`**: CLI test runner used for rapid local testing of service workflows.
-
 ---
 
-## Technology Stack
-
-| Category | Technologies |
-|---|---|
-| **Runtime & Framework** | .NET 7 / ASP.NET Core Web API, C# |
-| **Data Access & ORM** | Entity Framework Core 7, EFCore.BulkExtensions, Microsoft SQL Server |
-| **Dependency Injection & AOP** | Autofac 7, Autofac.Extras.DynamicProxy, Castle.Core (DynamicProxy) |
-| **Validation** | FluentValidation |
-| **Authentication & Security** | JWT (System.IdentityModel.Tokens.Jwt), HMAC-SHA512 Password Hashing & Salting |
-| **Background Processing** | Hangfire (Memory Storage & Background Server) |
-| **HTTP Client & Integration** | System.Net.Http, Newtonsoft.Json, System.Text.Json |
-
----
-
-## Key Features & Technical Highlights
-
-### 1. Aspect-Oriented Programming (AOP) with Autofac & DynamicProxy
-Cross-cutting concerns are decoupled from business methods via method-level attributes intercepted at runtime:
-- `[SecuredOperation("admin,car.add")]`: Enforces role/claim authorization via `IHttpContextAccessor` before method execution.
-- `[ValidationAspect(typeof(CarValidator))]`: Intercepts method invocations and validates incoming entities against FluentValidation rules before execution.
-- `[CacheAspect]`: Caches return values in memory using deterministic cache keys.
-- `[CacheRemoveAspect("ICarService.Get")]`: Automatically evicts relevant cache entries upon data mutation (Add/Update/Delete).
-- `[PerformanceAspect(interval: 5)]`: Measures execution time and triggers warnings if a method takes longer than the configured threshold.
-- `[TransactionScopeAspect]`: Wraps transactional operations in an ambient `TransactionScope` with automatic rollback on unhandled exceptions.
-
-### 2. Reinforcement Learning Dynamic Pricing Proxy & Bulk Batching
-- Integrates with an external Python FastAPI Q-learning pricing service.
-- Direct external access to the ML service is blocked; `PricingManager` acts as the secure reverse proxy and coordinator.
-- **N+1 Prevention**: In `UpdateAllPricesAsync()`, active cars and historical rentals are fetched in single consolidated database queries, transformed into batch payloads, and sent to the ML endpoint.
-- **Bulk Database Writes**: Price updates are persisted back to SQL Server using `EFCore.BulkExtensions` (`BulkUpdateAsync`) instead of issuing hundreds of individual SQL `UPDATE` statements.
-- **Recurring Automation**: Integrated with Hangfire recurring jobs (`RecurringJob.AddOrUpdate`) to periodically execute automated fleet repricing cycles.
-
-### 3. Granular Multi-Tenant & Role-Based Authorization
-- Distinguishes between **Individual Customers**, **Corporate Customers**, **Location Managers**, and **System Administrators**.
-- Operation claims are stored in relational database tables (`OperationClaims`, `UserOperationClaims`, `LocationOperationClaims`, `LocationUserRoles`) and injected as claims into signed JWT tokens.
-
-### 4. Resilient Security & Configuration Hygiene
-- Password credentials are stored using unique salt and HMAC-SHA512 hashing (`HashingHelper`).
-- Sensitive connection strings and JWT signing keys are loaded through environment variables (`RENTACAR_CONNECTION_STRING`, `TokenOptions__SecurityKey`) and untracked `appsettings.Local.json` files, preventing secrets from being committed to source control.
-- Global exception handling middleware (`ConfigureCustomExceptionMiddleware`) catches unhandled exceptions and returns RFC 7807-compliant standardized error responses without leaking stack traces.
-
----
-
-## Project Structure
+## 🗂️ Project Structure & Layer Responsibilities
 
 ```
 CarProject/
-├── Business/                      # Business logic, Managers, Validation & Autofac Modules
-│   ├── Abstract/                  # Service interfaces (ICarService, IRentalService, etc.)
-│   ├── Concrete/                  # Service implementations (CarManager, PricingManager, etc.)
+├── Business/                      # Business & Domain Logic Layer
+│   ├── Abstract/                  # Service interfaces (ICarService, IRentalService, IPricingService)
+│   ├── Concrete/                  # Domain managers implementing business logic
 │   ├── BusinessAspects/Autofac/   # [SecuredOperation] claim authorization aspect
-│   ├── Constants/                 # System messages and HTTP constants
-│   ├── DependencyResolvers/       # AutofacBusinessModule configuration
-│   └── ValidationRules/FluentValidation/ # FluentValidation validators
-├── Core/                          # Universal enterprise framework
-│   ├── Aspects/Autofac/           # Caching, Performance, Transaction, Validation aspects
-│   ├── CrossCuttingConcerns/      # Caching, Logging, and Validation engines
-│   ├── DataAccess/                # Generic IEntityRepository & EF implementation
-│   ├── Entities/                  # IEntity, IDto, User, OperationClaim base models
+│   ├── Constants/                 # Domain response and validation message constants
+│   ├── DependencyResolvers/       # AutofacBusinessModule dependency registration
+│   └── ValidationRules/FluentValidation/ # FluentValidation entity validators
+├── Core/                          # Universal Cross-Cutting Framework (Domain-Agnostic)
+│   ├── Aspects/Autofac/           # Caching, Performance, Transaction, Validation interceptors
+│   ├── CrossCuttingConcerns/      # Caching engines, Logging, and Validation tooling
+│   ├── DataAccess/                # Generic IEntityRepository & EF implementation base
+│   ├── Entities/                  # IEntity, IDto, User, OperationClaim base primitives
 │   ├── Extensions/                # ServiceCollection, Claims, Exception middleware extensions
-│   └── Utilities/                 # Security (JWT, Hashing), Results pattern, IoC helpers
-├── DataAccess/                    # Entity Framework Core DbContext, Migrations, DALs
-│   ├── Abstract/                  # Specific DAL interfaces (ICarDal, IRentalDal, etc.)
-│   ├── Concrete/EntityFramework/  # RentACarContext and Ef*Dal implementations
-│   └── Migrations/                # EF Core schema migration history
-├── Entities/                      # Domain entities and DTOs
+│   └── Utilities/                 # Security (JWT, Hashing, Salting), Results pattern, IoC helpers
+├── DataAccess/                    # Persistence & ORM Layer
+│   ├── Abstract/                  # Entity DAL interfaces (ICarDal, IRentalDal, ICustomerDal)
+│   ├── Concrete/EntityFramework/  # RentACarContext and specialized EF Linq DALs
+│   └── Migrations/                # EF Core Code-First migration snapshots
+├── Entities/                      # Domain Entities & Data Transfer Objects
 │   ├── Concrete/                  # Car, Rental, Brand, Color, Location, PriceDecision, etc.
-│   ├── DTOs/                      # Composite query DTOs (CarDetailDto, RentalDetailDto, etc.)
-│   └── Enums/                     # CarStatus, PaymentStatus, etc.
-├── Web API/                       # ASP.NET Core presentation layer
-│   ├── Controllers/               # REST API Controllers (Cars, Rentals, Auth, etc.)
+│   ├── DTOs/                      # Composite DTOs (CarDetailDto, RentalDetailDto, CustomerDetailDto)
+│   └── Enums/                     # CarStatus, PaymentStatus, FuelType, GearType
+├── Web API/                       # Presentation & Hosting Layer
+│   ├── Controllers/               # REST API Controllers exposing endpoints
 │   ├── Security/                  # HangfireDashboardAuthorizationFilter
 │   ├── Program.cs & Startup.cs    # Pipeline, DI, JWT, CORS, and Hangfire initialization
-│   └── appsettings.json           # Template configuration (secrets git-ignored)
-└── ConsoleUI/                     # Console verification and smoke-test harness
+│   └── appsettings.json           # Configuration template (secrets git-ignored)
+└── ConsoleUI/                     # CLI verification harness for rapid local smoke testing
 ```
 
 ---
 
-## API Overview
-
-All REST API endpoints are exposed under `/api/*`. Key route groups include:
-
-| Controller | Base Route | Key Operations |
-|---|---|---|
-| **Auth** | `/api/auth` | User login (`/login`), register (`/register`), corporate register (`/registerforcorporate`) |
-| **Cars** | `/api/cars` | Fleet CRUD, detail lookups (`/getcardetails`), branch filters (`/getbybranch`), brand/color filters |
-| **Dynamic Pricing** | `/api/cars` | Single car recommendation (`/{id}/recommended-price`), single price update (`/{id}/update-price`), batch update (`/update-prices-batch`), performance metrics (`/pricing/performance`) |
-| **Rentals** | `/api/rentals` | Rental creation (`/add`), return processing (`/return`), active rentals (`/getrentaldetails`) |
-| **Locations & Branches** | `/api/locations` | Location CRUD, city-based branch listings |
-| **Location Managers** | `/api/locationmanagers` | Branch manager management and permission assignment |
-| **Reference Lookups** | `/api/brands`, `/api/colors`, `/api/fuels`, `/api/gears`, `/api/segments` | Master lookup data management |
-| **Car Images** | `/api/carimages` | Car image uploads, deletion, and retrieval |
-| **Users & Customers** | `/api/users`, `/api/customers`, `/api/individualcustomers`, `/api/corporatecustomers` | Customer profiling and claim management |
-
----
-
-## Database & Entity Model
-
-The relational schema is managed through Entity Framework Core Code-First migrations and includes:
-
-- **Fleet Entities**: `Cars`, `Brands`, `Colors`, `Fuels`, `Gears`, `Segments`, `CarImages`.
-- **Location & Organization**: `Locations`, `LocationCities`, `LocationManagers`, `LocationUserRoles`, `LocationOperationClaims`.
-- **Customers & Users**: `Users`, `Customers`, `IndividualCustomers`, `CorporateCustomers`, `OperationClaims`, `UserOperationClaims`.
-- **Transactions & Pricing**: `Rentals`, `Payments`, `PriceDecisions`.
+## 🗄️ Relational Database & Entity Model
 
 ```mermaid
 erDiagram
@@ -310,69 +265,92 @@ erDiagram
 
 ---
 
-## Getting Started
+## ⚡ Key Features & Engineering Highlights
+
+### 1. Aspect-Oriented Programming (AOP) with DynamicProxy
+Cross-cutting infrastructure concerns are intercepted transparently at runtime:
+* `[SecuredOperation("admin,car.add")]`: Role/claim authorization enforced before method execution.
+* `[ValidationAspect(typeof(CarValidator))]`: Intercepts arguments and applies FluentValidation rules.
+* `[CacheAspect]`: Caches return values in memory using deterministic signature keys.
+* `[CacheRemoveAspect("ICarService.Get")]`: Evicts matching cache patterns on data mutation.
+* `[PerformanceAspect(interval: 5)]`: Emits warning logs if method execution exceeds threshold.
+* `[TransactionScopeAspect]`: Wraps execution in an ambient `TransactionScope` with automatic rollback.
+
+### 2. RL Dynamic Pricing Engine & Batch Processing
+* **Secure Reverse Proxy:** The external Python FastAPI RL model is not exposed to the public internet; `PricingManager` authenticates and proxies all pricing requests.
+* **Bulk Database Writes:** Batch updates are committed via `EFCore.BulkExtensions` (`BulkUpdateAsync`), reducing hundreds of database round-trips to a single query.
+* **Automated Recurring Tasks:** Configured with **Hangfire** to execute periodic fleet-wide price optimizations.
+
+---
+
+## 🛠️ Technology Stack
+
+| Domain | Technology |
+|---|---|
+| **Runtime & Framework** | .NET 7 / ASP.NET Core Web API, C# 11 |
+| **Data Access & ORM** | Entity Framework Core 7, EFCore.BulkExtensions, Microsoft SQL Server |
+| **DI & AOP Engine** | Autofac 7, Autofac.Extras.DynamicProxy, Castle.Core |
+| **Validation** | FluentValidation 11 |
+| **Security & Auth** | JWT (System.IdentityModel.Tokens.Jwt), HMAC-SHA512 Hashing & Salting |
+| **Background Processing** | Hangfire (Memory Storage & Background Server) |
+| **Integration** | HttpClient, System.Text.Json, Newtonsoft.Json |
+
+---
+
+## 🚀 Getting Started & Local Setup
 
 ### Prerequisites
+* **.NET 7 SDK:** Version 7.0+
+* **Microsoft SQL Server:** 2019+ (LocalDB, SQL Express, or Docker)
+* **Optional (Python RL Service):** Python 3.10+ if running the dynamic pricing microservice locally.
 
-- [.NET 7 SDK](https://dotnet.microsoft.com/download/dotnet/7.0)
-- [Microsoft SQL Server](https://www.microsoft.com/en-us/sql-server/) (local instance or Docker container)
-- Optional: Python 3.10+ (if running the RL pricing companion microservice locally)
-
-### 1. Configuration Setup
-
-Create a `Web API/appsettings.Local.json` file (or set environment variables) to provide required database and cryptographic secrets:
-
+### 1. Database Configuration
+Create a `Web API/appsettings.Local.json` file in the project (or set environment variables):
 ```json
 {
   "ConnectionStrings": {
-    "RentACar": "Server=localhost,1433;Database=RentACar;User Id=sa;Password=YourSecurePassword123!;TrustServerCertificate=True;"
+    "RentACarContext": "Server=localhost;Database=RentACarDB;Trusted_Connection=True;TrustServerCertificate=True;"
   },
   "TokenOptions": {
-    "Audience": "www.rentacar.com",
-    "Issuer": "www.rentacar.com",
+    "Audience": "rentacar@rentacar.com",
+    "Issuer": "rentacar@rentacar.com",
     "AccessTokenExpiration": 60,
-    "SecurityKey": "your-super-secret-jwt-key-with-minimum-256-bits-length"
+    "SecurityKey": "YourSuperSecret256BitKeyForJwtSigningMustBeLongEnough"
   }
 }
 ```
 
-Alternatively, configure environment variables:
-```powershell
-$env:RENTACAR_CONNECTION_STRING = "Server=localhost,1433;Database=RentACar;User Id=sa;Password=YourSecurePassword123!;TrustServerCertificate=True;"
-$env:TokenOptions__SecurityKey = "your-super-secret-jwt-key-with-minimum-256-bits-length"
-```
-
-### 2. Apply Migrations & Seed Database
-
+### 2. Apply EF Core Migrations
 ```bash
-dotnet ef database update --project DataAccess --startup-project "Web API"
+cd "Web API"
+dotnet ef database update --project ../DataAccess
 ```
 
-### 3. Run the Backend Web API
-
+### 3. Run the Backend API
 ```bash
 dotnet run --project "Web API"
 ```
-
-The API service starts on `https://localhost:44306` (or `http://localhost:5000`).
-- **Hangfire Dashboard**: `https://localhost:44306/hangfire`
+The API server will initialize on **`https://localhost:44306`** and **`http://localhost:5000`**.
 
 ---
 
-## Engineering Decisions & Trade-offs
+## 📡 API Overview & Route Matrix
 
-1. **Autofac & Castle DynamicProxy over Standard ASP.NET Core Action Filters**:
-   - *Rationale*: Action Filters only intercept HTTP requests at the controller boundary. Using Autofac dynamic proxy interceptors enables cross-cutting concerns (validation, caching, security checks) directly on service interface methods, making the business layer testable and reusable outside an HTTP context (e.g. CLI or background jobs).
-2. **Bulk Extensions for Batch Price Updates**:
-   - *Rationale*: When updating prices across hundreds of vehicles simultaneously from the RL engine, standard EF Core `SaveChanges` generates individual parameter queries. `EFCore.BulkExtensions` executes high-performance batch SQL statements, reducing database roundtrips.
-3. **In-Memory Hangfire Storage vs Persistent Job Storage**:
-   - *Current Decision*: Hangfire uses in-memory storage for development convenience and recurring job triggering.
-   - *Limitation*: Job state does not persist across application restarts.
+| Controller | Route | Description |
+|---|---|---|
+| **Auth** | `/api/auth/login`, `/api/auth/register` | Authentication, JWT issuance, and claim assignment |
+| **Cars** | `/api/cars/getcardetails` | Fleet catalogue with Brand, Color, Fuel, Gear, and Branch joins |
+| **Dynamic Pricing** | `/api/cars/{id}/recommended-price` | Single-car ML recommendation |
+| **Batch Pricing** | `/api/cars/update-prices-batch` | Fleet-wide bulk repricing execution |
+| **Pricing Analytics** | `/api/cars/pricing/performance` | RL model vs control group utilization and revenue |
+| **Rentals** | `/api/rentals/add`, `/api/rentals/return` | Booking validation, date conflicts, return processing |
+| **Locations** | `/api/locations/getall` | Geographic branches and coordinates for Leaflet maps |
+| **Reference Data** | `/api/brands`, `/api/colors`, `/api/fuels` | Vehicle master lookup data |
 
 ---
 
-## Known Limitations & Roadmap
+## 🔒 Security Best Practices & Configuration Hygiene
 
-- **Unit & Integration Test Coverage**: The core architecture includes validation and business layers, but unit/integration tests with Moq/xUnit need to be expanded.
-- **SQL Server Connection Pooling**: Requires production-grade database retry policies with EF Core execution strategies (`EnableRetryOnFailure`).
-- **Distributed Caching**: The current caching aspect uses in-memory caching (`IMemoryCache`); transitioning to Redis will allow horizontal scaling.
+* **Cryptographic Salting:** User passwords are stored as `password_hash` and unique `password_salt` via HMAC-SHA512.
+* **Secret Isolation:** Database connection strings and JWT keys reside in untracked `appsettings.Local.json` or environment variables (`RENTACAR_CONNECTION_STRING`).
+* **RFC 7807 Standard Error Responses:** Global exception middleware intercepts all unhandled errors, ensuring no stack traces or database errors leak to clients.
