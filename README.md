@@ -19,49 +19,81 @@ This repository serves as the **core backend**. The companion Angular frontend i
 The solution follows a strict onion / layered architecture where each layer depends only on abstractions of inner or core layers:
 
 ```mermaid
-flowchart TD
-    Client["Client Applications<br/>(Angular Frontend: rentacar)"]
-    
-    subgraph WebAPI ["Web API Layer"]
-        Controllers["API Controllers<br/>(Cars, Rentals, Auth, Locations, etc.)"]
-        AuthFilter["JWT Bearer Authentication<br/>& Hangfire Auth Filter"]
-        Middleware["Custom Exception Middleware"]
-    end
-    
-    subgraph BusinessLayer ["Business Layer"]
-        Managers["Service Managers<br/>(CarManager, RentalManager, AuthManager, PricingManager)"]
-        Validation["FluentValidation Rules"]
-        AOP["Autofac AOP Interceptors<br/>(SecuredOperation, Cache, Validation, Performance, Transaction)"]
-    end
-    
-    subgraph CoreLayer ["Core Framework Layer"]
-        CrossCutting["Cross-Cutting Concerns<br/>(Memory Cache, Logging, Security)"]
-        BaseRepo["Generic EF Entity Repository Base"]
-        Results["Standardized Result/DataResult Models"]
-    end
-    
-    subgraph DataAccessLayer ["DataAccess Layer"]
-        DbContext["RentACarContext (EF Core)"]
-        DALs["Entity Specific DALs<br/>(EfCarDal, EfRentalDal, EfCustomerDal)"]
-        BulkOps["EFCore.BulkExtensions"]
+flowchart TB
+    %% ================= GLOBAL STYLES =================
+    classDef clientStyle fill:#1e293b,stroke:#38bdf8,stroke-width:2px,color:#f8fafc,rx:8,ry:8;
+    classDef apiStyle fill:#082f49,stroke:#0ea5e9,stroke-width:2px,color:#f8fafc,rx:8,ry:8;
+    classDef businessStyle fill:#064e3b,stroke:#10b981,stroke-width:2px,color:#f8fafc,rx:8,ry:8;
+    classDef aopStyle fill:#4c1d95,stroke:#c084fc,stroke-width:2px,color:#f8fafc,rx:8,ry:8;
+    classDef coreStyle fill:#312e81,stroke:#818cf8,stroke-width:2px,color:#f8fafc,rx:8,ry:8;
+    classDef dataStyle fill:#451a03,stroke:#f59e0b,stroke-width:2px,color:#f8fafc,rx:8,ry:8;
+    classDef infraStyle fill:#0f172a,stroke:#64748b,stroke-width:2px,color:#f8fafc,rx:8,ry:8;
+    classDef mlStyle fill:#701a75,stroke:#f472b6,stroke-width:2px,color:#f8fafc,rx:8,ry:8;
+
+    %% ================= CLIENT TIER =================
+    subgraph ClientTier [" 🌐 CLIENT PRESENTATION LAYER "]
+        Client["Angular 19 Standalone SPA<br/><b>rentacar :4200</b><br/><i>(TypeScript + Bootstrap + Leaflet)</i>"]:::clientStyle
     end
 
-    subgraph ExternalServices ["External Services & Background Processing"]
-        Hangfire["Hangfire Server<br/>(Recurring Cron Jobs)"]
-        RLService["Python FastAPI RL Pricing Service<br/>(Port 8001 / Internal Only)"]
-        SqlServer[("SQL Server Database")]
+    %% ================= BACKEND ONION LAYERS =================
+    subgraph BackendApp [" ⚡ ASP.NET CORE 7 MODULAR BACKEND (:44306) "]
+
+        subgraph WebApiTier [" 📡 Web API Presentation Layer "]
+            Controllers["REST API Controllers<br/><code>/api/cars, /api/rentals, /api/auth</code>"]:::apiStyle
+            JwtAuthFilter{{"JWT Bearer & Role Claims Filter<br/><i>HMAC-SHA512 Verification</i>"}}:::apiStyle
+            ExceptionMiddleware["Global Exception Middleware<br/><i>RFC 7807 Error Contracts</i>"]:::apiStyle
+        end
+
+        subgraph BusinessTier [" ⚙️ Business & Domain Logic Layer "]
+            Managers["Domain Service Managers<br/><i>(CarManager, RentalManager, PricingManager)</i>"]:::businessStyle
+            ValidationRules["FluentValidation Engine<br/><i>(CarValidator, RentalValidator)</i>"]:::businessStyle
+            
+            subgraph AopInterceptors [" 🛡️ Autofac AOP Interception Engine "]
+                SecuredAspect{{"[SecuredOperation]<br/><i>Claim Authorization</i>"}}:::aopStyle
+                CacheAspect["[CacheAspect] / [CacheRemoveAspect]<br/><i>In-Memory Cache Eviction</i>"]:::aopStyle
+                PerfAspect["[PerformanceAspect]<br/><i>Execution Profiling (5s Threshold)</i>"]:::aopStyle
+                TxAspect["[TransactionScopeAspect]<br/><i>Ambient Transaction Rollback</i>"]:::aopStyle
+            end
+        end
+
+        subgraph CoreTier [" 🧱 Enterprise Core Framework Layer "]
+            CrossCutting["Cross-Cutting Concerns<br/><i>(MemoryCache, Serilog, Security Helpers)</i>"]:::coreStyle
+            ResultModels[["Standardized Result Wrappers<br/><i>IDataResult&lt;T&gt;, IResult, SuccessDataResult</i>"]]:::coreStyle
+            BaseRepository[["Generic EF Repository Base<br/><code>EfEntityRepositoryBase&lt;TEntity, TContext&gt;</code>"]]:::coreStyle
+        end
+
+        subgraph DataAccessTier [" 🗄️ DataAccess & Persistence Layer "]
+            DbContext[("EF Core RentACarContext<br/><i>Code-First Schema & Linq Joins</i>")]:::dataStyle
+            EntityDALs["Entity DALs<br/><i>(EfCarDal, EfRentalDal, EfCustomerDal)</i>"]:::dataStyle
+            BulkExtensions[["EFCore.BulkExtensions<br/><i>High-Throughput Batch Writes</i>"]]:::dataStyle
+        end
     end
 
-    Client -->|HTTPS / Bearer JWT| Controllers
-    Controllers --> Managers
-    Managers -.->|Aspect Interception| AOP
-    AOP -.-> CrossCutting
-    Managers --> DALs
-    DALs --> DbContext
-    DbContext --> SqlServer
-    BulkOps --> SqlServer
-    Managers -->|HTTP Client| RLService
-    Hangfire -->|Trigger Batch Updates| Managers
+    %% ================= EXTERNAL & ML INFRASTRUCTURE =================
+    subgraph ExternalTier [" ☁️ INFRASTRUCTURE & MICROSERVICES "]
+        SqlServer[("Microsoft SQL Server Database<br/><i>Relational Storage & Code-First Migrations</i>")]:::infraStyle
+        HangfireServer["Hangfire Background Engine<br/><i>Automated Dynamic Repricing Cron</i>"]:::infraStyle
+        PythonRL["Python FastAPI RL Pricing Service<br/><code>localhost:8001 (Internal Only)</code><br/><i>Q-Learning Pricing Agent</i>"]:::mlStyle
+    end
+
+    %% ================= PIPELINE CONNECTIONS =================
+    Client ==>|"HTTPS / JSON + Bearer JWT"| Controllers
+    Controllers --> JwtAuthFilter
+    JwtAuthFilter --> ExceptionMiddleware
+    ExceptionMiddleware ==> Managers
+
+    Managers -.->|"Aspect Interception"| AopInterceptors
+    AopInterceptors -.-> CrossCutting
+    Managers --> ValidationRules
+    Managers ==> EntityDALs
+    EntityDALs --> BaseRepository
+    BaseRepository ==> DbContext
+    DbContext ==>|"SQL Server Queries"| SqlServer
+    Managers ==>|"Batch Update (BulkUpdateAsync)"| BulkExtensions
+    BulkExtensions ==>|"Bulk SQL Updates"| SqlServer
+
+    HangfireServer -.->|"Trigger Scheduled Fleet Repricing"| Managers
+    Managers <==>|"Secure Reverse Proxy (HTTP Client)"| PythonRL
 ```
 
 ### Layer Responsibilities
@@ -183,24 +215,97 @@ The relational schema is managed through Entity Framework Core Code-First migrat
 
 ```mermaid
 erDiagram
-    Users ||--o{ UserOperationClaims : has
-    OperationClaims ||--o{ UserOperationClaims : assigned
-    Users ||--o| Customers : extends
-    Customers ||--o| IndividualCustomers : "is individual"
-    Customers ||--o| CorporateCustomers : "is corporate"
-    
-    Locations ||--o{ Cars : houses
-    Brands ||--o{ Cars : classifies
-    Colors ||--o{ Cars : styles
-    Segments ||--o{ Cars : categorizes
-    Fuels ||--o{ Cars : powers
-    Gears ||--o{ Cars : equips
-    Cars ||--o{ CarImages : displays
-    
-    Cars ||--o{ Rentals : rented
-    Customers ||--o{ Rentals : books
-    Rentals ||--o{ Payments : generates
-    Cars ||--o{ PriceDecisions : logs
+    USERS ||--o{ USER_OPERATION_CLAIMS : "has"
+    OPERATION_CLAIMS ||--o{ USER_OPERATION_CLAIMS : "defines"
+    USERS ||--o| CUSTOMERS : "extends"
+    CUSTOMERS ||--o| INDIVIDUAL_CUSTOMERS : "is individual"
+    CUSTOMERS ||--o| CORPORATE_CUSTOMERS : "is corporate"
+
+    USERS {
+        int id PK
+        varchar email "UK"
+        varbinary password_hash
+        varbinary password_salt
+        varchar first_name
+        varchar last_name
+        boolean status
+    }
+
+    CUSTOMERS {
+        int user_id PK,FK
+        varchar company_name
+    }
+
+    INDIVIDUAL_CUSTOMERS {
+        int customer_id PK,FK
+        varchar national_identity "UK"
+    }
+
+    CORPORATE_CUSTOMERS {
+        int customer_id PK,FK
+        varchar tax_number "UK"
+        varchar company_name
+    }
+
+    LOCATIONS ||--o{ CARS : "houses"
+    BRANDS ||--o{ CARS : "classifies"
+    COLORS ||--o{ CARS : "styles"
+    SEGMENTS ||--o{ CARS : "categorizes"
+    FUELS ||--o{ CARS : "powers"
+    GEARS ||--o{ CARS : "equips"
+    CARS ||--o{ CAR_IMAGES : "features"
+
+    CARS {
+        int id PK
+        int brand_id FK
+        int color_id FK
+        int location_id FK
+        int segment_id FK
+        int fuel_id FK
+        int gear_id FK
+        int model_year
+        decimal daily_price
+        varchar description
+        int min_findeks_score
+        varchar plate_number "UK"
+        int kilometers
+    }
+
+    CARS ||--o{ RENTALS : "rented in"
+    CUSTOMERS ||--o{ RENTALS : "books"
+    RENTALS ||--o{ PAYMENTS : "billed by"
+    CARS ||--o{ PRICE_DECISIONS : "records"
+
+    RENTALS {
+        int id PK
+        int car_id FK
+        int customer_id FK
+        int rent_start_location_id FK
+        int rent_end_location_id FK
+        datetime rent_start_date
+        datetime rent_end_date
+        datetime return_date
+        decimal total_price
+    }
+
+    PAYMENTS {
+        int id PK
+        int rental_id FK
+        decimal amount
+        datetime payment_date
+        varchar payment_status
+        varchar transaction_code
+    }
+
+    PRICE_DECISIONS {
+        int id PK
+        int car_id FK
+        decimal old_price
+        decimal new_price
+        decimal dynamic_multiplier
+        varchar decision_source "RL_MODEL | MANUAL"
+        datetime decision_time
+    }
 ```
 
 ---
